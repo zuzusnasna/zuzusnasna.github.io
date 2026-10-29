@@ -4,12 +4,29 @@ layout: default
 <section class="intro">
   <p class="eyebrow">STUDY NOTE</p>
   <h1>학습 기록</h1>
-  <p>배운 내용을 정리하고, 직접 구현하면서 생긴 문제와 해결 과정을 기록합니다.</p>
+  <p>부트캠프에서 배운 내용부터 프로젝트에서 직접 부딪힌 문제와 해결 과정까지 기록합니다.</p>
 </section>
 
 <div class="content-grid">
   <aside class="sidebar">
-    <h2>Tags</h2>
+    <h2>Projects</h2>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=EMS">개인 프로젝트 : EMS</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=RealTimeChat">개인 프로젝트 : RealTimeChat</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=SmartTicketing">팀 프로젝트 : SmartTicketing</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=GameHub">팀 프로젝트 : GameHub</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=Meet-Up">팀 프로젝트 : Meet-Up</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=SwingFit">팀 프로젝트 : SwingFit</a>
+
+    <h2 class="sidebar-heading">Study</h2>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=HTML">부트캠프 : HTML</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=Java">부트캠프 : Java</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=Oracle">부트캠프 : Oracle</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=PL%2FSQL">부트캠프 : PL/SQL</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=React">React Study</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=Linux">Linux</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag=머신러닝">Machine Learning</a>
+
+    <h2 class="sidebar-heading">Tags</h2>
     {% assign tags = site.tags | sort %}
     <a class="tag all" href="{{ '/' | relative_url }}">전체 <span>{{ site.posts.size }}</span></a>
     {% for tag in tags %}
@@ -28,15 +45,17 @@ layout: default
       </article>
       {% endfor %}
     </div>
-    <div class="empty" id="empty">해당 태그의 글이 없습니다.</div>
+    <div class="empty" id="empty">해당 분류의 글이 없습니다.</div>
   </section>
 </div>
 
 <script>
   const tag = new URLSearchParams(location.search).get('tag');
-  if (tag) {
+  const filter = tag ? tag.toLowerCase().replaceAll('%2f', '/') : null;
+  if (filter) {
     document.querySelectorAll('.post-card').forEach(card => {
-      card.hidden = !card.dataset.tags.split(' ').includes(tag);
+      const tags = card.dataset.tags.toLowerCase().split(' ');
+      card.hidden = !tags.includes(filter) && !tags.includes(tag.toLowerCase());
     });
     document.querySelector('.all')?.classList.remove('active');
   }
