@@ -1,0 +1,45 @@
+---
+layout: default
+---
+<section class="intro">
+  <p class="eyebrow">STUDY NOTE</p>
+  <h1>학습 기록</h1>
+  <p>배운 내용을 정리하고, 직접 구현하면서 생긴 문제와 해결 과정을 기록합니다.</p>
+</section>
+
+<div class="content-grid">
+  <aside class="sidebar">
+    <h2>Tags</h2>
+    {% assign tags = site.tags | sort %}
+    <a class="tag all" href="{{ '/' | relative_url }}">전체 <span>{{ site.posts.size }}</span></a>
+    {% for tag in tags %}
+      <a class="tag" href="{{ '/' | relative_url }}?tag={{ tag[0] | slugify }}">{{ tag[0] }} <span>{{ tag[1].size }}</span></a>
+    {% endfor %}
+  </aside>
+
+  <section class="post-area">
+    <div class="post-list" id="post-list">
+      {% for post in site.posts %}
+      <article class="post-card" data-tags="{% for tag in post.tags %}{{ tag | slugify }} {% endfor %}">
+        <div class="post-date">{{ post.date | date: "%Y.%m.%d" }}</div>
+        <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+        <p>{{ post.excerpt | strip_html | strip_newlines | truncate: 150 }}</p>
+        <div class="post-tags">{% for tag in post.tags %}<span>#{{ tag }}</span>{% endfor %}</div>
+      </article>
+      {% endfor %}
+    </div>
+    <div class="empty" id="empty">해당 태그의 글이 없습니다.</div>
+  </section>
+</div>
+
+<script>
+  const tag = new URLSearchParams(location.search).get('tag');
+  if (tag) {
+    document.querySelectorAll('.post-card').forEach(card => {
+      card.hidden = !card.dataset.tags.split(' ').includes(tag);
+    });
+    document.querySelector('.all')?.classList.remove('active');
+  }
+  const visible = [...document.querySelectorAll('.post-card')].some(card => !card.hidden);
+  document.getElementById('empty').hidden = visible;
+</script>
