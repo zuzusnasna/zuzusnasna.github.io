@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "부트캠프 : 식별관계와 비식별관계를 구분하는 기준"
+title: "식별관계와 비식별관계를 구분하는 기준"
 date: 2026-10-18 09:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, Database]
