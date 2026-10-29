@@ -6,6 +6,17 @@ categories: [프로젝트]
 tags: [RealTimeChat, WebSocket, STOMP, Spring Boot]
 ---
 
+<figure class="project-visual project-diagram">
+<svg viewBox="0 0 760 150" role="img" aria-label="실시간 채팅 WebSocket STOMP 흐름">
+<rect x="8" y="35" width="150" height="72" rx="3" fill="#fff" stroke="#dedde1"/><text x="83" y="65" text-anchor="middle" font-size="14" fill="#242832">브라우저</text><text x="83" y="85" text-anchor="middle" font-size="11" fill="#6f727b">STOMP client</text>
+<path d="M158 71 H202" stroke="#bd4b35" stroke-width="2"/><path d="M195 65 L202 71 L195 77" fill="none" stroke="#bd4b35" stroke-width="2"/>
+<rect x="202" y="35" width="170" height="72" rx="3" fill="#f3e7e2" stroke="#bd4b35"/><text x="287" y="65" text-anchor="middle" font-size="14" fill="#242832">WebSocket</text><text x="287" y="85" text-anchor="middle" font-size="11" fill="#6f727b">양방향 연결</text>
+<path d="M372 71 H416" stroke="#bd4b35" stroke-width="2"/><path d="M409 65 L416 71 L409 77" fill="none" stroke="#bd4b35" stroke-width="2"/>
+<rect x="416" y="35" width="155" height="72" rx="3" fill="#fff" stroke="#dedde1"/><text x="493" y="65" text-anchor="middle" font-size="14" fill="#242832">Spring Broker</text><text x="493" y="85" text-anchor="middle" font-size="11" fill="#6f727b">구독 목적지</text>
+<path d="M571 71 H615" stroke="#bd4b35" stroke-width="2"/><path d="M608 65 L615 71 L608 77" fill="none" stroke="#bd4b35" stroke-width="2"/>
+<rect x="615" y="35" width="137" height="72" rx="3" fill="#fff" stroke="#dedde1"/><text x="683" y="65" text-anchor="middle" font-size="14" fill="#242832">구독 사용자</text><text x="683" y="85" text-anchor="middle" font-size="11" fill="#6f727b">실시간 수신</text>
+</svg><figcaption>STOMP 목적지에 메시지를 발행하고 해당 목적지를 구독 중인 클라이언트로 전달하는 기본 흐름.</figcaption></figure>
+
 일반적인 HTTP 요청만으로 채팅을 만들면 사용자가 메시지를 확인하기 위해 계속 서버에 요청해야 한다. 실시간 채팅에서는 서버가 새로운 메시지를 연결된 클라이언트에 바로 전달할 필요가 있다.
 
 ## WebSocket
