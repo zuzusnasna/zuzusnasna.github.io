@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "부트캠프 : Oracle DDL, DML, 제약조건과 테이블 설계"
+title: "Oracle DDL, DML, 제약조건과 테이블 설계"
 date: 2026-10-17 09:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, Database]
