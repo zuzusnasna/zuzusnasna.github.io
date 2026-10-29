@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "부트캠프 : PL/SQL 예외 처리와 프로시저 설계"
+title: "PL/SQL 예외 처리와 프로시저 설계"
 date: 2026-10-19 09:00:00 +0900
 categories: [학습]
 tags: [Oracle, PL/SQL]
