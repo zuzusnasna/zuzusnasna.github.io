@@ -71,3 +71,60 @@ JDBC 디버깅은 애플리케이션 코드만 읽기보다 연결 문자열과 
 5. 비밀번호나 접속 문자열을 로그에 노출하지 않고 오류 원인을 분리한다.
 
 연결 실패를 해결할 때는 설정을 여러 개 동시에 바꾸지 말고 한 조건씩 검증해야 무엇이 원인이었는지 학습할 수 있다.
+
+
+## 기능 단위로 Servlet, Service, DAO를 나눈 이유
+
+GameHub는 Spring 없이 Servlet, Tomcat, JDBC, Oracle을 직접 연결한 프로젝트였다. 프레임워크가 자동으로 연결해 주는 부분이 적어서 각 계층이 어떤 책임을 갖는지 코드로 확인해야 했다.
+
+~~~text
+HTTP 요청
+  ↓
+Servlet: 파라미터 확인 / 응답 처리
+  ↓
+Service: 업무 규칙
+  ↓
+DAO: SQL과 JDBC
+  ↓
+Oracle
+~~~
+
+게시글 목록, 작성, 상세, 수정, 삭제는 각각 요청을 처리하는 Servlet과 DB 작업을 담당하는 DAO로 나눌 수 있다. 좋아요와 댓글 좋아요, 게임 뉴스 조회도 화면 이벤트만으로 끝나지 않고 DB의 상태와 연결되어야 한다.
+
+## 게시글 수정·삭제에서 확인할 점
+
+요청에서 넘어온 게시글 번호만으로 SQL을 실행하면 사용자가 다른 사람의 게시글을 수정하거나 삭제할 수 있는 문제가 생길 수 있다. 서버에서는 로그인 사용자와 게시글 작성자 관계를 확인하고, SQL에는 바인드 변수를 사용해 값을 전달해야 한다.
+
+~~~java
+String sql = "SELECT post_id, title, content FROM posts WHERE post_id = ?";
+try (PreparedStatement ps = conn.prepareStatement(sql)) {
+    ps.setLong(1, postId);
+    try (ResultSet rs = ps.executeQuery()) {
+        // 조회 결과를 DTO로 변환
+    }
+}
+~~~
+
+위 코드는 JDBC의 바인드 변수와 자원 정리를 설명하기 위한 축약 예시다. 실제 프로젝트의 테이블명이나 메서드명을 그대로 재현한 코드는 아니다. 중요한 점은 SQL 문자열에 사용자 입력을 직접 이어 붙이지 않고, PreparedStatement와 try-with-resources를 사용해 SQL 실행과 자원 해제를 명확히 하는 것이다.
+
+## JDBC 연결 오류를 해결한 순서
+
+Oracle 연결이 실패하면 SQL 문장보다 먼저 접속 설정을 확인해야 한다. 당시 실습 환경에서는 XE의 PDB 서비스 이름을 사용하는 접속 주소가 필요했다.
+
+~~~text
+jdbc:oracle:thin:@localhost:1521/XEPDB1
+~~~
+
+오류를 확인할 때는 다음 항목을 분리했다.
+
+1. Oracle 서비스와 리스너가 실행 중인지
+2. 호스트와 포트가 맞는지
+3. SID가 아니라 실제 서비스 이름을 지정했는지
+4. 사용자 계정에 접속 권한이 있는지
+5. JDBC 드라이버와 URL 형식이 맞는지
+
+설정을 한 번에 여러 개 바꾸기보다 DB 클라이언트에서 같은 계정과 서비스로 접속되는지 먼저 확인하면, 문제를 DB 상태와 Java 코드 중 어디에서 찾아야 하는지 좁힐 수 있다.
+
+## 이 프로젝트에서 배운 점
+
+Spring MVC나 JPA를 사용할 때도 HTTP 요청, 업무 규칙, 데이터 접근의 책임은 사라지지 않는다. 프레임워크는 이 경계를 구성하는 반복 코드를 줄여 준다. Servlet/JDBC를 직접 구현한 경험은 Controller, Service, Repository가 왜 분리되는지 이해하는 기반이 됐다.
