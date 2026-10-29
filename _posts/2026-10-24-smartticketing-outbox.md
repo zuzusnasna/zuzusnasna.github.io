@@ -6,6 +6,11 @@ categories: [프로젝트]
 tags: [SmartTicketing, Spring Boot, Transactional Outbox, Redis]
 ---
 
+<figure class="project-visual">
+  <img src="https://raw.githubusercontent.com/zuzusnasna/SmartTicketing/main/docs/images/outbox.svg" alt="SmartTicketing Transactional Outbox 처리 흐름" loading="lazy">
+  <figcaption>DB 트랜잭션과 이벤트 발행 사이의 불일치를 줄이기 위한 Outbox 흐름.</figcaption>
+</figure>
+
 취소표를 기다리는 사용자가 있는 상황에서 좌석 취소와 후속 알림·배정을 안정적으로 연결하는 것이 어려웠다.
 
 ## 문제
