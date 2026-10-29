@@ -11,8 +11,8 @@ tags: [Oracle, SQL, DML, Transaction]
 SELECT가 데이터를 읽는 문장이라면 DML(Data Manipulation Language)은 테이블의 데이터를 입력·수정·삭제한다. 실무에서는 실행 전에 WHERE 조건과 대상 행을 확인하고, 변경 결과를 검증한 뒤 COMMIT하는 습관이 중요하다.
 
 <figure class="note-cover">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" alt="Oracle 데이터베이스 로고" style="width:96px;height:96px;object-fit:contain;margin:0 auto">
-  <figcaption>Oracle SQL 실습 — 데이터 변경과 트랜잭션 관리</figcaption>
+  <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1400&q=85" alt="데이터 변경 SQL 실습">
+  <figcaption>데이터 변경 SQL 실습 — Oracle SQL 학습 노트</figcaption>
 </figure>
 
 ## 1. INSERT — 데이터 입력
