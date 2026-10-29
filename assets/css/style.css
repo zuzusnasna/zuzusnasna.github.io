@@ -160,3 +160,19 @@ nav a:hover{color:var(--journal-accent)}
 .post-tech-visual img{width:25px;height:25px;object-fit:contain;opacity:.78}
 footer{border-top:1px solid var(--journal-line);background:#eeece3;color:#718071;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 @media(max-width:700px){.page-wrap{padding:38px 18px 70px}.content-grid{display:block}.sidebar{border:0;border-bottom:1px solid var(--journal-line);padding:0 0 18px;margin-bottom:32px;display:flex;gap:14px;overflow:auto}.sidebar h2{display:none}.tag{white-space:nowrap}.intro-heading-row{gap:14px}.tag-search{width:100%;margin:0}.post-card{padding-left:17px}.post-detail h1{font-size:34px}.post-content{font-size:16px}.post-content h2{font-size:25px;margin-top:48px}.post-content pre{padding:15px}}
+
+
+/* Reading aids for long-form technical notes */
+.reading-progress{position:fixed;z-index:200;top:0;left:0;width:0;height:3px;background:var(--journal-accent);pointer-events:none}
+.post-reading-meta{display:flex;align-items:center;gap:12px;margin-top:22px;padding:12px 0;border-top:1px solid var(--journal-line);border-bottom:1px solid var(--journal-line);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:11px;color:var(--journal-muted)}
+.reading-label{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--journal-accent)}
+.post-toc{margin-top:24px;padding:20px 22px;border:1px solid var(--journal-line);background:#eeefe6}
+.post-toc[hidden]{display:none}
+.toc-heading{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.toc-heading span{font-size:9px;font-weight:800;letter-spacing:.13em;color:var(--journal-accent)}
+.toc-heading strong{font-family:Georgia,"Noto Serif KR",serif;font-size:17px;color:var(--journal-ink)}
+.post-toc ol{margin:0;padding-left:1.35em;columns:2;column-gap:32px}
+.post-toc li{break-inside:avoid;padding:3px 0;color:#89948a;font-size:12px;line-height:1.65}
+.post-toc a{color:#475b4a;text-decoration:none}
+.post-toc a:hover{color:var(--journal-accent);text-decoration:underline;text-underline-offset:3px}
+@media(max-width:700px){.post-toc ol{columns:1}.post-reading-meta{font-size:10px}}
