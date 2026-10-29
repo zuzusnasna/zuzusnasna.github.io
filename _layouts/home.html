@@ -25,21 +25,22 @@ layout: default
     <a class="tag" href="{{ '/' | relative_url }}?section=Frontend">HTML / CSS / JavaScript / React</a>
     <a class="tag" href="{{ '/' | relative_url }}?section=Infra">Linux / AWS / Docker / Redis / CI-CD</a>
     <a class="tag" href="{{ '/' | relative_url }}?section=MachineLearning">Machine Learning</a>
-
-    <h2 class="sidebar-heading">Tags</h2>
-    {% assign tags = site.tags | sort %}
-    <a class="tag all" href="{{ '/' | relative_url }}">전체 <span>{{ site.posts.size }}</span></a>
-    {% for tag in tags %}
-      <a class="tag" href="{{ '/' | relative_url }}?tag={{ tag[0] | slugify }}">{{ tag[0] }} <span>{{ tag[1].size }}</span></a>
-    {% endfor %}
   </aside>
 
   <section class="post-area">
+    <div class="tag-search">
+      <label for="tag-search-input">태그 검색</label>
+      <div class="tag-search-row">
+        <input id="tag-search-input" type="search" placeholder="예: Redis, JPA, Oracle, WebSocket" autocomplete="off">
+        <button id="tag-search-clear" type="button">초기화</button>
+      </div>
+      <div class="tag-results" id="tag-results"></div>
+    </div>
+
     <div class="post-list" id="post-list">
       {% for post in site.posts %}
       {% assign menu_section = '' %}
 
-      {% comment %} Project posts are always kept in their project menu. {% endcomment %}
       {% if post.title contains '개인 프로젝트 : EMS' %}{% assign menu_section = 'EMS' %}
       {% elsif post.title contains '개인 프로젝트 : RealTimeChat' %}{% assign menu_section = 'RealTimeChat' %}
       {% elsif post.title contains '팀 프로젝트 : SmartTicketing' %}{% assign menu_section = 'SmartTicketing' %}
@@ -47,8 +48,6 @@ layout: default
       {% elsif post.title contains '팀 프로젝트 : Meet-Up' %}{% assign menu_section = 'Meet-Up' %}
       {% elsif post.title contains '팀 프로젝트 : SwingFit' %}{% assign menu_section = 'SwingFit' %}
       {% elsif post.title contains '설계 : QuerySentinel' %}{% assign menu_section = 'QuerySentinel' %}
-
-      {% comment %} Broad study categories. One post belongs to one study menu. {% endcomment %}
       {% elsif post.tags contains 'OAuth2' or post.tags contains 'JWT' or post.tags contains 'Spring Security' or post.title contains 'OAuth' or post.title contains 'JWT' or post.title contains '인증' %}{% assign menu_section = 'Auth' %}
       {% elsif post.tags contains 'Oracle' or post.tags contains 'SQL' or post.tags contains 'PL/SQL' or post.tags contains 'SQL Tuning' or post.tags contains 'Database' or post.title contains 'Oracle' or post.title contains 'SQL' or post.title contains 'PL/SQL' %}{% assign menu_section = 'Database' %}
       {% elsif post.tags contains 'Spring Boot' or post.tags contains 'Spring' or post.tags contains 'Java' or post.tags contains 'Servlet' or post.tags contains 'JDBC' or post.tags contains 'JPA' or post.tags contains 'MyBatis' or post.title contains 'Spring' or post.title contains 'Java' or post.title contains 'Servlet' %}{% assign menu_section = 'Backend' %}
@@ -74,17 +73,90 @@ layout: default
   const section = params.get('section');
   const tag = params.get('tag');
   const cards = [...document.querySelectorAll('.post-card')];
+  const input = document.getElementById('tag-search-input');
+  const results = document.getElementById('tag-results');
+  const clearButton = document.getElementById('tag-search-clear');
 
-  if (section) {
-    cards.forEach(card => {
-      card.hidden = card.dataset.section !== section;
+  const tagMap = new Map();
+  cards.forEach(card => {
+    card.dataset.tags.split(' ').filter(Boolean).forEach(value => {
+      const label = value.replace(/-/g, ' ');
+      if (!tagMap.has(value)) tagMap.set(value, label);
     });
-  } else if (tag) {
+  });
+
+  function showCardsBySection() {
     cards.forEach(card => {
-      const tags = card.dataset.tags.toLowerCase().split(' ');
-      card.hidden = !tags.includes(tag.toLowerCase());
+      card.hidden = section ? card.dataset.section !== section : false;
     });
   }
+
+  function applyTag(value) {
+    const query = value.trim().toLowerCase();
+    cards.forEach(card => {
+      const tags = card.dataset.tags.toLowerCase().split(' ').filter(Boolean);
+      card.hidden = query ? !tags.includes(query) : false;
+    });
+    const visible = cards.some(card => !card.hidden);
+    document.getElementById('empty').hidden = visible;
+  }
+
+  function renderTagResults(query) {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) {
+      results.innerHTML = '';
+      return;
+    }
+
+    const matches = [...tagMap.entries()].filter(([slug, label]) =>
+      slug.toLowerCase().includes(normalized) || label.toLowerCase().includes(normalized)
+    );
+
+    results.innerHTML = matches.map(([slug, label]) =>
+      `<button type="button" class="tag-result" data-tag="${slug}">#${label}</button>`
+    ).join('');
+
+    results.querySelectorAll('.tag-result').forEach(button => {
+      button.addEventListener('click', () => {
+        const selected = button.dataset.tag;
+        input.value = tagMap.get(selected);
+        history.replaceState(null, '', `${location.pathname}?tag=${encodeURIComponent(selected)}`);
+        applyTag(selected);
+        results.innerHTML = '';
+      });
+    });
+  }
+
+  if (section) {
+    showCardsBySection();
+  } else if (tag) {
+    const matchedTag = [...tagMap.keys()].find(value => value.toLowerCase() === tag.toLowerCase());
+    input.value = matchedTag ? tagMap.get(matchedTag) : tag;
+    applyTag(tag);
+  } else {
+    showCardsBySection();
+  }
+
+  input.addEventListener('input', event => renderTagResults(event.target.value));
+  input.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      const query = event.target.value.trim().toLowerCase();
+      const exact = [...tagMap.keys()].find(value => value.toLowerCase() === query || tagMap.get(value).toLowerCase() === query);
+      if (exact) {
+        history.replaceState(null, '', `${location.pathname}?tag=${encodeURIComponent(exact)}`);
+        applyTag(exact);
+        results.innerHTML = '';
+      }
+    }
+  });
+
+  clearButton.addEventListener('click', () => {
+    input.value = '';
+    results.innerHTML = '';
+    history.replaceState(null, '', location.pathname);
+    showCardsBySection();
+    document.getElementById('empty').hidden = false;
+  });
 
   const visible = cards.some(card => !card.hidden);
   document.getElementById('empty').hidden = visible;
