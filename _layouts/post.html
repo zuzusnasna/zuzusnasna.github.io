@@ -20,5 +20,57 @@ layout: default
     {% if page.tags contains 'TensorFlow Lite' or page.tags contains 'Machine Learning' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow">{% endif %}
   </div>
   {% endif %}
-  <div class="post-content">{{ content }}</div>
+  <div class="post-reading-meta" aria-label="글 정보">
+    <span class="reading-label">STUDY NOTE</span>
+    <span id="reading-time">읽는 시간 계산 중</span>
+  </div>
+  <nav class="post-toc" id="post-toc" aria-label="이 글의 목차" hidden>
+    <div class="toc-heading"><span>IN THIS NOTE</span><strong>목차</strong></div>
+    <ol id="post-toc-list"></ol>
+  </nav>
+  <div class="post-content" id="post-content">{{ content }}</div>
 </article>
+<div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+<script>
+(() => {
+  const content = document.getElementById('post-content');
+  if (!content) return;
+  const headings = [...content.querySelectorAll('h2')];
+  const toc = document.getElementById('post-toc');
+  const list = document.getElementById('post-toc-list');
+  const slugify = text => text.toLocaleLowerCase('ko-KR').trim()
+    .replace(/[^\\p{L}\\p{N}\\s-]/gu, '').replace(/\\s+/g, '-');
+  const seen = new Set();
+  headings.forEach((heading, index) => {
+    if (!heading.id) {
+      let id = slugify(heading.textContent) || 'section-' + (index + 1);
+      const base = id;
+      let suffix = 2;
+      while (seen.has(id) || document.getElementById(id)) id = base + '-' + suffix++;
+      heading.id = id;
+      seen.add(id);
+    }
+    const item = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = '#' + heading.id;
+    link.textContent = heading.textContent;
+    item.appendChild(link);
+    list.appendChild(item);
+  });
+  if (headings.length >= 3) toc.hidden = false;
+  const text = content.innerText || '';
+  const minutes = Math.max(1, Math.ceil(text.replace(/\\s/g, '').length / 450));
+  const readingTime = document.getElementById('reading-time');
+  if (readingTime) readingTime.textContent = '약 ' + minutes + '분 읽기 · ' + headings.length + '개 주제';
+  const progress = document.getElementById('reading-progress');
+  const updateProgress = () => {
+    if (!progress) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const value = max > 0 ? Math.min(100, Math.max(0, window.scrollY / max * 100)) : 0;
+    progress.style.width = value + '%';
+  };
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+})();
+</script>
