@@ -11,8 +11,8 @@ tags: [Oracle, SQL, Subquery, Database]
 예를 들어 101번 학과 학생들의 평균 몸무게보다 가벼운 학생을 찾고 싶다고 하자. 평균값을 먼저 알아내서 직접 SQL에 입력할 수도 있지만, 데이터가 바뀌면 평균도 달라진다. 평균을 구하는 SELECT를 조건 안에 넣으면 매번 최신 데이터 기준으로 비교할 수 있다.
 
 <figure class="note-cover">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" alt="Oracle 데이터베이스 로고" style="width:96px;height:96px;object-fit:contain;margin:0 auto">
-  <figcaption>Oracle SQL 실습 — 조회 결과를 다른 조회의 조건으로 사용하기</figcaption>
+  <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=85" alt="서브쿼리 실습 작업 환경">
+  <figcaption>서브쿼리 실습 작업 환경 — Oracle SQL 학습 노트</figcaption>
 </figure>
 
 ## 1. 단일행 서브쿼리
