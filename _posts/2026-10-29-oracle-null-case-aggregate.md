@@ -11,8 +11,8 @@ tags: [Oracle, SQL, NULL, CASE, GROUP BY]
 이번 범위는 NULL 처리 함수에서 시작해 조건 분기, 그룹 함수, 그룹별 집계로 이어진다. 개별 함수를 외우는 것보다 **어떤 데이터를 어떤 기준으로 계산하려는지** 먼저 정하면 함수 선택이 쉬워진다.
 
 <figure class="note-cover">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" alt="Oracle 데이터베이스 로고" style="width:96px;height:96px;object-fit:contain;margin:0 auto">
-  <figcaption>Oracle SQL 실습 — NULL 처리와 그룹 집계</figcaption>
+  <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1400&q=85" alt="SQL 코드와 NULL 처리 예제">
+  <figcaption>SQL 코드와 NULL 처리 예제 — Oracle SQL 학습 노트</figcaption>
 </figure>
 
 ## 1. NULL을 포함한 금액 계산
