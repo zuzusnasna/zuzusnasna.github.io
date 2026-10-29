@@ -70,35 +70,44 @@ layout: default
 
 <script>
   const params = new URLSearchParams(location.search);
-  const section = params.get('section');
-  const tag = params.get('tag');
+  let section = params.get('section');
+  let tag = params.get('tag');
   const cards = [...document.querySelectorAll('.post-card')];
   const input = document.getElementById('tag-search-input');
   const results = document.getElementById('tag-results');
   const clearButton = document.getElementById('tag-search-clear');
+  const empty = document.getElementById('empty');
 
   const tagMap = new Map();
   cards.forEach(card => {
-    card.dataset.tags.split(' ').filter(Boolean).forEach(value => {
-      const label = value.replace(/-/g, ' ');
-      if (!tagMap.has(value)) tagMap.set(value, label);
+    card.dataset.tags.split(' ').filter(Boolean).forEach(slug => {
+      if (!tagMap.has(slug)) tagMap.set(slug, slug);
     });
   });
 
-  function showCardsBySection() {
-    cards.forEach(card => {
-      card.hidden = section ? card.dataset.section !== section : false;
-    });
+  function updateEmpty() {
+    empty.hidden = cards.some(card => !card.hidden);
   }
 
-  function applyTag(value) {
+  function showAll() {
+    cards.forEach(card => { card.hidden = false; });
+    updateEmpty();
+  }
+
+  function showSection(value) {
+    cards.forEach(card => {
+      card.hidden = card.dataset.section !== value;
+    });
+    updateEmpty();
+  }
+
+  function showTag(value) {
     const query = value.trim().toLowerCase();
     cards.forEach(card => {
       const tags = card.dataset.tags.toLowerCase().split(' ').filter(Boolean);
-      card.hidden = query ? !tags.includes(query) : false;
+      card.hidden = !query || !tags.includes(query);
     });
-    const visible = cards.some(card => !card.hidden);
-    document.getElementById('empty').hidden = visible;
+    updateEmpty();
   }
 
   function renderTagResults(query) {
@@ -108,43 +117,43 @@ layout: default
       return;
     }
 
-    const matches = [...tagMap.entries()].filter(([slug, label]) =>
-      slug.toLowerCase().includes(normalized) || label.toLowerCase().includes(normalized)
-    );
-
-    results.innerHTML = matches.map(([slug, label]) =>
-      `<button type="button" class="tag-result" data-tag="${slug}">#${label}</button>`
+    const matches = [...tagMap.entries()].filter(([slug]) => slug.toLowerCase().includes(normalized));
+    results.innerHTML = matches.map(([slug]) =>
+      `<button type="button" class="tag-result" data-tag="${slug}">#${slug.replace(/-/g, ' ')}</button>`
     ).join('');
 
     results.querySelectorAll('.tag-result').forEach(button => {
       button.addEventListener('click', () => {
         const selected = button.dataset.tag;
-        input.value = tagMap.get(selected);
+        input.value = selected.replace(/-/g, ' ');
+        section = null;
+        tag = selected;
         history.replaceState(null, '', `${location.pathname}?tag=${encodeURIComponent(selected)}`);
-        applyTag(selected);
+        showTag(selected);
         results.innerHTML = '';
       });
     });
   }
 
-  if (section) {
-    showCardsBySection();
-  } else if (tag) {
-    const matchedTag = [...tagMap.keys()].find(value => value.toLowerCase() === tag.toLowerCase());
-    input.value = matchedTag ? tagMap.get(matchedTag) : tag;
-    applyTag(tag);
+  if (tag) {
+    input.value = tag.replace(/-/g, ' ');
+    showTag(tag);
+  } else if (section) {
+    showSection(section);
   } else {
-    showCardsBySection();
+    showAll();
   }
 
   input.addEventListener('input', event => renderTagResults(event.target.value));
   input.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
-      const query = event.target.value.trim().toLowerCase();
-      const exact = [...tagMap.keys()].find(value => value.toLowerCase() === query || tagMap.get(value).toLowerCase() === query);
+      const query = event.target.value.trim().toLowerCase().replace(/\s+/g, '-');
+      const exact = [...tagMap.keys()].find(slug => slug.toLowerCase() === query);
       if (exact) {
+        section = null;
+        tag = exact;
         history.replaceState(null, '', `${location.pathname}?tag=${encodeURIComponent(exact)}`);
-        applyTag(exact);
+        showTag(exact);
         results.innerHTML = '';
       }
     }
@@ -153,11 +162,9 @@ layout: default
   clearButton.addEventListener('click', () => {
     input.value = '';
     results.innerHTML = '';
+    section = null;
+    tag = null;
     history.replaceState(null, '', location.pathname);
-    showCardsBySection();
-    document.getElementById('empty').hidden = false;
+    showAll();
   });
-
-  const visible = cards.some(card => !card.hidden);
-  document.getElementById('empty').hidden = visible;
 </script>
