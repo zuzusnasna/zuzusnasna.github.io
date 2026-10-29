@@ -6,6 +6,11 @@ categories: [프로젝트]
 tags: [GameHub, Java, Servlet, JDBC, Oracle]
 ---
 
+<figure class="project-visual">
+  <img src="https://raw.githubusercontent.com/zuzusnasna/miniproject/main/src/main/webapp/images/icon/lol.jpg" alt="GameHub 게임 목록에 사용되는 게임 썸네일 예시" loading="lazy">
+  <figcaption>GameHub의 게임 카탈로그에서 사용하는 썸네일 이미지 예시.</figcaption>
+</figure>
+
 GameHub는 Spring 없이 Java Servlet + Tomcat + JDBC + Oracle을 직접 연결한 프로젝트라서 웹 요청부터 DB 연결까지 각 단계가 눈에 보였다.
 
 ## 전체 요청 흐름
