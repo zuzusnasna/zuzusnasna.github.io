@@ -10,31 +10,29 @@ layout: default
 <div class="content-grid">
   <aside class="sidebar">
     <h2>Projects</h2>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'EMS' | slugify }}">개인 프로젝트 : EMS</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'RealTimeChat' | slugify }}">개인 프로젝트 : RealTimeChat</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'SmartTicketing' | slugify }}">팀 프로젝트 : SmartTicketing</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'GameHub' | slugify }}">팀 프로젝트 : GameHub</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Meet-Up' | slugify }}">팀 프로젝트 : Meet-Up</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'SwingFit' | slugify }}">팀 프로젝트 : SwingFit</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'QuerySentinel' | slugify }}">설계 : QuerySentinel</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=EMS">개인 프로젝트 : EMS</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=RealTimeChat">개인 프로젝트 : RealTimeChat</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=SmartTicketing">팀 프로젝트 : SmartTicketing</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=GameHub">팀 프로젝트 : GameHub</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=Meet-Up">팀 프로젝트 : Meet-Up</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=SwingFit">팀 프로젝트 : SwingFit</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=QuerySentinel">설계 : QuerySentinel</a>
 
     <h2 class="sidebar-heading">Bootcamp</h2>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'HTML' | slugify }}">부트캠프 : HTML</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'CSS' | slugify }}">부트캠프 : CSS</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'JavaScript' | slugify }}">부트캠프 : JavaScript</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Java' | slugify }}">부트캠프 : Java</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Oracle' | slugify }}">부트캠프 : Oracle</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'PL/SQL' | slugify }}">부트캠프 : PL/SQL</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Spring Boot' | slugify }}">부트캠프 : Spring Boot</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'JPA' | slugify }}">JPA</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Spring Security' | slugify }}">Spring Security</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=HTML">부트캠프 : HTML</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=CSS">부트캠프 : CSS</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=JavaScript">부트캠프 : JavaScript</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=Java">부트캠프 : Java</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=Oracle">부트캠프 : Oracle</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=PLSQL">부트캠프 : PL/SQL</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=Spring">부트캠프 : Spring</a>
 
     <h2 class="sidebar-heading">Study</h2>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'React' | slugify }}">React Study</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Linux' | slugify }}">Linux</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Redis' | slugify }}">Redis</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'SQL Tuning' | slugify }}">SQL Tuning</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag={{ '머신러닝' | slugify }}">Machine Learning</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=React">React Study</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=Linux">Linux</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=Redis">Redis</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=SQLTuning">SQL Tuning</a>
+    <a class="tag" href="{{ '/' | relative_url }}?section=MachineLearning">Machine Learning</a>
 
     <h2 class="sidebar-heading">Tags</h2>
     {% assign tags = site.tags | sort %}
@@ -47,7 +45,29 @@ layout: default
   <section class="post-area">
     <div class="post-list" id="post-list">
       {% for post in site.posts %}
-      <article class="post-card" data-tags="{% for tag in post.tags %}{{ tag | slugify }} {% endfor %}">
+      {% assign menu_section = '' %}
+      {% assign title_prefix = post.title | split: ' — ' | first %}
+      {% if post.title contains '개인 프로젝트 : EMS' %}{% assign menu_section = 'EMS' %}
+      {% elsif post.title contains '개인 프로젝트 : RealTimeChat' %}{% assign menu_section = 'RealTimeChat' %}
+      {% elsif post.title contains '팀 프로젝트 : SmartTicketing' %}{% assign menu_section = 'SmartTicketing' %}
+      {% elsif post.title contains '팀 프로젝트 : GameHub' %}{% assign menu_section = 'GameHub' %}
+      {% elsif post.title contains '팀 프로젝트 : Meet-Up' %}{% assign menu_section = 'Meet-Up' %}
+      {% elsif post.title contains '팀 프로젝트 : SwingFit' %}{% assign menu_section = 'SwingFit' %}
+      {% elsif post.title contains '설계 : QuerySentinel' %}{% assign menu_section = 'QuerySentinel' %}
+      {% elsif post.title contains '부트캠프 : HTML' %}{% assign menu_section = 'HTML' %}
+      {% elsif post.title contains '부트캠프 : CSS' %}{% assign menu_section = 'CSS' %}
+      {% elsif post.title contains '부트캠프 : JavaScript' %}{% assign menu_section = 'JavaScript' %}
+      {% elsif post.title contains '부트캠프 : Java' %}{% assign menu_section = 'Java' %}
+      {% elsif post.title contains '부트캠프 : Oracle' %}{% assign menu_section = 'Oracle' %}
+      {% elsif post.title contains '부트캠프 : PL/SQL' %}{% assign menu_section = 'PLSQL' %}
+      {% elsif post.title contains 'Spring Security' or post.title contains 'Spring Boot' or post.title contains 'Spring : ' or post.title contains 'Spring Study' %}{% assign menu_section = 'Spring' %}
+      {% elsif post.title contains 'React Study' %}{% assign menu_section = 'React' %}
+      {% elsif post.title contains 'Linux' %}{% assign menu_section = 'Linux' %}
+      {% elsif post.title contains 'Redis Study' %}{% assign menu_section = 'Redis' %}
+      {% elsif post.title contains 'SQL Tuning' %}{% assign menu_section = 'SQLTuning' %}
+      {% elsif post.title contains 'Machine Learning' %}{% assign menu_section = 'MachineLearning' %}
+      {% endif %}
+      <article class="post-card" data-section="{{ menu_section }}" data-tags="{% for tag in post.tags %}{{ tag | slugify }} {% endfor %}">
         <div class="post-date">{{ post.date | date: "%Y.%m.%d" }}</div>
         <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
         <p>{{ post.excerpt | strip_html | strip_newlines | truncate: 150 }}</p>
@@ -60,14 +80,22 @@ layout: default
 </div>
 
 <script>
-  const tag = new URLSearchParams(location.search).get('tag');
-  if (tag) {
-    document.querySelectorAll('.post-card').forEach(card => {
+  const params = new URLSearchParams(location.search);
+  const section = params.get('section');
+  const tag = params.get('tag');
+  const cards = [...document.querySelectorAll('.post-card')];
+
+  if (section) {
+    cards.forEach(card => {
+      card.hidden = card.dataset.section !== section;
+    });
+  } else if (tag) {
+    cards.forEach(card => {
       const tags = card.dataset.tags.toLowerCase().split(' ');
       card.hidden = !tags.includes(tag.toLowerCase());
     });
-    document.querySelector('.all')?.classList.remove('active');
   }
-  const visible = [...document.querySelectorAll('.post-card')].some(card => !card.hidden);
+
+  const visible = cards.some(card => !card.hidden);
   document.getElementById('empty').hidden = visible;
 </script>
