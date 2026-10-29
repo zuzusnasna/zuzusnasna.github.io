@@ -94,3 +94,7 @@ nav a:hover{border-color:#222}
  .tag-results{position:relative;top:auto;max-height:200px;box-shadow:none;margin-top:6px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
+
+.post-tech-visual{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:14px 0;border-top:1px solid #eee;border-bottom:1px solid #eee}
+.post-tech-visual img{width:28px;height:28px;object-fit:contain;margin:0;border:0;border-radius:0;opacity:.82}
+@media(max-width:700px){.post-tech-visual{gap:10px;flex-wrap:wrap}.post-tech-visual img{width:24px;height:24px}}
