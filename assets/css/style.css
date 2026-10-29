@@ -268,3 +268,23 @@ body{letter-spacing:-.018em;word-break:keep-all}
   .tag-search{width:100%;margin:0}
   .tag-results:not(:empty){position:relative;top:auto;left:auto;right:auto;margin-top:8px;box-shadow:none}
 }
+
+
+/* Tag search stays quiet until the input is focused. Results are plain text, not chips. */
+.tag-search{position:relative;margin-left:auto}
+.tag-results{display:none!important;position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:30;gap:8px 14px;padding:8px 0!important;border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important}
+.tag-search:focus-within .tag-results:not(:empty){display:flex!important}
+.tag-result{display:inline-block;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:var(--journal-muted)!important;font:inherit;font-size:12px!important;white-space:nowrap}
+.tag-result:hover{background:transparent!important;border:0!important;color:var(--journal-accent)!important;text-decoration:underline;text-underline-offset:3px}
+.tag-no-results{padding:0;color:var(--journal-muted);font-size:12px}
+.post-tags span,.post-tags a{padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:var(--journal-muted)!important;font-size:12px}
+.post-tags span:before,.post-tags a:before{content:"";display:none}
+@media(max-width:700px){
+ .intro-heading-row{align-items:center!important;flex-direction:row!important;gap:20px}
+ .tag-search{width:min(48%,390px)!important;margin:0 0 0 auto!important}
+ .tag-results{position:absolute!important;top:calc(100% + 5px)!important;left:0!important;right:0!important;margin:0!important}
+}
+@media(max-width:480px){
+ .intro-heading-row{align-items:stretch!important;flex-direction:column!important}
+ .tag-search{width:100%!important;margin:0!important}
+}
