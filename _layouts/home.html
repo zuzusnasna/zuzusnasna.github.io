@@ -8,13 +8,13 @@ layout: default
     <div class="tag-search">
       <label for="tag-search-input">태그 검색</label>
       <div class="tag-search-row">
-        <input id="tag-search-input" type="search" placeholder="태그로 게시글 찾기" autocomplete="off">
-        <button id="tag-search-clear" type="button">초기화</button>
+        <input id="tag-search-input" type="search" placeholder="태그 또는 기술 검색" aria-describedby="tag-search-help" autocomplete="off">
+        <button id="tag-search-clear" type="button" aria-label="검색 초기화">전체 보기</button>
       </div>
-      <div class="tag-results" id="tag-results"></div>
+      <div class="tag-results" id="tag-results" role="listbox" aria-label="태그 목록"></div>
     </div>
   </div>
-  <p>부트캠프에서 배운 내용부터 프로젝트에서 직접 부딪힌 문제와 해결 과정까지 기록합니다.</p>
+  <p>개념을 정리하고, 직접 겪은 오류와 해결 과정을 기록합니다. 프로젝트 소개는 포트폴리오에서, 이곳에서는 구현 과정과 판단 근거를 다룹니다.</p>
 </section>
 
 <div class="content-grid">
@@ -56,9 +56,10 @@ layout: default
       {% if post.tags contains 'Linux' or post.tags contains 'AWS' or post.tags contains 'EC2' or post.tags contains 'Docker' or post.tags contains 'Redis' or post.tags contains 'CI/CD' or post.title contains 'Linux' or post.title contains 'Redis' or post.title contains 'Docker' or post.title contains 'EC2' %}{% assign menu_sections = menu_sections | append: 'Infra,' %}{% endif %}
       {% if post.tags contains 'Machine Learning' or post.tags contains '머신러닝' or post.title contains 'Machine Learning' or post.title contains '머신러닝' %}{% assign menu_sections = menu_sections | append: 'MachineLearning,' %}{% endif %}
 
-      <article class="post-card" data-sections="{{ menu_sections }}" data-tags="{% for tag in post.tags %}{{ tag | slugify }} {% endfor %}">
+      <article class="post-card" data-sections="{{ menu_sections }}" data-tags="{% for tag in post.tags %}{{ tag | slugify }} {% endfor %}" data-tag-labels="{% for tag in post.tags %}{{ tag | escape }}||{% endfor %}">
         <div class="post-date">{{ post.date | date: "%Y.%m.%d" }}</div>
-        <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+        {% assign display_title = post.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' %}
+        <h2><a href="{{ post.url | relative_url }}">{{ display_title }}</a></h2>
         <p>{{ post.excerpt | strip_html | strip_newlines | truncate: 150 }}</p>
         <div class="post-tags">{% for tag in post.tags %}<span>#{{ tag }}</span>{% endfor %}</div>
       </article>
@@ -80,8 +81,10 @@ layout: default
 
   const tagMap = new Map();
   cards.forEach(card => {
-    card.dataset.tags.split(' ').filter(Boolean).forEach(slug => {
-      if (!tagMap.has(slug)) tagMap.set(slug, slug);
+    const slugs = card.dataset.tags.split(' ').filter(Boolean);
+    const labels = card.dataset.tagLabels.split('||').filter(Boolean);
+    slugs.forEach((slug, index) => {
+      if (!tagMap.has(slug)) tagMap.set(slug, labels[index] || slug.replace(/-/g, ' '));
     });
   });
 
@@ -110,33 +113,31 @@ layout: default
     updateEmpty();
   }
 
-  function renderTagResults(query) {
+  function renderTagResults(query = '') {
     const normalized = query.trim().toLowerCase();
-    if (!normalized) {
-      results.innerHTML = '';
-      return;
-    }
-
-    const matches = [...tagMap.entries()].filter(([slug]) => slug.toLowerCase().includes(normalized));
-    results.innerHTML = matches.map(([slug]) =>
-      `<button type="button" class="tag-result" data-tag="${slug}">#${slug.replace(/-/g, ' ')}</button>`
-    ).join('');
+    const matches = [...tagMap.entries()]
+      .filter(([slug, label]) => !normalized || slug.toLowerCase().includes(normalized) || label.toLowerCase().includes(normalized))
+      .sort((a, b) => a[1].localeCompare(b[1], 'ko'));
+    results.innerHTML = matches.length
+      ? matches.map(([slug, label]) => '<button type="button" role="option" class="tag-result" data-tag="' + slug + '">#' + label + '</button>').join('')
+      : '<span class="tag-no-results">일치하는 태그가 없습니다.</span>';
 
     results.querySelectorAll('.tag-result').forEach(button => {
       button.addEventListener('click', () => {
         const selected = button.dataset.tag;
-        input.value = selected.replace(/-/g, ' ');
+        input.value = tagMap.get(selected) || selected;
         section = null;
         tag = selected;
-        history.replaceState(null, '', `${location.pathname}?tag=${encodeURIComponent(selected)}`);
+        history.replaceState(null, '', location.pathname + '?tag=' + encodeURIComponent(selected));
         showTag(selected);
         results.innerHTML = '';
+        input.blur();
       });
     });
   }
 
   if (tag) {
-    input.value = tag.replace(/-/g, ' ');
+    input.value = tagMap.get(tag) || tag.replace(/-/g, ' ');
     showTag(tag);
   } else if (section) {
     showSection(section);
@@ -144,6 +145,8 @@ layout: default
     showAll();
   }
 
+  input.addEventListener('focus', () => renderTagResults(input.value));
+  input.addEventListener('click', () => renderTagResults(input.value));
   input.addEventListener('input', event => renderTagResults(event.target.value));
   input.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
@@ -162,6 +165,7 @@ layout: default
   clearButton.addEventListener('click', () => {
     input.value = '';
     results.innerHTML = '';
+    input.blur();
     section = null;
     tag = null;
     history.replaceState(null, '', location.pathname);
