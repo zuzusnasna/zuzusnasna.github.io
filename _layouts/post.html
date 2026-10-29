@@ -6,20 +6,6 @@ layout: default
   {% assign display_title = page.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
   <h1>{{ display_title }}</h1>
   <div class="post-tags">{% for tag in page.tags %}<a href="{{ '/' | relative_url }}?tag={{ tag | slugify }}">#{{ tag }}</a>{% endfor %}</div>
-  {% if page.tags contains 'Java' or page.tags contains 'Spring Boot' or page.tags contains 'Spring' or page.tags contains 'React' or page.tags contains 'JavaScript' or page.tags contains 'Oracle' or page.tags contains 'MySQL' or page.tags contains 'Redis' or page.tags contains 'Docker' or page.tags contains 'AWS' or page.tags contains 'EC2' or page.tags contains 'TensorFlow Lite' or page.tags contains 'Machine Learning' %}
-  <div class="post-tech-visual" aria-label="관련 기술">
-    {% if page.tags contains 'Java' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java">{% endif %}
-    {% if page.tags contains 'Spring Boot' or page.tags contains 'Spring' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="Spring">{% endif %}
-    {% if page.tags contains 'React' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React">{% endif %}
-    {% if page.tags contains 'JavaScript' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">{% endif %}
-    {% if page.tags contains 'Oracle' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" alt="Oracle">{% endif %}
-    {% if page.tags contains 'MySQL' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL">{% endif %}
-    {% if page.tags contains 'Redis' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis">{% endif %}
-    {% if page.tags contains 'Docker' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker">{% endif %}
-    {% if page.tags contains 'AWS' or page.tags contains 'EC2' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS">{% endif %}
-    {% if page.tags contains 'TensorFlow Lite' or page.tags contains 'Machine Learning' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow">{% endif %}
-  </div>
-  {% endif %}
   <div class="post-reading-meta" aria-label="글 정보"><span id="reading-time">읽는 시간 계산 중</span></div>
   <nav class="post-toc" id="post-toc" aria-label="목차" hidden>
     <h2 class="toc-title">목차</h2>
