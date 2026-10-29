@@ -6,6 +6,17 @@ categories: [프로젝트]
 tags: [RealTimeChat, WebSocket, Redis, React]
 ---
 
+<figure class="project-visual project-diagram">
+<svg viewBox="0 0 760 150" role="img" aria-label="채팅 메시지 저장과 미읽음 수 갱신 흐름">
+<rect x="8" y="35" width="150" height="72" rx="3" fill="#fff" stroke="#dedde1"/><text x="83" y="65" text-anchor="middle" font-size="14" fill="#242832">메시지 전송</text><text x="83" y="85" text-anchor="middle" font-size="11" fill="#6f727b">sender</text>
+<path d="M158 71 H202" stroke="#bd4b35" stroke-width="2"/><path d="M195 65 L202 71 L195 77" fill="none" stroke="#bd4b35" stroke-width="2"/>
+<rect x="202" y="35" width="160" height="72" rx="3" fill="#fff" stroke="#dedde1"/><text x="282" y="65" text-anchor="middle" font-size="14" fill="#242832">DB 저장</text><text x="282" y="85" text-anchor="middle" font-size="11" fill="#6f727b">메시지 이력</text>
+<path d="M362 71 H406" stroke="#bd4b35" stroke-width="2"/><path d="M399 65 L406 71 L399 77" fill="none" stroke="#bd4b35" stroke-width="2"/>
+<rect x="406" y="35" width="160" height="72" rx="3" fill="#f3e7e2" stroke="#bd4b35"/><text x="486" y="65" text-anchor="middle" font-size="14" fill="#242832">읽음 기준 비교</text><text x="486" y="85" text-anchor="middle" font-size="11" fill="#6f727b">lastReadMessage</text>
+<path d="M566 71 H610" stroke="#bd4b35" stroke-width="2"/><path d="M603 65 L610 71 L603 77" fill="none" stroke="#bd4b35" stroke-width="2"/>
+<rect x="610" y="35" width="142" height="72" rx="3" fill="#fff" stroke="#dedde1"/><text x="681" y="65" text-anchor="middle" font-size="14" fill="#242832">미읽음 배지</text><text x="681" y="85" text-anchor="middle" font-size="11" fill="#6f727b">목록에 표시</text>
+</svg><figcaption>메시지 저장, 사용자별 읽음 기준, 미읽음 수 표시를 구분해 이해하기 위한 개념도.</figcaption></figure>
+
 채팅 서비스에서 메시지를 실시간으로 전달하는 것만으로는 부족했다. 사용자가 방을 보고 있지 않을 때 새 메시지가 왔다는 것을 알려줘야 했다.
 
 ## 미읽음 수
