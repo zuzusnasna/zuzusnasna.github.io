@@ -3,7 +3,7 @@ layout: default
 ---
 <article class="post-detail">
   <div class="post-date">{{ page.date | date: "%Y.%m.%d" }}</div>
-  {% assign display_title = page.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' %}
+  {% assign display_title = page.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
   <h1>{{ display_title }}</h1>
   <div class="post-tags">{% for tag in page.tags %}<a href="{{ '/' | relative_url }}?tag={{ tag | slugify }}">#{{ tag }}</a>{% endfor %}</div>
   {% if page.tags contains 'Java' or page.tags contains 'Spring Boot' or page.tags contains 'Spring' or page.tags contains 'React' or page.tags contains 'JavaScript' or page.tags contains 'Oracle' or page.tags contains 'MySQL' or page.tags contains 'Redis' or page.tags contains 'Docker' or page.tags contains 'AWS' or page.tags contains 'EC2' or page.tags contains 'TensorFlow Lite' or page.tags contains 'Machine Learning' %}
