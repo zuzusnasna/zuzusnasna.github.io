@@ -10,28 +10,40 @@ PL/SQL 수업에서 다룬 세 기능은 모두 데이터 처리와 관련 있�
 
 ## 1. Procedure: 호출해서 실행하는 작업
 
-자주 사용하는 SQL과 업무 절차를 데이터베이스 객체로 저장해 두고 호출한다.
+프로시저는 반복해서 실행하는 SQL과 업무 규칙을 하나의 데이터베이스 객체로 묶어 두고 필요할 때 호출한다. 예를 들어 회원 주문 금액에 따라 회원 등급을 다시 계산하는 작업을 생각할 수 있다.
+
+아래 코드는 설명을 위한 예시 스키마다. `members` 테이블에 `member_id`, `total_order_amount`, `grade`, `updated_at` 컬럼이 있다고 가정하며, 수업에서 실제로 사용한 테이블 구조라는 뜻은 아니다.
 
 ```sql
-CREATE OR REPLACE PROCEDURE usp_update_emp (
-    p_empno emp.empno%TYPE
-)
+CREATE OR REPLACE PROCEDURE refresh_member_grade
 IS
 BEGIN
-    UPDATE emp
-       SET sal = 0
-     WHERE empno = p_empno;
+    UPDATE members
+       SET grade =
+           CASE
+               WHEN total_order_amount >= 1000000 THEN 'VIP'
+               WHEN total_order_amount >= 300000  THEN 'GOLD'
+               ELSE 'BASIC'
+           END,
+           updated_at = SYSDATE;
 END;
 /
 ```
 
-`CREATE OR REPLACE`는 객체를 새로 만들거나 기존 정의를 교체한다. `p_empno`는 입력 매개변수이며, 호출할 때 대상 사번을 전달한다.
+이 프로시저는 회원별 누적 주문 금액을 기준으로 등급을 다시 계산한다.
+
+- `CREATE OR REPLACE PROCEDURE`: 프로시저를 생성하거나 기존 정의를 교체한다.
+- `UPDATE members`: 회원 테이블의 등급을 갱신한다.
+- `CASE`: 금액 구간에 따라 등급을 정한다.
+- `updated_at = SYSDATE`: 갱신 시각을 기록한다.
+
+실행은 다음과 같이 한다.
 
 ```sql
-EXEC usp_update_emp(7788);
+EXEC refresh_member_grade;
 ```
 
-프로시저는 직접 호출해야 실행된다. 수업에서는 입력값을 받아 UPDATE하는 예제뿐 아니라 `OUT` 매개변수로 이름·급여 또는 처리 메시지를 반환하는 예제도 다뤘다.
+위 예제는 모든 회원을 한 번에 갱신한다. 특정 회원만 처리하고 싶다면 회원 ID를 입력 매개변수로 받고 `WHERE member_id = p_member_id` 조건을 추가할 수 있다. 실제 서비스에서는 등급 기준, NULL 금액 처리, 변경 행 수, 실행 권한과 트랜잭션 정책을 업무 규칙에 맞게 정해야 한다. 수업 실습 코드를 받으면 실제 테이블명과 조건으로 대체할 수 있다.
 
 ## 2. JOB: 정해진 시간에 실행
 
@@ -61,13 +73,13 @@ AFTER INSERT OR UPDATE OR DELETE ON emp2
 BEGIN
     IF INSERTING THEN
         INSERT INTO emp_audit
-        VALUES (emp_audit_tr.NEXTVAL, USER, 'inserting', SYSDATE);
+        VALUES (emp_audit_tr_seq.NEXTVAL, USER, 'inserting', SYSDATE);
     ELSIF UPDATING THEN
         INSERT INTO emp_audit
-        VALUES (emp_audit_tr.NEXTVAL, USER, 'updating', SYSDATE);
+        VALUES (emp_audit_tr_seq.NEXTVAL, USER, 'updating', SYSDATE);
     ELSIF DELETING THEN
         INSERT INTO emp_audit
-        VALUES (emp_audit_tr.NEXTVAL, USER, 'deleting', SYSDATE);
+        VALUES (emp_audit_tr_seq.NEXTVAL, USER, 'deleting', SYSDATE);
     END IF;
 END;
 /
