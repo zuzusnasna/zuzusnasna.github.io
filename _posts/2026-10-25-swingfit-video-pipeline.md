@@ -6,6 +6,11 @@ categories: [프로젝트]
 tags: [SwingFit, Kotlin, TensorFlow Lite, Android]
 ---
 
+<figure class="project-visual">
+  <img src="https://raw.githubusercontent.com/zuzusnasna/SwingFit/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" alt="SwingFit 앱 아이콘" loading="lazy">
+  <figcaption>SwingFit 모바일 앱의 실행 아이콘.</figcaption>
+</figure>
+
 SwingFit에서는 스마트폰으로 촬영한 골프 스윙 영상을 분석하기 위해 영상 처리와 모델 추론을 하나의 흐름으로 연결했다.
 
 ## 처리 흐름
