@@ -11,8 +11,8 @@ tags: [Oracle, SQL, JOIN, Database]
 학생 테이블에는 학번과 학과번호가 있고, 학과 테이블에는 학과번호와 학과명이 있다고 하자. 학생 이름만 조회하는 것으로는 소속 학과의 이름을 알 수 없다. 두 테이블의 공통 키인 `deptno`를 이용해 필요한 정보를 한 결과로 묶는 작업이 **JOIN**이다.
 
 <figure class="note-cover">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" alt="Oracle 데이터베이스 로고" style="width:96px;height:96px;object-fit:contain;margin:0 auto">
-  <figcaption>Oracle SQL 실습 — 테이블 간 관계를 조회로 연결하기</figcaption>
+  <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=85" alt="여러 테이블의 연결 관계">
+  <figcaption>여러 테이블의 연결 관계 — Oracle SQL 학습 노트</figcaption>
 </figure>
 
 ## 1. 조인 조건이 없으면: CROSS JOIN
