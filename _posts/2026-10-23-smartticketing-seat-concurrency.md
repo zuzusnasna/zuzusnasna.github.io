@@ -6,6 +6,11 @@ categories: [프로젝트]
 tags: [SmartTicketing, Spring Boot, Redis, MySQL, 동시성]
 ---
 
+<figure class="project-visual">
+  <img src="https://raw.githubusercontent.com/zuzusnasna/SmartTicketing/main/docs/images/zone-lock.svg" alt="SmartTicketing 좌석 구역 잠금 구조" loading="lazy">
+  <figcaption>좌석 동시성 제어를 설명하는 구역 잠금 구조도.</figcaption>
+</figure>
+
 좌석 예매에서 가장 중요한 문제는 여러 사용자가 같은 좌석을 동시에 선택했을 때 **한 명만 성공해야 한다**는 것이었다.
 
 ## 처음 생각한 방법
