@@ -39,7 +39,7 @@ layout: default
   const toc = document.getElementById('post-toc');
   const list = document.getElementById('post-toc-list');
   const slugify = text => text.toLocaleLowerCase('ko-KR').trim()
-    .replace(/[^\\p{L}\\p{N}\\s-]/gu, '').replace(/\\s+/g, '-');
+    .replace(/[^\p{L}\p{N}\s-]/gu, '').replace(/\s+/g, '-');
   const seen = new Set();
   headings.forEach((heading, index) => {
     if (!heading.id) {
@@ -59,7 +59,7 @@ layout: default
   });
   if (headings.length >= 3) toc.hidden = false;
   const text = content.innerText || '';
-  const minutes = Math.max(1, Math.ceil(text.replace(/\\s/g, '').length / 450));
+  const minutes = Math.max(1, Math.ceil(text.replace(/\s/g, '').length / 450));
   const readingTime = document.getElementById('reading-time');
   if (readingTime) readingTime.textContent = '약 ' + minutes + '분 읽기 · ' + headings.length + '개 주제';
   const progress = document.getElementById('reading-progress');
