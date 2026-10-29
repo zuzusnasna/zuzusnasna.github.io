@@ -40,24 +40,23 @@ layout: default
   <section class="post-area">
     <div class="post-list" id="post-list">
       {% for post in site.posts %}
-      {% assign menu_section = '' %}
+      {% assign menu_sections = '' %}
+      {% if post.title contains '개인 프로젝트 : EMS' %}{% assign menu_sections = menu_sections | append: 'EMS,' %}{% endif %}
+      {% if post.title contains '개인 프로젝트 : RealTimeChat' %}{% assign menu_sections = menu_sections | append: 'RealTimeChat,' %}{% endif %}
+      {% if post.title contains '팀 프로젝트 : SmartTicketing' %}{% assign menu_sections = menu_sections | append: 'SmartTicketing,' %}{% endif %}
+      {% if post.title contains '팀 프로젝트 : GameHub' %}{% assign menu_sections = menu_sections | append: 'GameHub,' %}{% endif %}
+      {% if post.title contains '팀 프로젝트 : Meet-Up' %}{% assign menu_sections = menu_sections | append: 'Meet-Up,' %}{% endif %}
+      {% if post.title contains '팀 프로젝트 : SwingFit' %}{% assign menu_sections = menu_sections | append: 'SwingFit,' %}{% endif %}
+      {% if post.title contains '설계 : QuerySentinel' %}{% assign menu_sections = menu_sections | append: 'QuerySentinel,' %}{% endif %}
 
-      {% if post.title contains '개인 프로젝트 : EMS' %}{% assign menu_section = 'EMS' %}
-      {% elsif post.title contains '개인 프로젝트 : RealTimeChat' %}{% assign menu_section = 'RealTimeChat' %}
-      {% elsif post.title contains '팀 프로젝트 : SmartTicketing' %}{% assign menu_section = 'SmartTicketing' %}
-      {% elsif post.title contains '팀 프로젝트 : GameHub' %}{% assign menu_section = 'GameHub' %}
-      {% elsif post.title contains '팀 프로젝트 : Meet-Up' %}{% assign menu_section = 'Meet-Up' %}
-      {% elsif post.title contains '팀 프로젝트 : SwingFit' %}{% assign menu_section = 'SwingFit' %}
-      {% elsif post.title contains '설계 : QuerySentinel' %}{% assign menu_section = 'QuerySentinel' %}
-      {% elsif post.tags contains 'OAuth2' or post.tags contains 'JWT' or post.tags contains 'Spring Security' or post.title contains 'OAuth' or post.title contains 'JWT' or post.title contains '인증' %}{% assign menu_section = 'Auth' %}
-      {% elsif post.tags contains 'Oracle' or post.tags contains 'SQL' or post.tags contains 'PL/SQL' or post.tags contains 'SQL Tuning' or post.tags contains 'Database' or post.title contains 'Oracle' or post.title contains 'SQL' or post.title contains 'PL/SQL' %}{% assign menu_section = 'Database' %}
-      {% elsif post.tags contains 'Spring Boot' or post.tags contains 'Spring' or post.tags contains 'Java' or post.tags contains 'Servlet' or post.tags contains 'JDBC' or post.tags contains 'JPA' or post.tags contains 'MyBatis' or post.title contains 'Spring' or post.title contains 'Java' or post.title contains 'Servlet' %}{% assign menu_section = 'Backend' %}
-      {% elsif post.tags contains 'HTML' or post.tags contains 'CSS' or post.tags contains 'JavaScript' or post.tags contains 'React' or post.title contains 'React' or post.title contains 'JavaScript' %}{% assign menu_section = 'Frontend' %}
-      {% elsif post.tags contains 'Linux' or post.tags contains 'AWS' or post.tags contains 'EC2' or post.tags contains 'Docker' or post.tags contains 'Redis' or post.tags contains 'CI/CD' or post.title contains 'Linux' or post.title contains 'Redis' or post.title contains 'Docker' or post.title contains 'EC2' %}{% assign menu_section = 'Infra' %}
-      {% elsif post.tags contains 'Machine Learning' or post.tags contains '머신러닝' or post.title contains 'Machine Learning' or post.title contains '머신러닝' %}{% assign menu_section = 'MachineLearning' %}
-      {% endif %}
+      {% if post.tags contains 'OAuth2' or post.tags contains 'JWT' or post.tags contains 'Spring Security' or post.title contains 'OAuth' or post.title contains 'JWT' or post.title contains '인증' %}{% assign menu_sections = menu_sections | append: 'Auth,' %}{% endif %}
+      {% if post.tags contains 'Oracle' or post.tags contains 'SQL' or post.tags contains 'PL/SQL' or post.tags contains 'SQL Tuning' or post.tags contains 'Database' or post.title contains 'Oracle' or post.title contains 'SQL' or post.title contains 'PL/SQL' %}{% assign menu_sections = menu_sections | append: 'Database,' %}{% endif %}
+      {% if post.tags contains 'Spring Boot' or post.tags contains 'Spring' or post.tags contains 'Java' or post.tags contains 'Servlet' or post.tags contains 'JDBC' or post.tags contains 'JPA' or post.tags contains 'MyBatis' or post.title contains 'Spring' or post.title contains 'Java' or post.title contains 'Servlet' %}{% assign menu_sections = menu_sections | append: 'Backend,' %}{% endif %}
+      {% if post.tags contains 'HTML' or post.tags contains 'CSS' or post.tags contains 'JavaScript' or post.tags contains 'React' or post.title contains 'React' or post.title contains 'JavaScript' %}{% assign menu_sections = menu_sections | append: 'Frontend,' %}{% endif %}
+      {% if post.tags contains 'Linux' or post.tags contains 'AWS' or post.tags contains 'EC2' or post.tags contains 'Docker' or post.tags contains 'Redis' or post.tags contains 'CI/CD' or post.title contains 'Linux' or post.title contains 'Redis' or post.title contains 'Docker' or post.title contains 'EC2' %}{% assign menu_sections = menu_sections | append: 'Infra,' %}{% endif %}
+      {% if post.tags contains 'Machine Learning' or post.tags contains '머신러닝' or post.title contains 'Machine Learning' or post.title contains '머신러닝' %}{% assign menu_sections = menu_sections | append: 'MachineLearning,' %}{% endif %}
 
-      <article class="post-card" data-section="{{ menu_section }}" data-tags="{% for tag in post.tags %}{{ tag | slugify }} {% endfor %}">
+      <article class="post-card" data-sections="{{ menu_sections }}" data-tags="{% for tag in post.tags %}{{ tag | slugify }} {% endfor %}">
         <div class="post-date">{{ post.date | date: "%Y.%m.%d" }}</div>
         <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
         <p>{{ post.excerpt | strip_html | strip_newlines | truncate: 150 }}</p>
@@ -97,7 +96,7 @@ layout: default
 
   function showSection(value) {
     cards.forEach(card => {
-      card.hidden = card.dataset.section !== value;
+      card.hidden = !card.dataset.sections.split(',').includes(value);
     });
     updateEmpty();
   }
