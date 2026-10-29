@@ -6,6 +6,7 @@ layout: default
   {% assign display_title = page.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' %}
   <h1>{{ display_title }}</h1>
   <div class="post-tags">{% for tag in page.tags %}<a href="{{ '/' | relative_url }}?tag={{ tag | slugify }}">#{{ tag }}</a>{% endfor %}</div>
+  {% if page.tags contains 'Java' or page.tags contains 'Spring Boot' or page.tags contains 'Spring' or page.tags contains 'React' or page.tags contains 'JavaScript' or page.tags contains 'Oracle' or page.tags contains 'MySQL' or page.tags contains 'Redis' or page.tags contains 'Docker' or page.tags contains 'AWS' or page.tags contains 'EC2' or page.tags contains 'TensorFlow Lite' or page.tags contains 'Machine Learning' %}
   <div class="post-tech-visual" aria-label="관련 기술">
     {% if page.tags contains 'Java' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java">{% endif %}
     {% if page.tags contains 'Spring Boot' or page.tags contains 'Spring' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="Spring">{% endif %}
@@ -18,5 +19,6 @@ layout: default
     {% if page.tags contains 'AWS' or page.tags contains 'EC2' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS">{% endif %}
     {% if page.tags contains 'TensorFlow Lite' or page.tags contains 'Machine Learning' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow">{% endif %}
   </div>
+  {% endif %}
   <div class="post-content">{{ content }}</div>
 </article>
