@@ -6,6 +6,11 @@ categories: [프로젝트]
 tags: [SmartTicketing, k6, Redis, 성능]
 ---
 
+<figure class="project-visual">
+  <img src="https://raw.githubusercontent.com/zuzusnasna/SmartTicketing/main/docs/images/waiting-autohold-demo.gif" alt="SmartTicketing 대기열 자동 좌석 처리 데모" loading="lazy">
+  <figcaption>대기열에서 좌석이 자동으로 배정되는 흐름을 보여주는 프로젝트 데모.</figcaption>
+</figure>
+
 동시성 문제는 코드만 보고 해결됐다고 판단하기 어려워 실제로 여러 요청이 동시에 들어오는 상황을 만들어 검증했다.
 
 ## 테스트 목적
