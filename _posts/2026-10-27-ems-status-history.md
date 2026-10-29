@@ -6,6 +6,11 @@ categories: [프로젝트]
 tags: [EMS, Spring Boot, JPA, Oracle, React]
 ---
 
+<figure class="project-visual">
+  <img src="https://raw.githubusercontent.com/zuzusnasna/equipment-management/main/frontend/src/assets/hero.png" alt="EMS 장비 관리 화면의 대표 이미지" loading="lazy">
+  <figcaption>EMS 프론트엔드 저장소에 포함된 대표 이미지.</figcaption>
+</figure>
+
 EMS를 만들면서 단순히 장비의 현재 상태만 저장하는 것과 **상태가 어떻게 바뀌었는지 기록하는 것**은 다른 요구사항이라는 점을 확인했다.
 
 ## 현재 상태
