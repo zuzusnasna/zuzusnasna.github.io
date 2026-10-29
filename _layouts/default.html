@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {% assign browser_title = page.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' %}
+  {% assign browser_title = page.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
   <title>{% if page.title %}{{ browser_title }} · {% endif %}{{ site.title }}</title>
   <meta name="description" content="{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
