@@ -14,3 +14,18 @@
 .tag-result{padding:4px 8px;border:1px solid #e5e5e5;border-radius:3px;background:#fff;color:#555;font-size:12px;cursor:pointer}
 .tag-result:hover{border-color:#aaa;color:#111}
 @media(max-width:700px){.intro-heading-row{align-items:flex-start;flex-direction:column;gap:16px}.tag-search{width:100%;margin:0 0 18px}.intro{margin-bottom:35px}}
+
+/* Tag search: aligned with the page title and visually distinct from the post list. */
+.intro-heading-row{min-height:58px}
+.tag-search{width:min(420px,52%);margin:0 0 4px auto;padding:12px 14px;border:1px solid #e5e7eb;background:#fafafa}
+.tag-search label{font-size:12px;font-weight:650;letter-spacing:.02em;color:#555}
+.tag-search-row{align-items:stretch}
+.tag-search-row input{height:42px;border-color:#d5d7db;background:#fff;border-radius:2px}
+.tag-search-row input::placeholder{color:#a0a0a0}
+.tag-search-row input:focus{outline:2px solid #d4d4d4;outline-offset:1px;border-color:#777}
+.tag-search-row button{min-height:42px;padding:0 14px;border-radius:2px;background:#202124;color:#fff;border-color:#202124;white-space:nowrap}
+.tag-search-row button:hover{background:#444;border-color:#444;color:#fff}
+.tag-results{top:calc(100% - 2px);padding:10px;background:#fff;border:1px solid #e5e5e5;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.tag-result{padding:6px 9px;border-radius:2px;background:#f7f7f7;border-color:#e5e5e5;color:#444}
+.tag-result:hover{background:#ededed;border-color:#bbb}
+@media(max-width:700px){.tag-search{width:100%;padding:12px;margin:0}.intro-heading-row{gap:14px}.tag-results{position:static;margin-top:8px;box-shadow:none}}
