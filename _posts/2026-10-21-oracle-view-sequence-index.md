@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "부트캠프 : Oracle VIEW, SEQUENCE, INDEX를 정리한 이유"
+title: "Oracle VIEW, SEQUENCE, INDEX를 정리한 이유"
 date: 2026-10-21 09:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL]
