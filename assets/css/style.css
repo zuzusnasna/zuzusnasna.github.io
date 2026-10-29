@@ -221,3 +221,28 @@ nav a:hover,.tag:hover,.tag.active,.post-card h2 a:hover{color:var(--journal-acc
 .reading-progress{background:var(--journal-accent)}
 @media(max-width:700px){.intro-heading-row{align-items:stretch;flex-direction:row;gap:14px}.intro-heading-row h1{font-size:36px}.tag-search{width:min(58%,390px);margin-left:auto}.tag-search label{font-size:10px}.tag-search-row{gap:5px}.tag-search-row input{padding:0 4px;font-size:12px}.tag-search-row button{padding-left:5px;font-size:11px}.tag-results{position:relative;top:auto;margin-top:8px;box-shadow:none}.post-toc ul{grid-template-columns:1fr}}
 @media(max-width:480px){.intro-heading-row{flex-direction:column;align-items:stretch}.intro-heading-row h1{font-size:34px}.tag-search{width:100%;margin:0}.tag-search label{font-size:11px}.tag-search-row input{font-size:14px}.tag-search-row button{padding-left:12px;font-size:12px}}
+
+
+/* Typography and visual reading aids */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+:root{--journal-font:"Noto Sans KR","Pretendard",sans-serif;--journal-mono:"IBM Plex Mono",ui-monospace,monospace}
+html,body,button,input,textarea,select,nav,.brand,footer,.post-reading-meta,.toc-heading,.post-content table{font-family:var(--journal-font)}
+body{letter-spacing:-.018em;word-break:keep-all}
+.post-detail h1,.intro h1{font-weight:700;letter-spacing:-.055em;line-height:1.28}
+.post-content{font-size:16px;line-height:1.95;letter-spacing:-.012em}
+.post-content h2{font-size:25px;font-weight:700;letter-spacing:-.045em;padding-bottom:10px;border-bottom:1px solid var(--journal-line)}
+.post-content h3{font-size:19px;font-weight:700;letter-spacing:-.035em}
+.post-content pre,.post-content pre code,.post-content :not(pre)>code{font-family:var(--journal-mono)}
+.post-content pre{border:1px solid #353944;border-radius:5px;background:#22252d;box-shadow:0 5px 18px rgba(36,40,50,.07)}
+.post-content pre code{font-size:13px;line-height:1.8}
+.post-content blockquote{border-left-width:3px;border-radius:0 4px 4px 0}
+.post-content table{font-size:13px}
+.post-content th{font-weight:700}
+.note-cover{margin:26px 0 36px}
+.note-cover img{width:100%;max-height:330px;object-fit:cover;display:block;border-radius:3px}
+.note-cover figcaption{margin-top:9px;color:var(--journal-muted);font-size:12px;line-height:1.7}
+.post-content img{max-width:100%;height:auto}
+.post-content figure{margin-inline:0}
+.post-content figure img{display:block}
+.post-content hr{border:0;border-top:1px solid var(--journal-line);margin:36px 0}
+@media(max-width:700px){.post-content{font-size:15px;line-height:1.9}.post-content h2{font-size:22px}.post-content h3{font-size:18px}.note-cover img{max-height:230px}.post-content pre code{font-size:12px}}
