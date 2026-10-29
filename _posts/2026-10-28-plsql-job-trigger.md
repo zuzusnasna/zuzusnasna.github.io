@@ -61,13 +61,13 @@ AFTER INSERT OR UPDATE OR DELETE ON emp2
 BEGIN
     IF INSERTING THEN
         INSERT INTO emp_audit
-        VALUES (emp_audit_tr_seq.NEXTVAL, USER, 'inserting', SYSDATE);
+        VALUES (emp_audit_tr.NEXTVAL, USER, 'inserting', SYSDATE);
     ELSIF UPDATING THEN
         INSERT INTO emp_audit
-        VALUES (emp_audit_tr_seq.NEXTVAL, USER, 'updating', SYSDATE);
+        VALUES (emp_audit_tr.NEXTVAL, USER, 'updating', SYSDATE);
     ELSIF DELETING THEN
         INSERT INTO emp_audit
-        VALUES (emp_audit_tr_seq.NEXTVAL, USER, 'deleting', SYSDATE);
+        VALUES (emp_audit_tr.NEXTVAL, USER, 'deleting', SYSDATE);
     END IF;
 END;
 /
