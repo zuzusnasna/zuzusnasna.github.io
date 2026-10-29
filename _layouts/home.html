@@ -10,21 +10,21 @@ layout: default
 <div class="content-grid">
   <aside class="sidebar">
     <h2>Projects</h2>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=EMS">개인 프로젝트 : EMS</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=RealTimeChat">개인 프로젝트 : RealTimeChat</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=SmartTicketing">팀 프로젝트 : SmartTicketing</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=GameHub">팀 프로젝트 : GameHub</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=Meet-Up">팀 프로젝트 : Meet-Up</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=SwingFit">팀 프로젝트 : SwingFit</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'EMS' | slugify }}">개인 프로젝트 : EMS</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'RealTimeChat' | slugify }}">개인 프로젝트 : RealTimeChat</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'SmartTicketing' | slugify }}">팀 프로젝트 : SmartTicketing</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'GameHub' | slugify }}">팀 프로젝트 : GameHub</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Meet-Up' | slugify }}">팀 프로젝트 : Meet-Up</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'SwingFit' | slugify }}">팀 프로젝트 : SwingFit</a>
 
     <h2 class="sidebar-heading">Study</h2>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=HTML">부트캠프 : HTML</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=Java">부트캠프 : Java</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=Oracle">부트캠프 : Oracle</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=PL%2FSQL">부트캠프 : PL/SQL</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=React">React Study</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=Linux">Linux</a>
-    <a class="tag" href="{{ '/' | relative_url }}?tag=머신러닝">Machine Learning</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'HTML' | slugify }}">부트캠프 : HTML</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Java' | slugify }}">부트캠프 : Java</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Oracle' | slugify }}">부트캠프 : Oracle</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'PL/SQL' | slugify }}">부트캠프 : PL/SQL</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'React' | slugify }}">React Study</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ 'Linux' | slugify }}">Linux</a>
+    <a class="tag" href="{{ '/' | relative_url }}?tag={{ '머신러닝' | slugify }}">Machine Learning</a>
 
     <h2 class="sidebar-heading">Tags</h2>
     {% assign tags = site.tags | sort %}
@@ -51,11 +51,10 @@ layout: default
 
 <script>
   const tag = new URLSearchParams(location.search).get('tag');
-  const filter = tag ? tag.toLowerCase().replaceAll('%2f', '/') : null;
-  if (filter) {
+  if (tag) {
     document.querySelectorAll('.post-card').forEach(card => {
       const tags = card.dataset.tags.toLowerCase().split(' ');
-      card.hidden = !tags.includes(filter) && !tags.includes(tag.toLowerCase());
+      card.hidden = !tags.includes(tag.toLowerCase());
     });
     document.querySelector('.all')?.classList.remove('active');
   }
