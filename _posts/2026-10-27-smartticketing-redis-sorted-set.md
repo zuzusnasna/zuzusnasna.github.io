@@ -6,6 +6,11 @@ tags: [Redis, Spring Boot, 성능, SmartTicketing]
 categories: [프로젝트]
 ---
 
+<figure class="project-visual">
+  <img src="https://raw.githubusercontent.com/zuzusnasna/SmartTicketing/main/docs/images/waiting-rank.svg" alt="SmartTicketing Redis 대기 순번 조회 흐름" loading="lazy">
+  <figcaption>Redis Sorted Set을 이용해 대기 순번을 조회하는 흐름.</figcaption>
+</figure>
+
 SmartTicketing의 대기열을 구현하면서 Redis Sorted Set을 사용했다.
 
 대기열에서는 사용자의 현재 순번을 빠르게 조회할 수 있어야 했다.
