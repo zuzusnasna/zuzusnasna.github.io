@@ -20,13 +20,10 @@ layout: default
     {% if page.tags contains 'TensorFlow Lite' or page.tags contains 'Machine Learning' %}<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow">{% endif %}
   </div>
   {% endif %}
-  <div class="post-reading-meta" aria-label="글 정보">
-    <span class="reading-label">STUDY NOTE</span>
-    <span id="reading-time">읽는 시간 계산 중</span>
-  </div>
-  <nav class="post-toc" id="post-toc" aria-label="이 글의 목차" hidden>
-    <div class="toc-heading"><span>IN THIS NOTE</span><strong>목차</strong></div>
-    <ol id="post-toc-list"></ol>
+  <div class="post-reading-meta" aria-label="글 정보"><span id="reading-time">읽는 시간 계산 중</span></div>
+  <nav class="post-toc" id="post-toc" aria-label="목차" hidden>
+    <h2 class="toc-title">목차</h2>
+    <ul id="post-toc-list"></ul>
   </nav>
   <div class="post-content" id="post-content">{{ content }}</div>
 </article>
