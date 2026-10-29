@@ -6,6 +6,17 @@ categories: [프로젝트]
 tags: [Meet-Up, Spring Boot, Redis, API]
 ---
 
+<figure class="project-visual project-diagram">
+<svg viewBox="0 0 760 150" role="img" aria-label="외부 대중교통 API 데이터를 서비스 응답으로 변환하는 흐름">
+<rect x="8" y="35" width="155" height="72" rx="3" fill="#f3e7e2" stroke="#bd4b35"/><text x="85" y="65" text-anchor="middle" font-size="14" fill="#242832">외부 API</text><text x="85" y="85" text-anchor="middle" font-size="11" fill="#6f727b">원본 응답</text>
+<path d="M163 71 H205" stroke="#bd4b35" stroke-width="2"/><path d="M198 65 L205 71 L198 77" fill="none" stroke="#bd4b35" stroke-width="2"/>
+<rect x="205" y="35" width="155" height="72" rx="3" fill="#fff" stroke="#dedde1"/><text x="282" y="65" text-anchor="middle" font-size="14" fill="#242832">DTO 변환</text><text x="282" y="85" text-anchor="middle" font-size="11" fill="#6f727b">필드 정규화</text>
+<path d="M360 71 H402" stroke="#bd4b35" stroke-width="2"/><path d="M395 65 L402 71 L395 77" fill="none" stroke="#bd4b35" stroke-width="2"/>
+<rect x="402" y="35" width="155" height="72" rx="3" fill="#fff" stroke="#dedde1"/><text x="479" y="65" text-anchor="middle" font-size="14" fill="#242832">서비스 로직</text><text x="479" y="85" text-anchor="middle" font-size="11" fill="#6f727b">검증·캐시</text>
+<path d="M557 71 H599" stroke="#bd4b35" stroke-width="2"/><path d="M592 65 L599 71 L592 77" fill="none" stroke="#bd4b35" stroke-width="2"/>
+<rect x="599" y="35" width="153" height="72" rx="3" fill="#f3e7e2" stroke="#bd4b35"/><text x="675" y="65" text-anchor="middle" font-size="14" fill="#242832">REST 응답</text><text x="675" y="85" text-anchor="middle" font-size="11" fill="#6f727b">프론트엔드 전달</text>
+</svg><figcaption>외부 API 응답을 그대로 노출하지 않고 내부 DTO와 서비스 규칙을 거쳐 반환하는 구조.</figcaption></figure>
+
 외부 대중교통 API를 연결하면서 어려웠던 부분은 API를 호출하는 것보다 **외부 데이터 형식을 우리 서비스에서 사용할 수 있는 형태로 바꾸는 것**이었다.
 
 ## 외부 API와 내부 모델
