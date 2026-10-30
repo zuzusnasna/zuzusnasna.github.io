@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Spring Boot 학습 : Spring Security 인증과 인가"
+title: "Spring Security 인증과 인가"
 date: 2026-09-09 09:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, Spring Security, 인증, 인가]
