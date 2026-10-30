@@ -1,50 +1,80 @@
 ---
 layout: post
-title: "Spring Boot 학습 : DI, IoC, AOP, Lombok"
-date: 2026-09-03 09:00:00 +0900
-categories: [학습]
-tags: [Spring Boot, Java]
+title: "Spring 시작 — Spring Framework, IoC, DI"
+date: 2026-10-30 15:00:00 +0900
+categories: [Spring]
+tags: [Spring]
 ---
 
-Spring Boot를 처음 공부하면서 DI와 IoC를 먼저 이해했다.
+오늘은 Spring Framework가 무엇인지부터 IoC와 DI의 관계를 정리했다.
 
-## IoC와 DI
+## 1. Spring Framework
 
-객체를 필요한 곳에서 직접 생성하는 대신 Spring 컨테이너가 객체의 생성과 의존관계를 관리한다.
+Spring은 Java 애플리케이션을 개발하기 위한 프레임워크다. 객체 생성과 의존성 관리 같은 부분을 Container가 담당하도록 구성할 수 있다.
+
+기존에는 개발자가 직접 객체를 생성했다.
 
 ```java
-@Service
-public class UserService {
-    private final UserRepository repository;
+MemberService service = new MemberService();
+```
 
-    public UserService(UserRepository repository) {
+객체와 의존 관계가 많아지면 생성 코드를 직접 관리하기 어려워진다.
+
+## 2. IoC
+
+IoC는 Inversion of Control, 제어의 역전이다.
+
+기존에는 개발자가 객체의 생성과 관리 흐름을 직접 제어했다.
+
+```text
+개발자
+ ↓
+new MemberService()
+ ↓
+객체 생성
+```
+
+Spring에서는 Container가 객체를 생성하고 관리한다.
+
+```text
+개발자
+ ↓
+Bean 등록
+ ↓
+Spring Container
+ ↓
+객체 생성 / 관리
+```
+
+객체를 누가 생성하고 관리하는지가 바뀐 것이다.
+
+## 3. DI
+
+DI는 Dependency Injection, 의존성 주입이다.
+
+서비스가 Repository를 직접 생성하는 대신 외부에서 전달받는다.
+
+```java
+class MemberService {
+    private final MemberRepository repository;
+
+    MemberService(MemberRepository repository) {
         this.repository = repository;
     }
 }
 ```
 
-생성자 주입을 사용하면 필요한 의존성이 명확해지고 테스트하기도 편하다.
+Spring에서는 Container가 필요한 Bean을 찾아 생성자를 통해 주입한다.
 
-## AOP
+```java
+@Service
+public class MemberService {
+    private final MemberMapper mapper;
 
-로깅, 트랜잭션처럼 여러 기능에 공통으로 필요한 관심사를 핵심 비즈니스 코드와 분리할 수 있다.
+    public MemberService(MemberMapper mapper) {
+        this.mapper = mapper;
+    }
+}
+```
 
-## Lombok
-
-반복되는 getter, setter, constructor 등의 코드를 줄여준다.
-
-Spring의 핵심은 어노테이션을 외우는 것보다 **컨테이너가 객체를 관리하고 의존성을 연결한다는 흐름**을 이해하는 것이었다.
-
-## 더 깊게 이해하기: 객체를 누가 만들고, 누가 책임지는가
-
-DI를 이해할 때 중요한 구분은 **객체를 사용하는 코드와 객체를 조립하는 코드**다. 서비스가 직접 `new UserRepository()`를 호출하면 구현체 생성과 사용이 한 클래스에 묶인다. 생성자 주입은 이 결합을 줄이고, 조립 책임을 Spring 컨테이너로 옮긴다. 테스트에서는 실제 저장소 대신 가짜 구현을 주입할 수도 있다.
-
-AOP는 모든 코드를 자동으로 편하게 만드는 기능이 아니다. 트랜잭션·로깅처럼 여러 객체에 반복되는 횡단 관심사를 분리할 때 유용하지만, 프록시를 거치는 호출 구조를 이해하지 못하면 적용 여부를 오해하기 쉽다. 예를 들어 같은 클래스 내부에서 `this.someTransactionalMethod()`처럼 호출하면 일반적인 프록시 기반 AOP가 기대대로 적용되지 않을 수 있다.
-
-### 실습하며 확인할 것
-- 생성자 주입을 사용했을 때 테스트에서 의존 객체를 교체할 수 있는가?
-- 서비스가 구현 클래스가 아니라 인터페이스에 의존하도록 바꾸면 무엇이 달라지는가?
-- 트랜잭션이나 로깅을 핵심 로직 안에 직접 작성한 경우와 AOP로 분리한 경우를 비교했는가?
-- Lombok은 코드를 줄이는 도구일 뿐, 생성자와 의존관계를 이해하는 일을 대신하지 않는다는 점을 구분했는가?
-
-이 개념은 어노테이션을 외우는 것보다 객체 생성 → 의존성 연결 → 메서드 호출의 흐름을 직접 추적할 때 오래 남는다.
+IoC가 객체를 관리하는 제어의 방향에 대한 개념이라면 DI는 그 과정에서 객체의 의존성을 외부에서 넣어주는 방법이라고 구분했다.
