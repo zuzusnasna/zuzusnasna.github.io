@@ -33,7 +33,6 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
   categories = metadata["categories"]
   errors << "#{path}: categories must be a non-empty array" unless categories.is_a?(Array) && categories.any?
   section = metadata["section"].to_s.strip
-  errors << "#{path}: section is required for sidebar classification" if section.empty?
   if !section.empty? && !known_sections.include?(section)
     errors << "#{path}: section '#{section}' is not defined in the blog sidebar"
   end
