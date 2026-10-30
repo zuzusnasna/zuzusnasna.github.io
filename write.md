@@ -243,11 +243,6 @@ permalink: /write/
     for (const [id, parent, pattern] of classifyRules) {
       if (pattern.test(source)) return {category: parent, section: id};
     }
-    const roots = {
-      java:['Java','java-core'], spring:['Spring','spring-core'], database:['Database','database-oracle'],
-      backend:['Backend','backend-performance'], frontend:['Frontend','frontend-html'],
-      infra:['Infra','infra-linux'], ml:['ML','ml'], 'machine learning':['ML','ml']
-    };
     const rootMap = {
       java:['Java','java-core'], spring:['Spring','spring-core'], database:['Database','database-oracle'],
       backend:['Backend','backend-performance'], frontend:['Frontend','frontend-html'],
