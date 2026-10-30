@@ -13,7 +13,7 @@ permalink: /write/
     <div class="write-actions">
       <button type="button" id="save-draft">임시 저장</button>
       <button type="button" id="download-post" class="primary">Markdown 저장</button>
-      <p class="editor-help">저장한 파일은 자동 게시되지 않습니다. GitHub 저장소의 <code>_posts</code> 폴더에 추가하고 <code>main</code>에 반영해야 블로그에 표시됩니다.</p>
+      <p class="editor-help">다운로드한 파일을 저장소의 <code>_posts</code> 폴더에 업로드하고 <code>main</code>에 커밋하면 Actions가 검증·배포합니다. 카테고리와 하위 분류는 블로그 메뉴 기준으로 자동 지정됩니다.</p>
     </div>
   </div>
 
@@ -97,7 +97,7 @@ permalink: /write/
 
   <div class="write-note">
     <strong>저장 방식</strong>
-    <span>카테고리를 선택하거나 직접 추가한 뒤 <b>Markdown 저장</b>을 누르면 Jekyll용 게시글 파일이 생성됩니다. 다운로드한 파일을 <code>_posts</code>에 넣으면 해당 카테고리로 게시됩니다.</span>
+    <span>기존 카테고리를 선택한 뒤 <b>Markdown 저장</b>을 누르세요. 생성된 <code>YYYY-MM-DD-제목.md</code> 파일을 저장소의 <code>_posts</code> 폴더에 업로드해 <code>main</code>에 커밋하면 Actions가 Front Matter와 메뉴 분류를 검사한 뒤 배포합니다. 새 사이드바 분류가 필요하면 메뉴에도 분류 ID를 먼저 추가해야 합니다.</span>
   </div>
 </section>
 
@@ -219,15 +219,24 @@ permalink: /write/
   ];
 
   function classifyPost(text, currentCategory, currentSection) {
+    const normalized = String(currentCategory || '').trim().toLowerCase();
+    const roots = ['java','spring','database','backend','frontend','infra','ml'];
+    const validSections = new Map();
+    Object.values(categoryMap).forEach(([parent, section]) => {
+      if (section) validSections.set(section, parent.toLowerCase());
+    });
+
+    // 가져온 Markdown의 section은 categories와 상위 분류가 일치할 때만 신뢰한다.
+    // 예: categories: [Spring] + section: java-pattern 같은 오래된 조합은 재분류한다.
     const section = String(currentSection || '').trim().toLowerCase();
-    const validSections = new Set(Object.values(categoryMap).map(item => item[1]));
-    if (validSections.has(section)) {
+    if (validSections.has(section) &&
+        (!normalized || roots.includes(normalized) || validSections.get(section) === normalized)) {
       const mapped = Object.values(categoryMap).find(item => item[1] === section);
       return {category: mapped[0], section};
     }
-    const normalized = String(currentCategory || '').trim().toLowerCase();
+
     const selected = Object.entries(categoryMap).find(([label]) => label.toLowerCase() === normalized);
-    if (selected && !['java','spring','database','backend','frontend','infra','ml'].includes(normalized)) {
+    if (selected && !roots.includes(normalized) && selected[1][1]) {
       return {category: selected[1][0], section: selected[1][1]};
     }
     const source = (text + ' ' + normalized).toLowerCase();
@@ -239,8 +248,13 @@ permalink: /write/
       backend:['Backend','backend-performance'], frontend:['Frontend','frontend-html'],
       infra:['Infra','infra-linux'], ml:['ML','ml'], 'machine learning':['ML','ml']
     };
-    const root = roots[normalized];
-    return root ? {category: root[0], section: root[1]} : {category:'기타', section:''};
+    const rootMap = {
+      java:['Java','java-core'], spring:['Spring','spring-core'], database:['Database','database-oracle'],
+      backend:['Backend','backend-performance'], frontend:['Frontend','frontend-html'],
+      infra:['Infra','infra-linux'], ml:['ML','ml'], 'machine learning':['ML','ml']
+    };
+    const root = rootMap[normalized];
+    return root ? {category: root[0], section: root[1]} : {category:'', section:''};
   }
 
   function parseMarkdownFile(markdown) {
@@ -387,7 +401,7 @@ permalink: /write/
   document.getElementById('download-post').addEventListener('click', () => {
     const postDate = date.value || new Date().toISOString().slice(0, 10);
     const safeTitle = title.value.trim();
-    const slug = safeTitle.toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-|-$/g, '') || 'new-post';
+    const slug = safeTitle.normalize('NFKC').toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '') || 'new-post';
     const tagList = tags.value.split(',').map(tag => tag.trim()).filter(Boolean);
     if (!safeTitle) {
       alert('게시글 제목을 입력해 주세요.');
@@ -410,7 +424,7 @@ permalink: /write/
       ? [inferred.category, inferred.section]
       : selectedMap;
     if (!mapped || !mapped[0] || !mapped[1]) {
-      alert('카테고리 연결 정보가 없습니다. 카테고리 설정을 확인해 주세요.');
+      alert('선택한 카테고리를 블로그 메뉴에서 찾을 수 없습니다. 기존 카테고리를 선택하거나 본문에 기술 키워드를 추가해 주세요.');
       return;
     }
     const quoteYaml = value => '"' + String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
