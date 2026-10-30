@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java String과 StringBuilder의 차이"
-date: 2026-10-07 00:00:00 +0900
+date: 2026-09-20 00:00:00 +0900
 categories: [학습]
 tags: [Java, String, StringBuilder]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Buffered I/O — 버퍼 스트림과 대용량 데이터 처리"
-date: 2026-10-15 00:00:00 +0900
+date: 2026-09-29 00:00:00 +0900
 categories: [Spring]
 tags: [Java, IO, BufferedReader, BufferedInputStream, Buffer]
 ---

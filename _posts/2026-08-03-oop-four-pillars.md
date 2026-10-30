@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "객체지향 프로그래밍의 네 가지 특징"
-date: 2026-08-12 00:00:00 +0900
+date: 2026-10-27 00:00:00 +0900
 categories: [학습]
 tags: [Java, 객체지향, OOP]
 ---

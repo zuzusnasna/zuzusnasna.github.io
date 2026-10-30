@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "JVM GC Roots — 객체 도달 가능성과 Garbage Collection"
-date: 2026-10-26 00:00:00 +0900
+date: 2026-08-31 00:00:00 +0900
 categories: [Spring]
 tags: [Java, JVM, GC, GCRoots, Memory]
 ---

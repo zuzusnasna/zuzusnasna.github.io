@@ -1,6 +1,6 @@
 ---
 title: "Java I/O Stream — InputStream과 OutputStream으로 파일 다루기"
-date: 2026-08-27 00:00:00 +0900
+date: 2026-08-04 00:00:00 +0900
 categories: [Spring]
 tags: [Java, IO, InputStream, OutputStream, File]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Thread — 스레드 생명 주기와 동시 실행 관리"
-date: 2026-08-07 00:00:00 +0900
+date: 2026-09-30 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Thread, Concurrency, Runnable, Executor]
 ---

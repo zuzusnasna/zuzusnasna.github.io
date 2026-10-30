@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Generic — 타입 매개변수, 제한된 타입과 와일드카드"
-date: 2026-07-21 00:00:00 +0900
+date: 2026-08-30 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Generic, Type Safety, Wildcard]
 ---

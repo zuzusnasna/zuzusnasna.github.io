@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Adapter Pattern — 서로 다른 인터페이스를 연결하는 어댑터 패턴"
-date: 2026-10-12 00:00:00 +0900
+date: 2026-10-21 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, Adapter]
 ---

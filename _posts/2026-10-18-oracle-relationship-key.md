@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "식별관계와 비식별관계를 구분하는 기준"
-date: 2026-09-10 00:00:00 +0900
+date: 2026-09-09 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, Database]
 ---

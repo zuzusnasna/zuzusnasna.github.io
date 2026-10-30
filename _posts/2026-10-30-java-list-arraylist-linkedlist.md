@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java List — ArrayList와 LinkedList의 내부 구조와 선택 기준"
-date: 2026-09-27 00:00:00 +0900
+date: 2026-09-08 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Collection, List, ArrayList, LinkedList]
 ---

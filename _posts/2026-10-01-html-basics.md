@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "HTML 기본 구조와 웹 페이지를 구성하는 태그"
-date: 2026-07-28 00:00:00 +0900
+date: 2026-08-28 00:00:00 +0900
 categories: [학습]
 tags: [HTML, CSS, JavaScript]
 ---

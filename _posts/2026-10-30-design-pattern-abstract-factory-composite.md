@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Design Pattern — Abstract Factory와 Composite"
-date: 2026-08-02 00:00:00 +0900
+date: 2026-09-12 00:00:00 +0900
 categories: [Spring]
 tags: [Design Pattern]
 ---

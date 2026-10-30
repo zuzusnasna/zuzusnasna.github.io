@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "MyBatis Mapper — XML, @Mapper, @Param 사용"
-date: 2026-08-25 00:00:00 +0900
+date: 2026-07-26 00:00:00 +0900
 categories: [Spring]
 tags: [MyBatis]
 ---

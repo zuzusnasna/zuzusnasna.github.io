@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Cursor로 직종별 급여 계산하기"
-date: 2026-07-14 00:00:00 +0900
+date: 2026-07-16 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, PL/SQL, Cursor]
 ---

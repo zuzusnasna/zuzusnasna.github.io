@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "JPA 객체 관계와 식별·비식별 관계를 이해한 과정"
-date: 2026-08-28 00:00:00 +0900
+date: 2026-10-03 00:00:00 +0900
 categories: [학습]
 tags: [JPA, Spring Boot, Database]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "HTML Form과 CSS로 입력 화면 구성하기"
-date: 2026-09-14 00:00:00 +0900
+date: 2026-10-15 00:00:00 +0900
 categories: [학습]
 tags: [HTML, CSS]
 ---

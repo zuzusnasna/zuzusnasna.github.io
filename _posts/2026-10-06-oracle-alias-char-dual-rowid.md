@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle SQL: Alias, 문자 타입, DUAL, SYSDATE, ROWID"
-date: 2026-09-20 00:00:00 +0900
+date: 2026-08-07 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, Alias, DUAL, ROWID]
 ---

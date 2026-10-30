@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Ubuntu에서 개발 환경을 확인할 때 자주 사용한 명령어"
-date: 2026-10-18 00:00:00 +0900
+date: 2026-08-09 00:00:00 +0900
 categories: [학습]
 tags: [Linux, Ubuntu, AWS]
 ---

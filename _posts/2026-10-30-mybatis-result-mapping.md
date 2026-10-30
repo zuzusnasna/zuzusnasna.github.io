@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "MyBatis ResultMap — JOIN 결과를 객체 관계로 매핑하기"
-date: 2026-08-19 00:00:00 +0900
+date: 2026-08-27 00:00:00 +0900
 categories: [Spring]
 section: spring-data
 tags: [Spring, MyBatis, ResultMap, Association, Collection]

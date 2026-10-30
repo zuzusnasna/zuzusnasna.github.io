@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring Security Filter Chain — 인증과 인가가 처리되는 순서"
-date: 2026-09-03 00:00:00 +0900
+date: 2026-07-31 00:00:00 +0900
 categories: [Spring]
 tags: [Spring Security, Filter Chain, Authentication, Authorization]
 ---

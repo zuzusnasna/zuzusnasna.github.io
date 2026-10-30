@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle DDL, DML, 제약조건과 테이블 설계"
-date: 2026-09-08 00:00:00 +0900
+date: 2026-10-09 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, Database]
 ---

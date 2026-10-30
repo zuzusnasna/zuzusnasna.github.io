@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "부트캠프 : JPA N+1 문제를 쿼리 관점에서 이해하기"
-date: 2026-10-03 00:00:00 +0900
+date: 2026-08-02 00:00:00 +0900
 categories: [학습]
 tags: [JPA, Spring Boot, SQL Tuning]
 ---

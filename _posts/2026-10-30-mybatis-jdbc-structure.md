@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "MyBatis 시작 — JDBC와 MyBatis의 차이, Mapper 구조"
-date: 2026-08-11 00:00:00 +0900
+date: 2026-08-02 00:00:00 +0900
 categories: [Spring]
 tags: [MyBatis, JDBC]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Garbage Collection — Heap 구조와 GC 알고리즘"
-date: 2026-10-08 00:00:00 +0900
+date: 2026-08-29 00:00:00 +0900
 categories: [Spring]
 tags: [Java, JVM, GC, Memory, Heap]
 ---

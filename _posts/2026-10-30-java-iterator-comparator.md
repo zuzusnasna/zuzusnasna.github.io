@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Iterator와 Comparable·Comparator — 순회와 정렬 기준"
-date: 2026-09-15 00:00:00 +0900
+date: 2026-09-25 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Collection, Iterator, Comparable, Comparator]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DIP와 DI의 차이, 의존성을 관리하는 방법"
-date: 2026-10-23 00:00:00 +0900
+date: 2026-10-17 00:00:00 +0900
 categories: [학습]
 tags: [Java, SOLID, DIP, DI]
 ---

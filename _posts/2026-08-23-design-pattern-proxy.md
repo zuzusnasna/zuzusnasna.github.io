@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Proxy Pattern — 실제 객체 접근을 제어하는 프록시 패턴"
-date: 2026-10-19 00:00:00 +0900
+date: 2026-09-03 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, Proxy]
 ---

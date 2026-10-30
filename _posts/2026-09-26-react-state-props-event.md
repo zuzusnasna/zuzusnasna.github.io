@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "React Study : Props와 State를 구분해서 생각하기"
-date: 2026-10-17 00:00:00 +0900
+date: 2026-07-14 00:00:00 +0900
 categories: [학습]
 tags: [React, JavaScript]
 ---

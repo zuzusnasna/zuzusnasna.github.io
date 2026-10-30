@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "운영 : 로그, 메트릭, 헬스체크를 분리해서 보는 이유"
-date: 2026-07-22 00:00:00 +0900
+date: 2026-10-24 00:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, AWS, 성능]
 ---

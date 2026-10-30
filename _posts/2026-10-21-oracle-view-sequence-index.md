@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle VIEW, SEQUENCE, INDEX를 정리한 이유"
-date: 2026-10-09 00:00:00 +0900
+date: 2026-09-26 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL]
 ---

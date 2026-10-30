@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "배포 : Docker와 컨테이너를 사용하면서 이해한 것"
-date: 2026-07-19 00:00:00 +0900
+date: 2026-08-23 00:00:00 +0900
 categories: [학습]
 tags: [Docker, AWS, Linux]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Template Method, Factory Method, Abstract Factory 비교"
-date: 2026-10-04 00:00:00 +0900
+date: 2026-09-27 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴]
 ---

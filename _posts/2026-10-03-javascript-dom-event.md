@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "부트캠프 : JavaScript 변수, DOM, 이벤트 처리"
-date: 2026-10-14 00:00:00 +0900
+date: 2026-10-08 00:00:00 +0900
 categories: [학습]
 tags: [JavaScript, HTML]
 ---

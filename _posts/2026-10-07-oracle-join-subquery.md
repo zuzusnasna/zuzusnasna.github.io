@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle JOIN과 서브쿼리: 여러 테이블에서 필요한 데이터 찾기"
-date: 2026-08-20 00:00:00 +0900
+date: 2026-07-20 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL]
 ---

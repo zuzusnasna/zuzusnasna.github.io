@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "PL/SQL의 Procedure, JOB, TRIGGER 구분하기"
-date: 2026-08-06 00:00:00 +0900
+date: 2026-09-24 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, PL/SQL, Procedure, JOB, TRIGGER]
 ---

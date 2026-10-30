@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Singleton Pattern — 애플리케이션에서 하나의 인스턴스를 공유하는 싱글톤 패턴"
-date: 2026-07-23 00:00:00 +0900
+date: 2026-07-15 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, Singleton]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DB 동시성 제어: Lock과 Transaction을 어떻게 선택할까"
-date: 2026-09-19 00:00:00 +0900
+date: 2026-07-27 00:00:00 +0900
 categories: [학습]
 tags: [Database, MySQL, Transaction, Lock, 동시성]
 ---

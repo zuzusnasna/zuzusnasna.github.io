@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "생성자 주입과 의존성 역전 — Spring에서 결합도를 낮추는 설계"
-date: 2026-09-22 00:00:00 +0900
+date: 2026-10-13 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, DI, IoC, Constructor Injection, DIP]
 ---

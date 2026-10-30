@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java static과 final의 사용 기준"
-date: 2026-10-03 00:00:00 +0900
+date: 2026-08-22 00:00:00 +0900
 categories: [학습]
 tags: [Java, static, final]
 ---

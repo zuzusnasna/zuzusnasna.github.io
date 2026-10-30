@@ -1,6 +1,6 @@
 ---
 title: "Java Collection Framework — List, Set, Map을 사용하는 기준"
-date: 2026-09-28 00:00:00 +0900
+date: 2026-09-10 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Collection, List, Set, Map]
 ---

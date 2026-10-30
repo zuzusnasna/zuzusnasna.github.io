@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java 기본 문법을 다시 정리한 내용"
-date: 2026-07-13 00:00:00 +0900
+date: 2026-10-16 00:00:00 +0900
 categories: [학습]
 tags: [Java]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "객체지향 설계 — SOLID 5원칙"
-date: 2026-08-05 00:00:00 +0900
+date: 2026-10-06 00:00:00 +0900
 categories: [Spring]
 tags: [Java, OOP]
 ---

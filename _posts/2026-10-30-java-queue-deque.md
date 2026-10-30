@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Queue와 Deque — FIFO, 양방향 큐와 BlockingQueue"
-date: 2026-10-22 00:00:00 +0900
+date: 2026-10-10 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Collection, Queue, Deque, BlockingQueue]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Linux : 포트 충돌과 프로세스를 찾는 방법"
-date: 2026-08-03 00:00:00 +0900
+date: 2026-08-17 00:00:00 +0900
 categories: [학습]
 tags: [Linux, AWS, Docker]
 ---

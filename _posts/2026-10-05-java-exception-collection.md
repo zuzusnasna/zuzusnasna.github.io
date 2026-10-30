@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java 예외 처리와 컬렉션을 사용하면서 배운 점"
-date: 2026-09-09 00:00:00 +0900
+date: 2026-09-02 00:00:00 +0900
 categories: [학습]
 tags: [Java]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Strategy Pattern — 상황에 따라 알고리즘을 바꾸는 전략 패턴"
-date: 2026-08-08 00:00:00 +0900
+date: 2026-08-24 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, Strategy]
 ---

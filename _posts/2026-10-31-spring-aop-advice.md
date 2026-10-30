@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring AOP Advice와 Pointcut — 공통 로직 적용 범위 제어"
-date: 2026-10-25 00:00:00 +0900
+date: 2026-08-27 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, AOP, Advice, Pointcut, Around]
 ---

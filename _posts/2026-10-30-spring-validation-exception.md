@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "부트캠프 : Spring Validation과 전역 예외 처리"
-date: 2026-07-21 00:00:00 +0900
+date: 2026-10-30 00:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, REST API]
 ---

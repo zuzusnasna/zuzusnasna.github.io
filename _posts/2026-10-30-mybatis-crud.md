@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "MyBatis CRUD — SELECT, INSERT, UPDATE, DELETE"
-date: 2026-09-04 00:00:00 +0900
+date: 2026-09-01 00:00:00 +0900
 categories: [Spring]
 tags: [MyBatis]
 ---

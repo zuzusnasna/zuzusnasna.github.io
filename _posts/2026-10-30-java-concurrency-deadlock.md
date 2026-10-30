@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Deadlock — 교착 상태의 발생 조건과 예방"
-date: 2026-09-04 00:00:00 +0900
+date: 2026-08-15 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Concurrency, Deadlock, Thread, Lock]
 ---

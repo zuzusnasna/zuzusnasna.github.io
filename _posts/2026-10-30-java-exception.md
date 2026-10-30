@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "부트캠프 : Java 예외 처리와 checked / unchecked exception"
-date: 2026-09-03 00:00:00 +0900
+date: 2026-10-25 00:00:00 +0900
 categories: [학습]
 tags: [Java]
 ---

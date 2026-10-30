@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring 테스트 기초 — JUnit 5와 테스트 피라미드"
-date: 2026-08-23 00:00:00 +0900
+date: 2026-08-16 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, Testing, JUnit 5, Unit Test]
 ---

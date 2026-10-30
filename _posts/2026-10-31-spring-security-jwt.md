@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "JWT 인증 흐름 — Access Token 검증과 Refresh Token 재발급"
-date: 2026-10-14 00:00:00 +0900
+date: 2026-08-19 00:00:00 +0900
 categories: [Spring]
 tags: [Spring Security, JWT, Access Token, Refresh Token]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "React + Vite 실습에서 배운 프로젝트 구성"
-date: 2026-10-30 00:00:00 +0900
+date: 2026-10-24 00:00:00 +0900
 categories: [학습]
 tags: [React, Vite, JavaScript]
 ---

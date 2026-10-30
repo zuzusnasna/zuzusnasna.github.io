@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle SQL 기초: SELECT, DESC, DISTINCT, AS"
-date: 2026-08-10 00:00:00 +0900
+date: 2026-10-20 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, SELECT]
 ---

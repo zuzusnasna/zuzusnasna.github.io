@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Design Pattern — Template Method와 Factory Method"
-date: 2026-08-30 00:00:00 +0900
+date: 2026-09-19 00:00:00 +0900
 categories: [Spring]
 tags: [Design Pattern]
 ---

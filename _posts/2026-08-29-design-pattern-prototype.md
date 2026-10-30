@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Prototype Pattern — 기존 객체를 복제해 새로운 객체를 만드는 프로토타입 패턴"
-date: 2026-09-30 00:00:00 +0900
+date: 2026-07-19 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, Prototype]
 ---

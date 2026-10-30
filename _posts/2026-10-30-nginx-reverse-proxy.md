@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "배포 : Nginx Reverse Proxy를 사용하는 이유"
-date: 2026-10-14 00:00:00 +0900
+date: 2026-08-26 00:00:00 +0900
 categories: [학습]
 tags: [Nginx, Docker, AWS, Linux]
 ---

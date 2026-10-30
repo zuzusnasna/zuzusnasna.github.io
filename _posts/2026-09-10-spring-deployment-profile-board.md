@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Profile과 게시판 실습"
-date: 2026-10-29 00:00:00 +0900
+date: 2026-10-13 00:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, Profile, JPA, Spring Security, Validation]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "k6로 부하 테스트하기: VU, Check, Threshold와 결과 측정"
-date: 2026-08-11 00:00:00 +0900
+date: 2026-08-01 00:00:00 +0900
 categories: [학습]
 tags: [k6, 성능 테스트, Load Test]
 ---

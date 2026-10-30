@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java 생성자와 this, super"
-date: 2026-10-10 00:00:00 +0900
+date: 2026-10-07 00:00:00 +0900
 categories: [학습]
 tags: [Java, 생성자, 상속]
 ---

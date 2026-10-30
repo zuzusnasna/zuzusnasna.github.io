@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "PL/SQL 기본 구조와 Procedure, Cursor"
-date: 2026-08-23 00:00:00 +0900
+date: 2026-09-13 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, PL/SQL, Procedure, Cursor]
 ---

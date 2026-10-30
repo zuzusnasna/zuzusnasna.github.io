@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java ThreadLocal — 스레드별 데이터와 스레드 풀 주의점"
-date: 2026-09-26 00:00:00 +0900
+date: 2026-07-31 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Concurrency, ThreadLocal, Thread]
 ---
