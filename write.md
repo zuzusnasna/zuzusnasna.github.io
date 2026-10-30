@@ -267,11 +267,13 @@ permalink: /write/
       const importedCategories = Array.isArray(meta.categories) ? meta.categories : (meta.categories ? [meta.categories] : []);
       const allText = [importedTitle, importedTags.join(' '), importedCategories.join(' '), parsed.content].join(' ');
       const inferred = classifyPost(allText, importedCategories[0] || '', meta.section || '');
+      const inferredOption = Object.entries(categoryMap).find(([, value]) => value[0] === inferred.category && value[1] === inferred.section);
       title.value = importedTitle;
       const dateMatch = String(meta.date || '').match(/\d{4}-\d{2}-\d{2}/);
       if (dateMatch) date.value = dateMatch[0];
-      if (!Array.from(category.options).some(option => option.value === inferred.category)) addCategoryOption(inferred.category, false);
-      category.value = inferred.category;
+      const categoryLabel = inferredOption ? inferredOption[0] : inferred.category;
+      if (!Array.from(category.options).some(option => option.value === categoryLabel)) addCategoryOption(categoryLabel, false);
+      category.value = categoryLabel;
       tags.value = importedTags.join(', ');
       body.value = parsed.content.trim();
       updatePreview();
@@ -384,7 +386,10 @@ permalink: /write/
     const tagList = tags.value.split(',').map(tag => tag.trim()).filter(Boolean);
     const tagList = tags.value.split(',').map(tag => tag.trim()).filter(Boolean);
     const inferred = classifyPost([safeTitle, tagList.join(' '), body.value].join(' '), category.value, '');
-    const mapped = categoryMap[category.value] || [inferred.category, inferred.section];
+    const selectedMap = categoryMap[category.value];
+    const mapped = !selectedMap || selectedMap[0] === category.value
+      ? [inferred.category, inferred.section]
+      : selectedMap;
     const frontMatter = [
       '---',
       'layout: post',
