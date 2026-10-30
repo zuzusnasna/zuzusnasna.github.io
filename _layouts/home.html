@@ -7,13 +7,10 @@ layout: default
 {% endfor %}
 <section class="study-hero">
   <div>
-    <p class="eyebrow">DEVELOPMENT STUDY</p>
-    <h1>개발 공부를 쌓아가는 곳</h1>
-    <p class="hero-copy">Java, Spring, JPA, MyBatis, API 설계와 테스트부터 데이터베이스·운영까지 백엔드 개발에 필요한 내용을 정리합니다.</p>
+    <h1>개발 공부 기록</h1>
   </div>
   <div class="study-stats">
     <div><strong>{{ study_count }}</strong><span>학습 글</span></div>
-    <div><strong>{{ site.posts | map: "tags" | join: "," | split: "," | uniq | size }}</strong><span>기술 태그</span></div>
   </div>
 </section>
 
@@ -52,7 +49,14 @@ layout: default
       <div class="nav-children">
         <button data-section="database-oracle" type="button">Oracle / SQL / PL-SQL</button>
         <button data-section="database-redis" type="button">Redis</button>
-        <button data-section="database-mysql" type="button">MySQL</button>
+      </div>
+    </div>
+
+    <div class="nav-group open">
+      <button class="nav-group-title" data-section="backend" type="button">Backend <span>−</span></button>
+      <div class="nav-children">
+        <button data-section="backend-messaging" type="button">실시간 / 메시징</button>
+        <button data-section="backend-performance" type="button">성능 / 부하 테스트</button>
       </div>
     </div>
 
@@ -103,14 +107,16 @@ layout: default
       {% assign classification = 'other' %}
       {% assign parent_classification = 'other' %}
       {% assign haystack = post.title | append: ' ' | append: post.tags | downcase %}
-      {% if haystack contains 'design pattern' or haystack contains '디자인패턴' or haystack contains 'singleton' or haystack contains 'strategy' or haystack contains 'factory' or haystack contains 'template method' or haystack contains 'observer' or haystack contains 'command' or haystack contains 'decorator' or haystack contains 'composite' %}
+      {% if haystack contains 'websocket' or haystack contains 'stomp' or haystack contains 'kafka' or haystack contains 'redis pubsub' or haystack contains 'pub/sub' or haystack contains 'messaging' or haystack contains 'outbox' %}
+        {% assign classification = 'backend-messaging' %}{% assign parent_classification = 'backend' %}
+      {% elsif haystack contains 'k6' or haystack contains 'load test' or haystack contains 'load testing' or haystack contains 'performance' or haystack contains 'observability' or haystack contains 'sql tuning' or haystack contains 'index' or haystack contains '성능' or haystack contains '부하 테스트' %}
+        {% assign classification = 'backend-performance' %}{% assign parent_classification = 'backend' %}
+      {% elsif haystack contains 'design pattern' or haystack contains '디자인패턴' or haystack contains 'singleton' or haystack contains 'strategy' or haystack contains 'factory' or haystack contains 'template method' or haystack contains 'observer' or haystack contains 'command' or haystack contains 'decorator' or haystack contains 'composite' %}
         {% assign classification = 'java-pattern' %}{% assign parent_classification = 'java' %}
       {% elsif haystack contains 'oracle' or haystack contains 'sql' or haystack contains 'pl/sql' or haystack contains 'database' %}
         {% assign classification = 'database-oracle' %}{% assign parent_classification = 'database' %}
       {% elsif haystack contains 'redis' %}
         {% assign classification = 'database-redis' %}{% assign parent_classification = 'database' %}
-      {% elsif haystack contains 'mysql' %}
-        {% assign classification = 'database-mysql' %}{% assign parent_classification = 'database' %}
       {% elsif haystack contains 'react' %}
         {% assign classification = 'frontend-react' %}{% assign parent_classification = 'frontend' %}
       {% elsif haystack contains 'test' or haystack contains 'junit' or haystack contains 'mockito' or haystack contains '테스트' %}
@@ -176,7 +182,8 @@ layout: default
   const labels = {
     all:'전체 공부', java:'JAVA', 'java-core':'JAVA 기본', 'java-oop':'객체지향 / SOLID', 'java-pattern':'디자인 패턴', 'java-advanced':'Generic / GC / Thread', 'java-collections':'컬렉션', 'java-jvm':'JVM', 'java-concurrency':'동시성', 'java-io':'입출력 / NIO',
     spring:'Spring', 'spring-core':'Spring Core / DI / AOP', 'spring-data':'JPA / MyBatis', 'spring-web':'MVC / REST API', 'spring-security':'Security / JWT / OAuth2', 'spring-testing':'테스트 / 품질 관리',
-    database:'Database', 'database-oracle':'Oracle / SQL / PL-SQL', 'database-redis':'Redis', 'database-mysql':'MySQL',
+    database:'Database', 'database-oracle':'Oracle / SQL / PL-SQL', 'database-redis':'Redis',
+    backend:'Backend', 'backend-messaging':'실시간 / 메시징', 'backend-performance':'성능 / 부하 테스트',
     frontend:'Frontend', 'frontend-html':'HTML / CSS / JavaScript', 'frontend-react':'React',
     infra:'Infra', 'infra-linux':'Linux', 'infra-aws':'AWS / EC2', 'infra-docker':'Docker', 'infra-cicd':'GitHub Actions / CI-CD', ml:'Machine Learning'
   };
