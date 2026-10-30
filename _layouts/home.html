@@ -29,6 +29,10 @@ layout: default
         <button data-section="java-oop" type="button">객체지향 / SOLID</button>
         <button data-section="java-pattern" type="button">디자인 패턴</button>
         <button data-section="java-advanced" type="button">Generic / GC / Thread</button>
+        <button data-section="java-collections" type="button">컬렉션</button>
+        <button data-section="java-jvm" type="button">JVM</button>
+        <button data-section="java-concurrency" type="button">동시성</button>
+        <button data-section="java-io" type="button">입출력 / NIO</button>
       </div>
     </div>
 
@@ -133,6 +137,14 @@ layout: default
         {% assign classification = 'ml' %}{% assign parent_classification = 'ml' %}
       {% elsif haystack contains 'solid' or haystack contains 'oop' or haystack contains 'object' or haystack contains 'class' or haystack contains 'interface' or haystack contains 'overloading' or haystack contains 'overriding' or haystack contains 'inheritance' or haystack contains 'composition' or haystack contains 'coupling' or haystack contains 'cohesion' or haystack contains 'dip' or haystack contains '상속' or haystack contains '조합' or haystack contains '결합도' or haystack contains '응집도' or haystack contains '의존 역전' %}
         {% assign classification = 'java-oop' %}{% assign parent_classification = 'java' %}
+      {% elsif haystack contains 'collection' or haystack contains 'list' or haystack contains 'set' or haystack contains 'map' %}
+        {% assign classification = 'java-collections' %}{% assign parent_classification = 'java' %}
+      {% elsif haystack contains 'jvm' or haystack contains 'heap' or haystack contains 'metaspace' or haystack contains 'stack memory' %}
+        {% assign classification = 'java-jvm' %}{% assign parent_classification = 'java' %}
+      {% elsif haystack contains 'concurrency' or haystack contains 'synchronized' or haystack contains 'reentrantlock' or haystack contains 'executorservice' or haystack contains 'completablefuture' or haystack contains 'threadpool' %}
+        {% assign classification = 'java-concurrency' %}{% assign parent_classification = 'java' %}
+      {% elsif haystack contains 'inputstream' or haystack contains 'outputstream' or haystack contains 'filechannel' or haystack contains 'nio' or haystack contains ' i/o' %}
+        {% assign classification = 'java-io' %}{% assign parent_classification = 'java' %}
       {% elsif haystack contains 'generic' or haystack contains 'garbage collection' or haystack contains 'thread' or haystack contains 'serialization' %}
         {% assign classification = 'java-advanced' %}{% assign parent_classification = 'java' %}
       {% elsif haystack contains 'java' %}
@@ -161,7 +173,7 @@ layout: default
   const tagItems = [...document.querySelectorAll('.tag-search-item')];
 
   const labels = {
-    all:'전체 공부', java:'JAVA', 'java-core':'JAVA 기본', 'java-oop':'객체지향 / SOLID', 'java-pattern':'디자인 패턴', 'java-advanced':'Generic / GC / Thread',
+    all:'전체 공부', java:'JAVA', 'java-core':'JAVA 기본', 'java-oop':'객체지향 / SOLID', 'java-pattern':'디자인 패턴', 'java-advanced':'Generic / GC / Thread', 'java-collections':'컬렉션', 'java-jvm':'JVM', 'java-concurrency':'동시성', 'java-io':'입출력 / NIO',
     spring:'Spring', 'spring-core':'Spring / DI / AOP', 'spring-mybatis':'MyBatis', 'spring-security':'Security / JWT / OAuth2', 'spring-jpa':'JPA', 'spring-web':'MVC / REST',
     database:'Database', 'database-oracle':'Oracle / SQL / PL-SQL', 'database-redis':'Redis', 'database-mysql':'MySQL',
     frontend:'Frontend', 'frontend-html':'HTML / CSS / JavaScript', 'frontend-react':'React',
