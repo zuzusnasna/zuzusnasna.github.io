@@ -22,19 +22,27 @@ permalink: /write/
         <input id="post-title" type="text" placeholder="게시글 제목">
         <div class="editor-row">
           <input id="post-date" type="date">
-          <select id="post-category" aria-label="게시글 카테고리">
-            <option value="Java">Java</option>
-            <option value="Spring">Spring</option>
-            <option value="Spring Core / DI / AOP">Spring Core / DI / AOP</option>
-            <option value="JPA / MyBatis">JPA / MyBatis</option>
-            <option value="MVC / REST API">MVC / REST API</option>
-            <option value="Security / JWT / OAuth2">Security / JWT / OAuth2</option>
-            <option value="테스트 / 품질 관리">테스트 / 품질 관리</option>
-            <option value="Database">Database</option>
-            <option value="PL/SQL">PL/SQL</option>
-            <option value="React">React</option>
-            <option value="기타">기타</option>
-          </select>
+          <div class="category-control">
+            <select id="post-category" aria-label="게시글 카테고리">
+              <option value="Java">Java</option>
+              <option value="Spring">Spring</option>
+              <option value="Spring Core / DI / AOP">Spring Core / DI / AOP</option>
+              <option value="JPA / MyBatis">JPA / MyBatis</option>
+              <option value="MVC / REST API">MVC / REST API</option>
+              <option value="Security / JWT / OAuth2">Security / JWT / OAuth2</option>
+              <option value="테스트 / 품질 관리">테스트 / 품질 관리</option>
+              <option value="Database">Database</option>
+              <option value="PL/SQL">PL/SQL</option>
+              <option value="React">React</option>
+              <option value="기타">기타</option>
+            </select>
+            <button type="button" id="add-category" class="category-add">+ 카테고리 추가</button>
+          </div>
+        </div>
+        <div id="new-category-row" class="new-category-row" hidden>
+          <input id="new-category" type="text" placeholder="새 카테고리 이름">
+          <button type="button" id="confirm-category">추가</button>
+          <button type="button" id="cancel-category">취소</button>
         </div>
         <input id="post-tags" type="text" placeholder="태그: Java, Spring, JPA">
       </div>
@@ -60,7 +68,7 @@ permalink: /write/
 
   <div class="write-note">
     <strong>저장 방식</strong>
-    <span>카테고리를 선택한 뒤 <b>Markdown 저장</b>을 누르면 Jekyll용 게시글 파일이 생성됩니다. 다운로드한 파일을 <code>_posts</code>에 넣으면 선택한 카테고리로 게시됩니다.</span>
+    <span>카테고리를 선택하거나 직접 추가한 뒤 <b>Markdown 저장</b>을 누르면 Jekyll용 게시글 파일이 생성됩니다. 다운로드한 파일을 <code>_posts</code>에 넣으면 해당 카테고리로 게시됩니다.</span>
   </div>
 </section>
 
@@ -72,7 +80,13 @@ permalink: /write/
   const tags = document.getElementById('post-tags');
   const body = document.getElementById('post-body');
   const preview = document.getElementById('post-preview');
+  const addCategory = document.getElementById('add-category');
+  const newCategoryRow = document.getElementById('new-category-row');
+  const newCategory = document.getElementById('new-category');
+  const confirmCategory = document.getElementById('confirm-category');
+  const cancelCategory = document.getElementById('cancel-category');
   const draftKey = 'zuzusnasna-study-draft';
+  const categoryKey = 'zuzusnasna-post-categories';
 
   const today = new Date();
   date.value = today.toISOString().slice(0, 10);
@@ -137,6 +151,68 @@ permalink: /write/
     updatePreview();
   }
 
+  function addCategoryOption(name, selectIt = true) {
+    const trimmed = name.trim();
+    if (!trimmed) return false;
+    const exists = Array.from(category.options).some(option => option.value.toLowerCase() === trimmed.toLowerCase());
+    if (exists) {
+      if (selectIt) category.value = trimmed;
+      return false;
+    }
+    const option = document.createElement('option');
+    option.value = trimmed;
+    option.textContent = trimmed;
+    category.appendChild(option);
+    if (selectIt) category.value = trimmed;
+    return true;
+  }
+
+  function loadCustomCategories() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(categoryKey) || '[]');
+      if (Array.isArray(saved)) saved.forEach(name => addCategoryOption(String(name), false));
+    } catch (_) {}
+  }
+
+  function saveCustomCategories() {
+    const builtIn = new Set(['Java', 'Spring', 'Spring Core / DI / AOP', 'JPA / MyBatis', 'MVC / REST API', 'Security / JWT / OAuth2', '테스트 / 품질 관리', 'Database', 'PL/SQL', 'React', '기타']);
+    const custom = Array.from(category.options).map(option => option.value).filter(value => !builtIn.has(value));
+    localStorage.setItem(categoryKey, JSON.stringify(custom));
+  }
+
+  addCategory.addEventListener('click', () => {
+    newCategoryRow.hidden = false;
+    newCategory.focus();
+  });
+
+  confirmCategory.addEventListener('click', () => {
+    const name = newCategory.value.trim();
+    if (!name) {
+      newCategory.focus();
+      return;
+    }
+    if (!addCategoryOption(name)) {
+      alert('이미 있는 카테고리입니다.');
+      newCategory.focus();
+      newCategory.select();
+      return;
+    }
+    saveCustomCategories();
+    newCategory.value = '';
+    newCategoryRow.hidden = true;
+    updatePreview();
+  });
+
+  cancelCategory.addEventListener('click', () => {
+    newCategory.value = '';
+    newCategoryRow.hidden = true;
+  });
+
+  newCategory.addEventListener('keydown', event => {
+    if (event.key === 'Enter') confirmCategory.click();
+    if (event.key === 'Escape') cancelCategory.click();
+  });
+
   document.querySelectorAll('.editor-toolbar button').forEach(button => button.addEventListener('click', () => {
     const action = button.dataset.action;
     if (action === 'bold') insertAround('**', '**', '강조할 내용');
@@ -179,12 +255,15 @@ permalink: /write/
     URL.revokeObjectURL(link.href);
   });
 
+  loadCustomCategories();
+
   const saved = localStorage.getItem(draftKey);
   if (saved) {
     try {
       const draft = JSON.parse(saved);
       title.value = draft.title || '';
       date.value = draft.date || date.value;
+      if (draft.category && !Array.from(category.options).some(option => option.value === draft.category)) addCategoryOption(draft.category, false);
       category.value = draft.category || 'Java';
       tags.value = draft.tags || '';
       body.value = draft.body || '';
