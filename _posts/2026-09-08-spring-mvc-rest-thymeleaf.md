@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Spring Boot 학습 : MVC, REST API, Thymeleaf와 JPA 연관관계"
+title: "MVC, REST API, Thymeleaf와 JPA 연관관계"
 date: 2026-09-08 09:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, Spring MVC, REST API, Thymeleaf, JPA]
