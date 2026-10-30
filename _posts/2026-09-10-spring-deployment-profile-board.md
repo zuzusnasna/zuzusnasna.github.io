@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Spring Boot 학습 : Profile과 게시판 실습"
+title: "Profile과 게시판 실습"
 date: 2026-09-10 09:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, Profile, JPA, Spring Security, Validation]
