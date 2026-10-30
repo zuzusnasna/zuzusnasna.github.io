@@ -407,7 +407,7 @@ permalink: /write/
     const postBody = body.value.replace(/^\n+/, '');
     const markdown = frontMatter + postBody;
     // 저장 전에 Jekyll Front Matter 구조를 검사해 잘못된 파일 다운로드를 차단한다.
-    if (!/^---\\r?\\n[\\s\\S]*?\\r?\\n---\\r?\\n\\r?\\n/.test(markdown)) {
+    if (!/^---\r?\n[\s\S]*?\r?\n---\r?\n\r?\n/.test(markdown)) {
       alert('게시글 형식이 올바르지 않습니다. 다시 저장해 주세요.');
       return;
     }
