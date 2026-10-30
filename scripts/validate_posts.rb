@@ -33,8 +33,29 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
   categories = metadata["categories"]
   errors << "#{path}: categories must be a non-empty array" unless categories.is_a?(Array) && categories.any?
   section = metadata["section"].to_s.strip
+  errors << "#{path}: section is required for sidebar classification" if section.empty?
   if !section.empty? && !known_sections.include?(section)
     errors << "#{path}: section '#{section}' is not defined in the blog sidebar"
+  end
+
+  # Keep Jekyll category and sidebar section in the same top-level group.
+  section_parent = case section
+                   when /\\Ajava-/ then "Java"
+                   when /\\Aspring-/ then "Spring"
+                   when /\\Adatabase-/ then "Database"
+                   when /\\Abackend-/ then "Backend"
+                   when /\\Afrontend-/ then "Frontend"
+                   when /\\Ainfra-/ then "Infra"
+                   when "ml" then "ML"
+                   else nil
+                   end
+  category = categories.is_a?(Array) ? categories.first.to_s : ""
+  if section_parent && category.casecmp(section_parent) != 0
+    errors << "#{path}: categories[0] '#{category}' does not match section '#{section}' (expected '#{section_parent}')"
+  end
+
+  unless File.basename(path).match?(/\\A\\d{4}-\\d{2}-\\d{2}-.+\\.(md|markdown)\\z/)
+    errors << "#{path}: filename must start with YYYY-MM-DD- for Jekyll posts"
   end
 end
 
