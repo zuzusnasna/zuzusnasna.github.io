@@ -2,8 +2,8 @@
 layout: post
 title: "MCP (Model Context Protocol)"
 date: 2026-10-30 00:00:00 +0900
-categories: [Java]
-section: java-io
+categories: [Spring]
+section: spring-ai
 tags: [MCP]
 ---
 
