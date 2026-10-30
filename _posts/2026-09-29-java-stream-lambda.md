@@ -2,7 +2,8 @@
 layout: post
 title: "Java : 함수형 프로그래밍, 람다와 Stream"
 date: 2026-08-08 00:00:00 +0900
-categories: [학습]
+categories: [Java]
+section: java-functional
 tags: [Java, Lambda, Stream, 함수형 프로그래밍]
 ---
 
