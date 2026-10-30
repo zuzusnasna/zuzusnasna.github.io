@@ -6,7 +6,6 @@ layout: default
   {% assign display_title = page.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
   <h1>{{ display_title }}</h1>
   <div class="post-tags">{% for tag in page.tags %}<a href="{{ '/' | relative_url }}?tag={{ tag | slugify }}">#{{ tag }}</a>{% endfor %}</div>
-  <div class="post-reading-meta" aria-label="글 정보"><span id="reading-time">읽는 시간 계산 중</span></div>
   <nav class="post-toc" id="post-toc" aria-label="목차" hidden>
     <h2 class="toc-title">목차</h2>
     <ul id="post-toc-list"></ul>
@@ -41,10 +40,6 @@ layout: default
     list.appendChild(item);
   });
   if (headings.length >= 3) toc.hidden = false;
-  const text = content.innerText || '';
-  const minutes = Math.max(1, Math.ceil(text.replace(/\s/g, '').length / 450));
-  const readingTime = document.getElementById('reading-time');
-  if (readingTime) readingTime.textContent = '약 ' + minutes + '분 읽기 · ' + headings.length + '개 주제';
   const progress = document.getElementById('reading-progress');
   const updateProgress = () => {
     if (!progress) return;
