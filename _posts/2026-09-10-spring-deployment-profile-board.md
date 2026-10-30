@@ -1,55 +1,76 @@
 ---
 layout: post
-title: "Spring Boot 학습 : Profile, JAR/WAR 배포와 게시판 실습"
+title: "Spring Boot 학습 : Profile과 게시판 실습"
 date: 2026-09-10 09:00:00 +0900
 categories: [학습]
-tags: [Spring Boot, 배포, Profile, JPA, Spring Security]
+tags: [Spring Boot, Profile, JPA, Spring Security, Validation]
 ---
 
-Spring Boot 학습 후반에는 개발 코드뿐 아니라 실행 환경과 배포까지 함께 정리했다.
+오늘은 Spring Boot의 Profile 설정을 확인하고, Spring Security와 JPA를 사용해 게시판 실습을 진행했다.
 
 ## Profile
 
-개발·운영처럼 환경별 설정을 분리할 수 있다.
+개발 환경처럼 설정값이 달라지는 경우 Profile을 사용해 환경별 설정을 나눌 수 있다.
 
 ```text
 application.yml
 application-local.yml
-application-prod.yml
+application-test.yml
 ```
 
-실행 환경에 맞는 profile을 선택해 DB 주소나 외부 서비스 설정을 분리한다.
+실행할 Profile에 따라 데이터베이스 주소나 기능 설정을 다르게 적용할 수 있다.
 
-## JAR와 WAR
+```yaml
+spring:
+  profiles:
+    active: local
+```
 
-- JAR : Spring Boot 내장 서버와 함께 실행하기 쉬운 방식
-- WAR : 외부 Tomcat 등에 배포할 수 있는 방식
+실습에서는 Profile을 이용해 설정 파일을 분리하는 구조와 실제 실행 시 어떤 설정이 적용되는지를 확인했다.
 
 ## 게시판 실습
 
-게시판에서는 다음 흐름을 한 번에 연결했다.
+게시판 기능은 회원 인증부터 게시글의 생성·조회·수정·삭제까지 하나의 흐름으로 연결했다.
 
 ```text
 회원가입
- → Spring Security 로그인
- → 게시글 작성
- → 작성자 연결
- → 수정 / 삭제
- → 권한 확인
+  ↓
+Spring Security 로그인
+  ↓
+게시글 작성
+  ↓
+작성자 연결
+  ↓
+수정 / 삭제
+  ↓
+권한 확인
 ```
 
-Validation과 `BindingResult`, BCrypt, `@Transactional`까지 적용하면서 단순 CRUD보다 실제 웹 서비스 흐름을 경험할 수 있었다.
+게시글 수정과 삭제에서는 현재 로그인한 사용자가 해당 게시글의 작성자인지 확인하도록 구성했다. 로그인 여부만 확인하면 다른 사용자의 게시글까지 변경할 수 있기 때문에 인증과 별도로 권한 확인이 필요하다.
 
-## 더 깊게 이해하기: 실행 환경은 애플리케이션의 일부다
+## Validation
 
-프로필은 개발·테스트·운영 환경마다 달라지는 설정을 분리하는 수단이다. 하지만 프로필 파일을 나누는 것만으로 비밀정보가 안전해지는 것은 아니다. 비밀번호나 API 키는 저장소에 올리지 않고 환경변수나 비밀 관리 기능으로 주입해야 하며, 운영 환경에서 어떤 값이 실제로 적용됐는지 확인할 수 있어야 한다.
+입력값은 Controller에서 검증하고 잘못된 요청은 서비스 로직으로 넘어가기 전에 처리한다.
 
-배포 장애를 조사할 때는 소스 코드뿐 아니라 JDK, 빌드 도구, 환경변수, 데이터베이스 연결 주소, 포트, 파일 경로도 함께 살펴야 한다. 로컬에서 성공한 실행이 운영에서 실패하는 이유는 코드 차이보다 환경 차이인 경우도 많다.
+```java
+@PostMapping("/posts")
+public String create(@Valid @ModelAttribute PostForm form,
+                     BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+        return "post/form";
+    }
 
-### 배포 전 점검
-- 필요한 환경변수 이름과 예시 값이 `.env.example` 또는 문서에 정리되어 있는가?
-- 실제 비밀값이 Git에 포함되지 않도록 `.gitignore`가 설정되어 있는가?
-- 애플리케이션이 시작되기 전에 DB 연결과 스키마 상태를 확인할 수 있는가?
-- 로그에 연결 실패 원인과 적용 프로필이 드러나되 민감정보는 노출되지 않는가?
+    postService.create(form);
+    return "redirect:/posts";
+}
+```
 
-배포 문서는 명령어 모음만이 아니라 새 개발자가 동일한 환경을 재현하기 위한 계약서라고 생각하면 좋다.
+`@Valid`는 객체의 검증 조건을 실행하고, `BindingResult`를 통해 검증 결과를 확인할 수 있다.
+
+## 비밀번호와 트랜잭션
+
+회원 비밀번호는 평문으로 저장하지 않고 BCrypt 같은 해시 방식으로 처리한다.
+
+게시글 작성이나 수정처럼 여러 데이터 변경이 하나의 작업으로 묶여야 하는 경우에는 `@Transactional`을 사용해 트랜잭션 경계를 설정한다.
+
+이번 실습에서는 실제 배포 환경을 구성한 것이 아니라 **Spring Boot에서 게시판 기능이 어떤 계층과 기술을 거쳐 동작하는지**에 집중했다.
