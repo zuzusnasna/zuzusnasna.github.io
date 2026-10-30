@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring Bean 등록 방식 — Component Scan과 Java Config의 선택"
-date: 2026-10-31 09:10:00 +0900
+date: 2026-10-30 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, Bean, ComponentScan, Configuration, Bean Registration]
 ---
