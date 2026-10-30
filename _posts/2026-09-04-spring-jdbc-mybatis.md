@@ -1,74 +1,44 @@
 ---
 layout: post
-title: "Spring Bean — Bean 등록과 생성자 주입"
-date: 2026-10-30 15:10:00 +0900
-categories: [Spring]
-tags: [Spring]
+title: "Spring Boot 학습 : JDBC와 MyBatis 비교"
+date: 2026-09-04 09:00:00 +0900
+categories: [학습]
+tags: [Spring Boot, JDBC, MyBatis, Database]
 ---
 
-오늘은 Spring Container가 관리하는 Bean과 의존성을 주입하는 방법을 정리했다.
+DB 접근 기술을 비교하면서 JDBC와 MyBatis가 어떤 문제를 해결하는지 정리했다.
 
-## 1. Bean
+## JDBC
 
-Spring Container가 생성하고 관리하는 객체를 Bean이라고 한다.
+Java 코드에서 SQL을 직접 실행하고 `ResultSet`을 통해 결과를 받아 객체로 변환한다.
 
-대표적인 Annotation은 다음과 같다.
+장점은 동작 원리가 명확하다는 것이지만 반복 코드가 많아진다.
 
-```java
-@Component
-@Service
-@Repository
-@Controller
-```
+## MyBatis
 
-예를 들어
+SQL을 별도로 관리하면서 Java 객체와 결과를 연결해 JDBC의 반복 작업을 줄인다.
 
-```java
-@Service
-public class MemberService {
-}
-```
-
-라고 하면 `MemberService`를 Spring이 Bean으로 등록하고 관리할 수 있다.
-
-## 2. Bean 사이의 의존 관계
-
-서비스에서 Repository가 필요하다면 생성자를 통해 받을 수 있다.
-
-```java
-@Service
-public class MemberService {
-    private final MemberRepository repository;
-
-    public MemberService(MemberRepository repository) {
-        this.repository = repository;
-    }
-}
-```
-
-Spring은 `MemberRepository`가 Bean으로 등록되어 있다면 해당 객체를 찾아 `MemberService`에 주입한다.
+## 정리
 
 ```text
-Spring Container
+JDBC
+Java → SQL → ResultSet → 객체 변환
 
-MemberRepository
-       ↓
-MemberService
+MyBatis
+Java → Mapper → SQL → 객체 매핑
 ```
 
-## 3. 생성자 주입
+DB 접근을 추상화하더라도 결국 SQL과 데이터베이스 동작을 이해해야 한다는 점을 배웠다.
 
-```java
-@Service
-public class OrderService {
-    private final Payment payment;
+## 더 깊게 이해하기: SQL의 책임은 어디에 둘까
 
-    public OrderService(Payment payment) {
-        this.payment = payment;
-    }
-}
-```
+JDBC는 데이터베이스 연결, SQL 실행, 결과 집합 처리, 자원 해제를 개발자가 직접 다루는 저수준 API다. MyBatis는 SQL을 명시적으로 작성하는 방식은 유지하면서 파라미터 바인딩과 결과 객체 매핑의 반복을 줄인다. 따라서 둘의 차이는 단순히 코드 줄 수가 아니라 **SQL 제어권과 반복 작업을 어느 계층이 맡는가**에 있다.
 
-생성자 주입은 객체 생성 시 필요한 의존성이 전달되도록 만들 수 있고 `final`을 사용해 주입된 의존성을 변경하지 않도록 할 수 있다.
+MyBatis를 사용할 때도 SQL이 자동으로 안전해지는 것은 아니다. 값은 `#{value}`로 바인딩하고, 테이블명이나 정렬 컬럼처럼 바인딩할 수 없는 동적 SQL 요소는 허용 목록으로 제한해야 한다. 문자열 결합으로 사용자 입력을 SQL에 넣으면 인젝션 위험이 생긴다.
 
-구체 클래스에 직접 의존하기보다 인터페이스에 의존하도록 만들면 구현체를 바꾸거나 테스트할 때도 유연하게 구성할 수 있다.
+### 선택 기준
+- 복잡한 조인이나 튜닝된 SQL을 명확히 관리해야 한다면 MyBatis의 명시적 SQL이 편리할 수 있다.
+- 객체 관계와 변경 감지, 영속성 컨텍스트의 이점을 활용하려면 JPA가 더 적합할 수 있다.
+- 어떤 방식을 쓰더라도 실행 SQL, 인덱스 사용 여부, 트랜잭션 경계를 확인해야 한다.
+
+실습에서는 동일한 조회를 JDBC와 MyBatis로 구현하고, 파라미터 바인딩·결과 매핑·예외 처리·자원 해제 코드를 비교해 보는 것이 좋다.
