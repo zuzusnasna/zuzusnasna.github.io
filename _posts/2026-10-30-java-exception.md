@@ -1,81 +1,91 @@
 ---
 layout: post
-title: "Java 데이터 처리 — Generic, Garbage Collection, Serialization"
-date: 2026-10-30 11:50:00 +0900
+title: "Java 실행 구조 — Call by Value와 Process, Thread"
+date: 2026-10-30 12:00:00 +0900
 categories: [Spring]
 tags: [Java]
 ---
 
-오늘은 Java의 타입 처리와 메모리 관리, 객체를 데이터로 변환하는 과정을 정리했다.
+오늘은 Java에서 메서드에 값이 전달되는 방식과 프로세스, 스레드의 차이를 정리했다.
 
-## 1. Generic
+## 1. Java는 Call by Value
 
-Generic은 클래스나 메서드에서 사용할 타입을 지정할 수 있게 해준다.
+Java에서는 메서드 인자를 항상 값으로 전달한다.
 
-```java
-List<Integer> numbers = new ArrayList<>();
-numbers.add(10);
-numbers.add(20);
-```
-
-타입을 `Integer`로 지정했기 때문에 다른 타입의 값을 넣으면 컴파일 단계에서 확인할 수 있다.
-
-## 2. Garbage Collection
-
-Java에서는 객체 메모리를 직접 해제하지 않는다.
+기본 타입을 보면 쉽게 확인할 수 있다.
 
 ```java
-Member member = new Member();
-member = null;
+static void change(int value) {
+    value = 100;
+}
+
+int number = 10;
+change(number);
+
+System.out.println(number); // 10
 ```
 
-더 이상 다른 객체가 참조하지 않는 객체는 GC의 대상이 될 수 있다.
+`number`의 값이 복사되어 전달됐기 때문에 메서드 안에서 `value`를 바꿔도 호출한 쪽의 `number`는 바뀌지 않는다.
 
-```text
-member ───→ Member 객체
+객체도 Call by Reference가 아니다. 객체를 전달할 때는 객체를 가리키는 참조값이 복사되어 전달된다.
 
-member = null
-
-Member 객체
-   ↑
-참조 없음
-   ↓
-GC 대상이 될 수 있음
-```
-
-중요한 점은 `member = null`을 했다고 바로 GC가 실행되는 것은 아니라는 것이다. GC 실행 시점은 JVM이 판단한다.
-
-## 3. Serialization
-
-객체를 저장하거나 전송할 수 있는 데이터 형태로 변환하는 것을 직렬화라고 한다.
-
-```text
-객체
- ↓
-직렬화
- ↓
-데이터
- ↓
-저장 / 전송
-```
-
-반대로 데이터를 다시 객체로 만드는 것이 역직렬화다.
-
-```text
-데이터
- ↓
-역직렬화
- ↓
-객체
-```
-
-실제 서버 개발에서는 Java 기본 Serialization뿐 아니라 JSON 같은 형식을 자주 사용한다.
-
-```json
-{
-  "name": "홍길동",
-  "age": 25
+```java
+static void change(Member member) {
+    member.name = "김철수";
 }
 ```
 
-객체를 메모리에 존재하는 상태 그대로만 보는 것이 아니라 저장·전송을 위한 데이터 형태로 바꿀 수 있다는 점까지 같이 정리했다.
+복사된 참조값이 같은 객체를 가리키기 때문에 객체의 상태 변경은 호출한 쪽에서도 확인할 수 있다.
+
+```text
+호출자 참조값 ──┐
+               ↓
+            Member 객체
+               ↑
+메서드 참조값 ──┘
+```
+
+그래서 Java는 **항상 Call by Value**라고 정리하는 것이 정확하다.
+
+## 2. Process
+
+프로세스는 실행 중인 프로그램이다. 프로세스는 기본적으로 독립적인 메모리 공간을 가진다.
+
+```text
+Process A
+ ├─ Code
+ ├─ Data
+ ├─ Heap
+ └─ Stack
+
+Process B
+ ├─ Code
+ ├─ Data
+ ├─ Heap
+ └─ Stack
+```
+
+서로 다른 프로세스는 메모리를 기본적으로 공유하지 않는다.
+
+## 3. Thread
+
+스레드는 프로세스 안에서 실제 작업을 수행하는 실행 흐름이다.
+
+```text
+프로세스
+ ├─ Thread 1
+ ├─ Thread 2
+ └─ Thread 3
+```
+
+같은 프로세스의 스레드들은 Heap 같은 메모리 영역을 공유할 수 있다.
+
+그래서 여러 스레드가 동시에 같은 데이터를 수정하면 문제가 생길 수 있다.
+
+```java
+count++;
+```
+
+이런 공유 상태를 안전하게 처리하려면 동기화, Lock, 원자적 연산 등의 방법을 고려해야 한다.
+
+웹 서버가 여러 사용자의 요청을 동시에 처리하는 구조를 이해하려면 Process와 Thread의 차이를 먼저 알고 있어야 했다.
