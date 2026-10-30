@@ -1,5 +1,6 @@
 ---
 layout: post
+layout: post
 title: "Java Memory Leak — 힙 덤프와 메모리 누수 분석"
 date: 2026-10-30
 categories: [Spring]
