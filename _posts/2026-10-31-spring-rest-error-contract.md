@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "REST API 오류 응답 설계 — 클라이언트가 처리할 수 있는 에러 계약"
-date: 2026-10-31 11:20:00 +0900
+date: 2026-10-30 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, REST, API Error, ExceptionHandler, ControllerAdvice]
 ---
