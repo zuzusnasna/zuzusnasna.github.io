@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring Boot 통합 테스트 — @SpringBootTest와 테스트 DB 전략"
-date: 2026-10-31 12:30:00 +0900
+date: 2026-10-30 00:00:00 +0900
 categories: [Spring]
 tags: [Spring Boot, Testing, SpringBootTest, Integration Test, Database]
 ---
