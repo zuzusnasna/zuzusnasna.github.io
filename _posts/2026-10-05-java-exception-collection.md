@@ -1,53 +1,126 @@
 ---
 layout: post
-title: "Java 예외 처리와 컬렉션을 사용하면서 배운 점"
-date: 2026-10-05 09:00:00 +0900
-categories: [학습]
-tags: [Java]
+title: "객체지향 기본 — 객체, OOP 4가지 특징, 오버로딩과 오버라이딩"
+date: 2026-10-30 11:20:00 +0900
+categories: [Spring]
+tags: [Java, OOP]
 ---
 
-## 예외 처리
+오늘은 객체지향 프로그래밍의 기본 개념과 Java에서 자주 헷갈리는 오버로딩, 오버라이딩을 같이 정리했다.
 
-예외 처리는 프로그램 실행 중 발생할 수 있는 문제를 정상적인 흐름과 분리해서 다루는 방법이다.
+## 1. 객체(Object)
+
+객체는 상태와 행동을 하나의 단위로 묶어서 표현한 것이다.
 
 ```java
-try {
-    int result = 10 / value;
-} catch (ArithmeticException e) {
-    System.out.println("0으로 나눌 수 없습니다.");
+class Car {
+    String model;
+    int speed;
+
+    void accelerate() {
+        speed += 10;
+    }
+
+    void stop() {
+        speed = 0;
+    }
 }
 ```
 
-무조건 예외를 숨기는 것보다 어떤 상황이 잘못됐는지 알 수 있도록 처리하는 것이 중요했다.
+`model`, `speed`는 상태이고 `accelerate()`, `stop()`은 행동이다.
 
-## 컬렉션
+## 2. OOP 4가지 특징
 
-- `List` : 순서가 있는 데이터
-- `Set` : 중복을 허용하지 않는 데이터
-- `Map` : key와 value의 연결
+### 추상화
+
+복잡한 내부 구현을 모두 드러내지 않고 필요한 특징만 표현한다.
+
+### 캡슐화
+
+객체의 내부 데이터를 외부에서 함부로 변경하지 못하게 숨긴다.
 
 ```java
-List<String> names = new ArrayList<>();
-names.add("홍길동");
-names.add("김철수");
+class Account {
+    private int balance;
+
+    public void deposit(int money) {
+        if (money > 0) {
+            balance += money;
+        }
+    }
+}
 ```
 
-프로젝트에서는 여러 데이터를 다루는 일이 많기 때문에 배열보다 컬렉션을 훨씬 자주 사용하게 된다.
+### 상속
 
-## 배운 점
+기존 클래스의 기능을 자식 클래스가 물려받는다.
 
-예외 처리와 컬렉션은 단독 문법이 아니라 실제 애플리케이션에서 입력값, DB 결과, 외부 API 응답을 안전하게 다루기 위한 기본 도구라고 이해했다.
+```java
+class Animal {
+    void eat() {
+        System.out.println("먹는다");
+    }
+}
 
-## 더 깊게 이해하기: 예외와 컬렉션은 API 계약을 드러낸다
+class Dog extends Animal {
+    void bark() {
+        System.out.println("멍멍");
+    }
+}
+```
 
-예외는 정상적인 결과와 실패 상황을 구분하는 수단이다. 예외를 무조건 잡아서 로그만 남기면 호출자는 작업이 실패했는지 알 수 없고, 원인 추적도 어려워진다. 반대로 복구할 수 없는 예외를 여러 계층에서 반복해서 감싸면 원래 원인이 사라질 수 있다. 예외를 처리할 계층은 복구, 변환, 사용자 응답 중 무엇을 책임지는지 기준으로 결정한다.
+### 다형성
 
-컬렉션은 저장 순서와 중복 허용 여부, 키 기반 접근 등 특성이 다르다. List는 순서와 인덱스가 중요할 때, Set은 중복 제거가 중요할 때, Map은 키로 값을 찾을 때 적합하다. 자료구조 선택은 단순한 문법 문제가 아니라 조회·삽입·삭제 패턴과 데이터의 의미에 영향을 준다.
+하나의 부모 타입으로 여러 자식 객체를 사용할 수 있다.
 
-### 확인할 내용
-- 예상 가능한 입력 오류와 시스템 장애를 구분했는가?
-- 예외를 잡은 뒤 무시하거나 성공처럼 반환하지 않는가?
-- 데이터의 순서가 필요할 때 순서가 보장되는 컬렉션을 선택했는가?
-- 객체를 Map의 키로 쓸 때 equals와 hashCode 계약을 지키는가?
+```java
+Animal animal = new Dog();
+animal.eat();
+```
 
-실무 코드에서는 실패를 정확히 표현하고 자료구조의 특성을 알고 선택하는 것만으로도 숨은 버그를 크게 줄일 수 있다.
+## 3. 오버로딩과 오버라이딩
+
+오버로딩은 같은 이름의 메서드를 매개변수만 다르게 여러 개 정의하는 것이다.
+
+```java
+class Calculator {
+    int add(int a, int b) {
+        return a + b;
+    }
+
+    int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+```
+
+오버라이딩은 부모 클래스의 메서드를 자식 클래스에서 재정의하는 것이다.
+
+```java
+class Animal {
+    void sound() {
+        System.out.println("동물 소리");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("멍멍");
+    }
+}
+```
+
+차이는 간단하게 정리할 수 있다.
+
+```text
+오버로딩
+→ 같은 클래스
+→ 같은 메서드 이름
+→ 매개변수 다름
+
+오버라이딩
+→ 부모-자식 관계
+→ 같은 메서드 시그니처
+→ 자식이 부모 메서드를 재정의
+```
