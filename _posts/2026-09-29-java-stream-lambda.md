@@ -1,50 +1,104 @@
 ---
 layout: post
-title: "Java Study : Lambda와 Stream을 사용하면서 달라진 코드"
-date: 2026-09-29 09:00:00 +0900
-categories: [학습]
+title: "Java 멤버와 상수 — static, non-static, final"
+date: 2026-10-30 11:30:00 +0900
+categories: [Spring]
 tags: [Java]
 ---
 
-Lambda와 Stream을 배우면서 반복문을 없애는 것보다 **데이터 처리 과정을 표현하는 방식이 달라진다**는 점에 집중했다.
+오늘은 객체마다 존재하는 멤버와 클래스에 하나만 존재하는 static 멤버의 차이를 정리하고 `final`까지 같이 봤다.
 
-## Lambda
+## 1. non-static 멤버
 
-```java
-List<String> names = List.of("홍길동", "김철수");
-names.forEach(name -> System.out.println(name));
-```
-
-함수를 값처럼 전달할 수 있어 컬렉션 처리 코드를 간결하게 만들 수 있다.
-
-## Stream
+non-static 멤버는 객체마다 별도로 존재한다.
 
 ```java
-List<String> result = names.stream()
-    .filter(name -> name.startsWith("김"))
-    .toList();
+class Person {
+    String name;
+
+    void hello() {
+        System.out.println(name);
+    }
+}
 ```
 
-`filter`, `map`, `sorted`, `collect` 등을 연결해 데이터 처리 과정을 표현할 수 있다.
+```java
+Person person1 = new Person();
+Person person2 = new Person();
 
-## 주의할 점
+person1.name = "홍길동";
+person2.name = "김철수";
+```
 
-코드가 짧아진다고 항상 좋은 것은 아니다. 복잡한 Stream을 한 줄로 작성하면 오히려 읽기 어려워질 수 있다.
+두 객체의 `name`은 서로 다른 값이다.
 
-## 배운 점
+## 2. static 멤버
 
-Lambda와 Stream은 단순 문법이 아니라 **컬렉션 데이터를 어떤 단계로 변환할 것인지 표현하는 도구**라고 이해했다.
+`static`은 객체가 아니라 클래스에 속한다.
 
-## 더 깊게 이해하기: Stream은 가독성을 위한 표현이다
+```java
+class Counter {
+    static int count = 0;
 
-Stream은 컬렉션 데이터를 선언적으로 변환·필터링·집계할 수 있게 해준다. 다만 모든 반복문을 Stream으로 바꾸는 것이 좋은 설계는 아니다. 중간 연산이 길어지거나 외부 상태를 변경하면 실행 흐름을 이해하기 어려워질 수 있다.
+    Counter() {
+        count++;
+    }
+}
+```
 
-Stream의 중간 연산은 최종 연산이 실행될 때 평가되는 지연 연산이다. 따라서 중간 연산만 작성하고 결과를 사용하지 않으면 실제 처리가 실행되지 않을 수 있다. `map`은 각 요소를 변환하고, `filter`는 조건에 맞는 요소를 남기며, `collect`는 결과를 모으는 역할을 한다.
+```java
+new Counter();
+new Counter();
+new Counter();
 
-### 비교 실습
-- 같은 작업을 for문과 Stream으로 작성한 뒤 어느 쪽이 더 읽기 쉬운지 비교한다.
-- 중간 연산 안에서 카운터나 외부 리스트를 수정하는 코드를 피한다.
-- 병렬 Stream은 공유 상태와 순서, 데이터 크기를 고려한 뒤 사용한다.
-- `Optional`과 Stream을 무조건 연결하기보다 null 가능성과 결과의 의미를 먼저 표현한다.
+System.out.println(Counter.count); // 3
+```
 
-코드의 길이보다 팀원이 변환 과정을 한 번에 이해할 수 있는지가 선택 기준이다.
+객체마다 `count`가 하나씩 생기는 것이 아니라 모든 객체가 하나의 `count`를 공유한다.
+
+| 구분 | static | non-static |
+|---|---|---|
+| 소속 | 클래스 | 객체 |
+| 공유 | 모든 객체가 공유 | 객체마다 별도 |
+| 접근 | 클래스명으로 가능 | 객체 필요 |
+| 용도 | 공통 데이터/기능 | 객체별 상태/기능 |
+
+## 3. final
+
+`final`은 변경할 수 없도록 제한하는 키워드다.
+
+변수:
+
+```java
+final int MAX = 100;
+// MAX = 200; // 오류
+```
+
+메서드:
+
+```java
+class Parent {
+    final void run() {
+        System.out.println("실행");
+    }
+}
+```
+
+`final` 메서드는 자식 클래스에서 오버라이딩할 수 없다.
+
+클래스:
+
+```java
+final class Parent {
+}
+```
+
+`final` 클래스는 상속할 수 없다.
+
+```text
+final 변수 → 값 변경 제한
+final 메서드 → 오버라이딩 제한
+final 클래스 → 상속 제한
+```
+
+`final`, `finally`, `finalize()`는 서로 다른 개념이다. 특히 `finalize()`는 현재 Java에서 일반적인 자원 관리 방법으로 사용하지 않는다.
