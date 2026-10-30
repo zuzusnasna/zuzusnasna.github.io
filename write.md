@@ -405,7 +405,13 @@ permalink: /write/
     // 빈 문자열을 filter(Boolean)으로 제거하면 본문 첫 줄과 ---가 붙을 수 있다.
     const frontMatter = frontMatterLines.join('\n') + '\n\n';
     const postBody = body.value.replace(/^\n+/, '');
-    const blob = new Blob([frontMatter, postBody], {type: 'text/markdown;charset=utf-8'});
+    const markdown = frontMatter + postBody;
+    // 저장 전에 Jekyll Front Matter 구조를 검사해 잘못된 파일 다운로드를 차단한다.
+    if (!/^---\\r?\\n[\\s\\S]*?\\r?\\n---\\r?\\n\\r?\\n/.test(markdown)) {
+      alert('게시글 형식이 올바르지 않습니다. 다시 저장해 주세요.');
+      return;
+    }
+    const blob = new Blob([markdown], {type: 'text/markdown;charset=utf-8'});
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = postDate + '-' + slug + '.md';
