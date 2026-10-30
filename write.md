@@ -190,7 +190,7 @@ permalink: /write/
   };
 
   const classifyRules = [
-    ['spring-ai','Spring',/\\b(spring ai|spring-ai|spring ai alibaba|spring ai model|chatclient|prompttemplate|ollama|openai api|embedding|vector store|retrieval augmented generation|\\brag\\b)\\b|생성형.?ai|벡터.?스토어/i],
+    ['spring-ai','Spring',/\b(spring ai|spring-ai|spring ai alibaba|spring ai model|chatclient|prompttemplate|ollama|openai api|embedding|vector store|retrieval augmented generation|\brag\b)\b|생성형.?ai|벡터.?스토어/i],
     ['java-jvm','Java',/\b(jvm|jit|gc|garbage collection|heap|metaspace|class loading|classloader)\b|가비지 컬렉션|클래스 로딩/i],
     ['java-collections','Java',/\b(collection|arraylist|linkedlist|hashmap|hashset|treeset|deque|iterator|comparator|list|set|map)\b|컬렉션/i],
     ['java-concurrency','Java',/\b(concurrency|synchronized|reentrantlock|executorservice|completablefuture|volatile|atomic|threadlocal|deadlock|thread|lock)\b|동시성|스레드/i],
