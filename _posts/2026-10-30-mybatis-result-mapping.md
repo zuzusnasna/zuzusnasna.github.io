@@ -3,6 +3,7 @@ layout: post
 title: "MyBatis ResultMap — JOIN 결과를 객체 관계로 매핑하기"
 date: 2026-10-30 00:00:00 +0900
 categories: [Spring]
+section: spring-data
 tags: [Spring, MyBatis, ResultMap, Association, Collection]
 ---
 ## ResultType만으로 부족한 경우
