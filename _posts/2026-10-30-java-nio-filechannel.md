@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Java FileChannel — 대용량 파일을 채널로 처리하기"
 date: 2026-10-30
 categories: [Spring]
