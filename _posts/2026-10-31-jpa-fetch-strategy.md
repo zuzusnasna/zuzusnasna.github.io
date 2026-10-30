@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "JPA Fetch 전략 — LAZY와 EAGER를 선택하는 기준"
-date: 2026-10-31 10:30:00 +0900
+date: 2026-10-30 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, JPA, FetchType, Lazy Loading, Eager Loading]
 ---
