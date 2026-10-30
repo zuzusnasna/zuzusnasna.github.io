@@ -28,6 +28,8 @@ jobs:
         with:
           ruby-version: '3.3'
           bundler-cache: true
+      - name: Validate blog posts
+        run: ruby scripts/validate_posts.rb
       - name: Build
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
       - name: Upload artifact
