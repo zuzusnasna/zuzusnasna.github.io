@@ -1,5 +1,6 @@
 ---
 layout: post
+layout: post
 title: "Java List — ArrayList와 LinkedList의 차이"
 date: 2026-10-30
 categories: [Spring]
