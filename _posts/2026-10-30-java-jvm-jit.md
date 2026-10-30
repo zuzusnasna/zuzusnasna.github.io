@@ -1,5 +1,6 @@
 ---
 layout: post
+layout: post
 title: "JVM JIT Compiler — 바이트코드가 실행되는 방식"
 date: 2026-10-30
 categories: [Spring]
