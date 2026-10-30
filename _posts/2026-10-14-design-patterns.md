@@ -1,53 +1,86 @@
 ---
 layout: post
-title: "Template Method, Factory Method, Abstract Factory 비교"
-date: 2026-10-14 09:00:00 +0900
-categories: [학습]
-tags: [Java, 디자인패턴]
+title: "Design Pattern — 디자인 패턴, Singleton, Strategy"
+date: 2026-10-30 13:00:00 +0900
+categories: [Spring]
+tags: [Design Pattern]
 ---
 
-디자인 패턴을 공부하면서 중요한 것은 이름보다 **어떤 변경을 분리하기 위해 사용하는가**였다.
+오늘은 디자인 패턴이 무엇인지 정리하고 Singleton과 Strategy 패턴을 코드로 확인했다.
 
-## Template Method
+## 1. 디자인 패턴이란?
 
-전체 알고리즘의 흐름은 부모 클래스가 정하고, 일부 단계만 자식 클래스가 구현한다.
+디자인 패턴은 개발하면서 반복적으로 발생하는 설계 문제를 해결하기 위한 대표적인 구조다. 완성된 코드를 그대로 가져다 쓰는 것이 아니라 상황에 맞는 설계 방법으로 보는 것이 맞다.
 
-```text
-공통 흐름
-  ↓
-준비 → 처리 → 정리
-       ↑
-   일부 단계만 구현
+대표적으로 생성, 구조, 행동 패턴으로 나눌 수 있다.
+
+## 2. Singleton Pattern
+
+특정 클래스의 객체를 하나만 생성하도록 제한하는 패턴이다.
+
+```java
+class Config {
+    private static Config instance;
+
+    private Config() {
+    }
+
+    public static Config getInstance() {
+        if (instance == null) {
+            instance = new Config();
+        }
+        return instance;
+    }
+}
 ```
 
-## Factory Method
+생성자를 `private`으로 만들어 외부에서 직접 객체를 생성하지 못하게 한다.
 
-객체를 생성하는 책임을 별도 메서드나 구현체로 분리한다. 생성 방식이 바뀌어도 사용하는 쪽의 코드가 덜 영향을 받는다.
+```java
+Config a = Config.getInstance();
+Config b = Config.getInstance();
 
-## Abstract Factory
+System.out.println(a == b); // true
+```
 
-서로 연관된 여러 객체를 하나의 제품군으로 생성할 때 사용한다.
+다만 위 구현은 멀티스레드 환경에서 동시에 객체가 생성될 가능성을 고려해야 한다. Spring에서는 기본적으로 Bean을 Singleton Scope로 관리하기 때문에 직접 Singleton 구현을 만드는 경우가 줄어든다.
 
-## 한 줄 비교
+## 3. Strategy Pattern
 
-| 패턴 | 핵심 |
-|---|---|
-| Template Method | 알고리즘 흐름 고정 |
-| Factory Method | 객체 생성 책임 분리 |
-| Abstract Factory | 관련 객체군 생성 |
+알고리즘이나 처리 방식을 각각의 클래스로 분리하고 필요한 전략을 선택하는 패턴이다.
 
-패턴을 무조건 적용하기보다 실제로 변경되는 지점이 어디인지 먼저 찾는 것이 중요하다고 정리했다.
+```java
+interface PaymentStrategy {
+    void pay(int amount);
+}
 
-## 더 깊게 이해하기: 패턴은 문제의 맥락이 있을 때 가치가 있다
+class CardPayment implements PaymentStrategy {
+    public void pay(int amount) {
+        System.out.println("카드 결제: " + amount);
+    }
+}
 
-디자인 패턴은 코드를 복잡하게 만드는 규칙이 아니라 반복해서 나타나는 설계 문제와 해결 방식에 이름을 붙인 것이다. 패턴을 먼저 정하고 코드를 끼워 맞추면 필요 없는 추상화가 늘어날 수 있다. 실제로 변하는 부분이 무엇인지, 어떤 책임을 분리해야 하는지 파악한 뒤 적용 여부를 결정한다.
+class KakaoPayment implements PaymentStrategy {
+    public void pay(int amount) {
+        System.out.println("카카오 결제: " + amount);
+    }
+}
+```
 
-Template Method는 상위 클래스가 알고리즘의 큰 흐름을 정하고 일부 단계를 하위 클래스에 맡길 때 적합하다. Factory Method는 객체 생성 결정을 하위 타입이나 별도 생성 책임에 위임할 때, Abstract Factory는 서로 관련된 객체군을 일관된 조합으로 생성해야 할 때 고려할 수 있다. 다만 상속이 부담스럽거나 조합이 더 단순하다면 다른 설계를 선택할 수 있다.
+서비스는 구체적인 결제 방식을 직접 만들지 않고 전략을 받는다.
 
-### 적용 전 질문
-- 현재 코드에서 자주 변하는 부분은 무엇인가?
-- 새 구현을 추가할 때 기존 코드를 얼마나 수정해야 하는가?
-- 인터페이스나 조합으로 더 단순하게 해결할 수 있는가?
-- 패턴을 도입한 결과 테스트와 이해가 쉬워졌는가, 아니면 추상화 계층만 늘었는가?
+```java
+class PaymentService {
+    private final PaymentStrategy strategy;
 
-패턴의 목적은 패턴 이름을 사용하는 것이 아니라 변경에 강하고 설명 가능한 설계를 만드는 것이다.
+    PaymentService(PaymentStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    void pay(int amount) {
+        strategy.pay(amount);
+    }
+}
+```
+
+결제 방식이 바뀌어도 `PaymentService`를 수정하지 않고 다른 전략을 주입할 수 있다.
