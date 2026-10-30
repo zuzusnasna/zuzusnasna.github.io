@@ -28,7 +28,8 @@ permalink: /write/
               <option value="Java 기본">Java 기본</option>
               <option value="객체지향 / SOLID">객체지향 / SOLID</option>
               <option value="디자인 패턴">디자인 패턴</option>
-              <option value="Generic / GC / Thread">Generic / GC / Thread</option>
+              <option value="Generic">Generic</option>
+              <option value="함수형 / Lambda / Stream">함수형 / Lambda / Stream</option>
               <option value="컬렉션">컬렉션</option>
               <option value="JVM">JVM</option>
               <option value="동시성">동시성</option>
@@ -173,7 +174,7 @@ permalink: /write/
   const categoryMap = {
     'Java': ['Java', 'java-core'], 'Java 기본': ['Java', 'java-core'],
     '객체지향 / SOLID': ['Java', 'java-oop'], '디자인 패턴': ['Java', 'java-pattern'],
-    'Generic / GC / Thread': ['Java', 'java-advanced'], '컬렉션': ['Java', 'java-collections'],
+    'Generic': ['Java', 'java-generics'], '함수형 / Lambda / Stream': ['Java', 'java-functional'], '컬렉션': ['Java', 'java-collections'],
     'JVM': ['Java', 'java-jvm'], '동시성': ['Java', 'java-concurrency'], '입출력 / NIO': ['Java', 'java-io'],
     'Spring': ['Spring', 'spring-core'], 'Spring Core / DI / AOP': ['Spring', 'spring-core'],
     'JPA / MyBatis': ['Spring', 'spring-data'], 'MVC / REST API': ['Spring', 'spring-web'],
@@ -194,7 +195,8 @@ permalink: /write/
     ['java-io','Java',/\b(filechannel|nio|inputstream|outputstream|bufferedreader|bufferedinputstream|serialization)\b|입출력|직렬화/i],
     ['java-pattern','Java',/\b(design pattern|singleton|strategy|factory|observer|command|decorator|adapter|facade|builder|prototype)\b|디자인.?패턴/i],
     ['java-oop','Java',/\b(solid|oop|inheritance|composition|coupling|cohesion|abstract class)\b|객체지향|상속|다형성|캡슐화|추상화/i],
-    ['java-advanced','Java',/\b(generic|lambda|stream api|functional programming)\b|제네릭|람다|함수형/i],
+    ['java-functional','Java',/\b(lambda|stream|functional programming)\b|람다|함수형/i],
+    ['java-generics','Java',/\bgeneric\b|제네릭/i],
     ['spring-data','Spring',/\b(jpa|mybatis|hibernate|entitymanager|orm|fetch join)\b/i],
     ['spring-security','Spring',/\b(spring security|jwt|oauth2|oauth|csrf|cors|filter chain)\b/i],
     ['spring-testing','Spring',/\b(junit|mockito|mockmvc|integration test|test slice)\b|테스트|품질 관리/i],
@@ -317,7 +319,7 @@ permalink: /write/
 
   function saveCustomCategories() {
     const builtIn = new Set([
-      'Java', 'Java 기본', '객체지향 / SOLID', '디자인 패턴', 'Generic / GC / Thread', '컬렉션', 'JVM', '동시성', '입출력 / NIO',
+      'Java', 'Java 기본', '객체지향 / SOLID', '디자인 패턴', 'Generic', '함수형 / Lambda / Stream', '컬렉션', 'JVM', '동시성', '입출력 / NIO',
       'Spring', 'Spring Core / DI / AOP', 'JPA / MyBatis', 'MVC / REST API', 'Security / JWT / OAuth2', '테스트 / 품질 관리',
       'Database', 'Oracle / SQL / PL-SQL', 'Redis', 'Backend', '실시간 / 메시징', '성능 / 부하 테스트',
       'Frontend', 'HTML / CSS / JavaScript', 'React', 'Infra', 'Linux', 'AWS / EC2', 'Docker', 'GitHub Actions / CI-CD',
