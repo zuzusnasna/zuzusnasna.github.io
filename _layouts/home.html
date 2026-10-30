@@ -1,17 +1,10 @@
 ---
 layout: default
 ---
-{% assign study_count = 0 %}
-{% for post in site.posts %}
-  {% if post.categories contains '학습' or post.categories contains 'Spring' %}{% assign study_count = study_count | plus: 1 %}{% endif %}
-{% endfor %}
+{% assign study_count = site.posts.size %}
 <section class="study-hero">
-  <div>
-    <h1>개발 공부 기록</h1>
-  </div>
-  <div class="study-stats">
-    <div><strong>{{ study_count }}</strong><span>학습 글</span></div>
-  </div>
+  <div><h1>개발 공부 기록</h1></div>
+  <div class="study-stats"><div><strong>{{ study_count }}</strong><span>학습 글</span></div></div>
 </section>
 
 <div class="study-layout">
@@ -80,9 +73,7 @@ layout: default
 
     <div class="nav-group">
       <button class="nav-group-title" data-section="ml" type="button">ML <span>+</span></button>
-      <div class="nav-children">
-        <button data-section="ml" type="button">Machine Learning</button>
-      </div>
+      <div class="nav-children"><button data-section="ml" type="button">Machine Learning</button></div>
     </div>
   </aside>
 
@@ -103,66 +94,51 @@ layout: default
 
     <div class="post-list" id="post-list">
       {% for post in site.posts %}
-      {% if post.categories contains '학습' or post.categories contains 'Spring' %}
       {% assign classification = 'other' %}
       {% assign parent_classification = 'other' %}
+      {% assign category = post.categories | first | default: '' | downcase %}
       {% assign haystack = post.title | append: ' ' | append: post.tags | downcase %}
-      {% if haystack contains 'websocket' or haystack contains 'stomp' or haystack contains 'kafka' or haystack contains 'redis pubsub' or haystack contains 'pub/sub' or haystack contains 'messaging' or haystack contains 'outbox' %}
-        {% assign classification = 'backend-messaging' %}{% assign parent_classification = 'backend' %}
-      {% elsif haystack contains 'k6' or haystack contains 'load test' or haystack contains 'load testing' or haystack contains 'performance' or haystack contains 'observability' or haystack contains 'sql tuning' or haystack contains 'index' or haystack contains '성능' or haystack contains '부하 테스트' %}
-        {% assign classification = 'backend-performance' %}{% assign parent_classification = 'backend' %}
-      {% elsif haystack contains 'design pattern' or haystack contains '디자인패턴' or haystack contains 'singleton' or haystack contains 'strategy' or haystack contains 'factory' or haystack contains 'template method' or haystack contains 'observer' or haystack contains 'command' or haystack contains 'decorator' or haystack contains 'composite' %}
-        {% assign classification = 'java-pattern' %}{% assign parent_classification = 'java' %}
-      {% elsif haystack contains 'oracle' or haystack contains 'sql' or haystack contains 'pl/sql' or haystack contains 'database' %}
-        {% assign classification = 'database-oracle' %}{% assign parent_classification = 'database' %}
-      {% elsif haystack contains 'redis' %}
-        {% assign classification = 'database-redis' %}{% assign parent_classification = 'database' %}
-      {% elsif haystack contains 'react' %}
-        {% assign classification = 'frontend-react' %}{% assign parent_classification = 'frontend' %}
-      {% elsif haystack contains 'test' or haystack contains 'junit' or haystack contains 'mockito' or haystack contains '테스트' %}
-        {% assign classification = 'spring-testing' %}{% assign parent_classification = 'spring' %}
-      {% elsif haystack contains 'mybatis' or haystack contains 'mapper' or haystack contains 'jdbc' or haystack contains 'jpa' or haystack contains 'hibernate' or haystack contains 'entity' or haystack contains '영속성' %}
-        {% assign classification = 'spring-data' %}{% assign parent_classification = 'spring' %}
-      {% elsif haystack contains 'jwt' or haystack contains 'oauth' or haystack contains 'security' or haystack contains '인증' %}
-        {% assign classification = 'spring-security' %}{% assign parent_classification = 'spring' %}
-      {% elsif haystack contains 'mvc' or haystack contains 'rest' or haystack contains 'controller' or haystack contains 'thymeleaf' or haystack contains 'http' %}
-        {% assign classification = 'spring-web' %}{% assign parent_classification = 'spring' %}
-      {% elsif haystack contains 'spring' or haystack contains 'aop' or haystack contains 'di' or haystack contains 'ioc' or haystack contains 'bean' %}
+
+      {% if post.section %}
+        {% assign classification = post.section %}{% assign parent_classification = 'spring' %}
+      {% elsif category == 'spring core / di / aop' %}
         {% assign classification = 'spring-core' %}{% assign parent_classification = 'spring' %}
-      {% elsif haystack contains 'javascript' or haystack contains 'html' or haystack contains 'css' %}
-        {% assign classification = 'frontend-html' %}{% assign parent_classification = 'frontend' %}
-      {% elsif haystack contains 'linux' or haystack contains 'ubuntu' or haystack contains 'process' or haystack contains 'port' %}
-        {% assign classification = 'infra-linux' %}{% assign parent_classification = 'infra' %}
-      {% elsif haystack contains 'aws' or haystack contains 'ec2' %}
-        {% assign classification = 'infra-aws' %}{% assign parent_classification = 'infra' %}
-      {% elsif haystack contains 'docker' or haystack contains 'container' %}
-        {% assign classification = 'infra-docker' %}{% assign parent_classification = 'infra' %}
-      {% elsif haystack contains 'github actions' or haystack contains 'ci/cd' or haystack contains 'deploy' %}
-        {% assign classification = 'infra-cicd' %}{% assign parent_classification = 'infra' %}
-      {% elsif haystack contains 'machine learning' or haystack contains '머신러닝' %}
+      {% elsif category == 'jpa / mybatis' %}
+        {% assign classification = 'spring-data' %}{% assign parent_classification = 'spring' %}
+      {% elsif category == 'mvc / rest api' %}
+        {% assign classification = 'spring-web' %}{% assign parent_classification = 'spring' %}
+      {% elsif category == 'security / jwt / oauth2' %}
+        {% assign classification = 'spring-security' %}{% assign parent_classification = 'spring' %}
+      {% elsif category == '테스트 / 품질 관리' %}
+        {% assign classification = 'spring-testing' %}{% assign parent_classification = 'spring' %}
+      {% elsif category == 'spring' %}
+        {% if haystack contains 'jpa' or haystack contains 'mybatis' or haystack contains 'hibernate' %}{% assign classification = 'spring-data' %}{% elsif haystack contains 'jwt' or haystack contains 'oauth' or haystack contains 'security' %}{% assign classification = 'spring-security' %}{% elsif haystack contains 'rest' or haystack contains 'controller' or haystack contains 'mvc' %}{% assign classification = 'spring-web' %}{% elsif haystack contains 'test' or haystack contains 'junit' or haystack contains 'mockito' %}{% assign classification = 'spring-testing' %}{% else %}{% assign classification = 'spring-core' %}{% endif %}{% assign parent_classification = 'spring' %}
+      {% elsif category == 'java' %}
+        {% if haystack contains 'jvm' or haystack contains 'jit' or haystack contains 'gc roots' or haystack contains 'memory leak' or haystack contains 'class loading' or haystack contains 'metaspace' %}{% assign classification = 'java-jvm' %}{% elsif haystack contains 'collection' or haystack contains 'arraylist' or haystack contains 'linkedlist' or haystack contains 'hashmap' or haystack contains 'hashset' or haystack contains 'treeset' or haystack contains 'queue' or haystack contains 'deque' or haystack contains 'iterator' or haystack contains 'comparator' %}{% assign classification = 'java-collections' %}{% elsif haystack contains 'concurrency' or haystack contains 'synchronized' or haystack contains 'reentrantlock' or haystack contains 'executorservice' or haystack contains 'completablefuture' or haystack contains 'volatile' or haystack contains 'atomic' or haystack contains 'threadlocal' or haystack contains 'deadlock' %}{% assign classification = 'java-concurrency' %}{% elsif haystack contains 'filechannel' or haystack contains 'nio' or haystack contains 'inputstream' or haystack contains 'outputstream' or haystack contains 'buffered' or haystack contains 'serialization' %}{% assign classification = 'java-io' %}{% elsif haystack contains 'design pattern' or haystack contains '디자인 패턴' or haystack contains 'singleton' or haystack contains 'strategy' or haystack contains 'factory' or haystack contains 'observer' or haystack contains 'command' or haystack contains 'decorator' or haystack contains 'composite' %}{% assign classification = 'java-pattern' %}{% elsif haystack contains 'solid' or haystack contains 'oop' or haystack contains 'inheritance' or haystack contains 'composition' or haystack contains 'coupling' or haystack contains 'cohesion' or haystack contains 'interface' or haystack contains 'abstract class' %}{% assign classification = 'java-oop' %}{% elsif haystack contains 'generic' or haystack contains 'garbage collection' or haystack contains 'thread' %}{% assign classification = 'java-advanced' %}{% else %}{% assign classification = 'java-core' %}{% endif %}{% assign parent_classification = 'java' %}
+      {% elsif category == 'database' or category == 'oracle / sql / pl-sql' or category == 'pl/sql' %}
+        {% if haystack contains 'redis' %}{% assign classification = 'database-redis' %}{% else %}{% assign classification = 'database-oracle' %}{% endif %}{% assign parent_classification = 'database' %}
+      {% elsif category == 'redis' %}
+        {% assign classification = 'database-redis' %}{% assign parent_classification = 'database' %}
+      {% elsif category == 'backend' %}
+        {% if haystack contains 'websocket' or haystack contains 'stomp' or haystack contains 'kafka' or haystack contains 'redis pubsub' or haystack contains 'pub/sub' or haystack contains 'messaging' or haystack contains 'outbox' %}{% assign classification = 'backend-messaging' %}{% else %}{% assign classification = 'backend-performance' %}{% endif %}{% assign parent_classification = 'backend' %}
+      {% elsif category == 'frontend' %}
+        {% if haystack contains 'react' %}{% assign classification = 'frontend-react' %}{% else %}{% assign classification = 'frontend-html' %}{% endif %}{% assign parent_classification = 'frontend' %}
+      {% elsif category == 'react' %}
+        {% assign classification = 'frontend-react' %}{% assign parent_classification = 'frontend' %}
+      {% elsif category == 'infra' %}
+        {% if haystack contains 'docker' or haystack contains 'container' %}{% assign classification = 'infra-docker' %}{% elsif haystack contains 'aws' or haystack contains 'ec2' %}{% assign classification = 'infra-aws' %}{% elsif haystack contains 'github actions' or haystack contains 'ci/cd' or haystack contains 'deploy' %}{% assign classification = 'infra-cicd' %}{% else %}{% assign classification = 'infra-linux' %}{% endif %}{% assign parent_classification = 'infra' %}
+      {% elsif category == 'ml' or category == 'machine learning' %}
         {% assign classification = 'ml' %}{% assign parent_classification = 'ml' %}
-      {% elsif haystack contains 'collection' or haystack contains 'list' or haystack contains 'set' or haystack contains 'map' or haystack contains 'queue' or haystack contains 'deque' or haystack contains 'iterator' or haystack contains 'comparator' %}
-        {% assign classification = 'java-collections' %}{% assign parent_classification = 'java' %}
-      {% elsif haystack contains 'jvm' or haystack contains 'heap' or haystack contains 'metaspace' or haystack contains 'stack memory' or haystack contains 'class loading' or haystack contains 'jit' or haystack contains 'gc roots' or haystack contains 'memory leak' %}
-        {% assign classification = 'java-jvm' %}{% assign parent_classification = 'java' %}
-      {% elsif haystack contains 'concurrency' or haystack contains 'synchronized' or haystack contains 'reentrantlock' or haystack contains 'executorservice' or haystack contains 'completablefuture' or haystack contains 'threadpool' or haystack contains 'volatile' or haystack contains 'atomic' or haystack contains 'threadlocal' or haystack contains 'deadlock' %}
-        {% assign classification = 'java-concurrency' %}{% assign parent_classification = 'java' %}
-      {% elsif haystack contains 'inputstream' or haystack contains 'outputstream' or haystack contains 'filechannel' or haystack contains 'nio' or haystack contains ' i/o' or haystack contains 'buffered' or haystack contains 'files api' or haystack contains 'serialization' %}
-        {% assign classification = 'java-io' %}{% assign parent_classification = 'java' %}
-      {% elsif haystack contains 'solid' or haystack contains 'oop' or haystack contains 'object' or haystack contains 'class' or haystack contains 'interface' or haystack contains 'overloading' or haystack contains 'overriding' or haystack contains 'inheritance' or haystack contains 'composition' or haystack contains 'coupling' or haystack contains 'cohesion' or haystack contains 'dip' or haystack contains '상속' or haystack contains '조합' or haystack contains '결합도' or haystack contains '응집도' or haystack contains '의존 역전' %}
-        {% assign classification = 'java-oop' %}{% assign parent_classification = 'java' %}
-      {% elsif haystack contains 'generic' or haystack contains 'garbage collection' or haystack contains 'thread' or haystack contains 'serialization' %}
-        {% assign classification = 'java-advanced' %}{% assign parent_classification = 'java' %}
-      {% elsif haystack contains 'java' %}
-        {% assign classification = 'java-core' %}{% assign parent_classification = 'java' %}
+      {% elsif category == '학습' %}
+        {% if haystack contains 'websocket' or haystack contains 'stomp' or haystack contains 'kafka' or haystack contains 'redis pubsub' or haystack contains 'pub/sub' or haystack contains 'messaging' or haystack contains 'outbox' %}{% assign classification = 'backend-messaging' %}{% assign parent_classification = 'backend' %}{% elsif haystack contains 'react' %}{% assign classification = 'frontend-react' %}{% assign parent_classification = 'frontend' %}{% elsif haystack contains 'jvm' or haystack contains 'jit' %}{% assign classification = 'java-jvm' %}{% assign parent_classification = 'java' %}{% elsif haystack contains 'java' %}{% assign classification = 'java-core' %}{% assign parent_classification = 'java' %}{% else %}{% assign classification = 'other' %}{% endif %}
       {% endif %}
-      {% if post.section %}{% assign classification = post.section %}{% assign parent_classification = 'spring' %}{% endif %}
+
       {% assign display_title = post.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
       <article class="study-card" data-section="{{ classification }}" data-parent-section="{{ parent_classification }}" data-search="{{ display_title | append: ' ' | append: post.excerpt | append: ' ' | append: post.tags | strip_html | downcase | escape }}">
         <div class="card-date">{{ post.date | date: "%Y.%m.%d" }}</div>
         <div class="card-body"><h3><a href="{{ post.url | relative_url }}">{{ display_title }}</a></h3><p>{{ post.excerpt | strip_html | strip_newlines | truncate: 180 }}</p><div class="post-tags">{% for tag in post.tags %}<span>#{{ tag }}</span>{% endfor %}</div></div>
       </article>
-      {% endif %}{% endfor %}
+      {% endfor %}
     </div>
     <div class="empty" id="empty" hidden>검색 조건에 맞는 공부 글이 없습니다.</div>
   </main>
@@ -178,87 +154,59 @@ layout: default
   const title = document.getElementById('section-title');
   const tagPanel = document.getElementById('tag-search-panel');
   const tagItems = [...document.querySelectorAll('.tag-search-item')];
-
-  const labels = {
-    all:'전체 공부', java:'JAVA', 'java-core':'JAVA 기본', 'java-oop':'객체지향 / SOLID', 'java-pattern':'디자인 패턴', 'java-advanced':'Generic / GC / Thread', 'java-collections':'컬렉션', 'java-jvm':'JVM', 'java-concurrency':'동시성', 'java-io':'입출력 / NIO',
-    spring:'Spring', 'spring-core':'Spring Core / DI / AOP', 'spring-data':'JPA / MyBatis', 'spring-web':'MVC / REST API', 'spring-security':'Security / JWT / OAuth2', 'spring-testing':'테스트 / 품질 관리',
-    database:'Database', 'database-oracle':'Oracle / SQL / PL-SQL', 'database-redis':'Redis',
-    backend:'Backend', 'backend-messaging':'실시간 / 메시징', 'backend-performance':'성능 / 부하 테스트',
-    frontend:'Frontend', 'frontend-html':'HTML / CSS / JavaScript', 'frontend-react':'React',
-    infra:'Infra', 'infra-linux':'Linux', 'infra-aws':'AWS / EC2', 'infra-docker':'Docker', 'infra-cicd':'GitHub Actions / CI-CD', ml:'Machine Learning'
-  };
-
+  const labels = {all:'전체 공부',java:'JAVA','java-core':'JAVA 기본','java-oop':'객체지향 / SOLID','java-pattern':'디자인 패턴','java-advanced':'Generic / GC / Thread','java-collections':'컬렉션','java-jvm':'JVM','java-concurrency':'동시성','java-io':'입출력 / NIO',spring:'Spring','spring-core':'Spring Core / DI / AOP','spring-data':'JPA / MyBatis','spring-web':'MVC / REST API','spring-security':'Security / JWT / OAuth2','spring-testing':'테스트 / 품질 관리',database:'Database','database-oracle':'Oracle / SQL / PL-SQL','database-redis':'Redis',backend:'Backend','backend-messaging':'실시간 / 메시징','backend-performance':'성능 / 부하 테스트',frontend:'Frontend','frontend-html':'HTML / CSS / JavaScript','frontend-react':'React',infra:'Infra','infra-linux':'Linux','infra-aws':'AWS / EC2','infra-docker':'Docker','infra-cicd':'GitHub Actions / CI-CD',ml:'Machine Learning'};
   let current = 'all';
 
-  function setGroupOpen(section, open) {
-    const group = groups.find(button => button.dataset.section === section)?.closest('.nav-group');
-    if (!group) return;
-    group.classList.toggle('open', open);
-    const indicator = group.querySelector('.nav-group-title span');
-    if (indicator) indicator.textContent = open ? '−' : '+';
-  }
-
   function openParentFor(section) {
-    const parent = buttons.find(button => button.dataset.section === section)?.closest('.nav-group');
-    if (parent) {
-      parent.classList.add('open');
-      const indicator = parent.querySelector('.nav-group-title span');
-      if (indicator) indicator.textContent = '−';
-    }
+    const group = buttons.find(button => button.dataset.section === section)?.closest('.nav-group');
+    if (!group) return;
+    group.classList.add('open');
+    const indicator = group.querySelector('.nav-group-title span');
+    if (indicator) indicator.textContent = '−';
   }
 
   function render() {
     const q = input.value.trim().toLowerCase();
     let visible = 0;
-
     cards.forEach(card => {
-      const matchesSection = current === 'all'
-        || card.dataset.section === current
-        || card.dataset.parentSection === current;
-      const matchesSearch = !q || card.dataset.search.includes(q);
-      const show = matchesSection && matchesSearch;
-
+      const sectionMatch = current === 'all' || card.dataset.section === current || card.dataset.parentSection === current;
+      const searchMatch = !q || card.dataset.search.includes(q);
+      const show = sectionMatch && searchMatch;
       card.style.display = show ? '' : 'none';
       if (show) visible++;
     });
-
     empty.hidden = visible !== 0;
     title.textContent = q && current === 'all' ? '검색 결과' : (labels[current] || '전체 공부');
   }
 
-  function selectSection(section, expandParent = true) {
+  function selectSection(section, updateUrl = true) {
     current = section;
     input.value = '';
     buttons.forEach(button => button.classList.toggle('active', button.dataset.section === current));
-    if (expandParent) openParentFor(section);
+    openParentFor(section);
     render();
-    const url = current === 'all' ? location.pathname : location.pathname + '?section=' + encodeURIComponent(current);
-    history.replaceState(null, '', url);
+    if (updateUrl) history.replaceState(null, '', current === 'all' ? location.pathname : location.pathname + '?section=' + encodeURIComponent(current));
   }
 
   buttons.forEach(button => {
     if (button.classList.contains('nav-group-title')) return;
-    button.addEventListener('click', event => {
-      event.preventDefault();
-      event.stopPropagation();
-      selectSection(button.dataset.section);
-    });
+    button.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); selectSection(button.dataset.section); });
   });
 
   groups.forEach(group => group.addEventListener('click', event => {
     event.preventDefault();
     event.stopPropagation();
     const parent = group.closest('.nav-group');
-    const willOpen = !parent.classList.contains('open');
-
-    selectSection(group.dataset.section, false);
-    setGroupOpen(group.dataset.section, willOpen);
+    const open = !parent.classList.contains('open');
+    parent.classList.toggle('open', open);
+    const indicator = parent.querySelector('.nav-group-title span');
+    if (indicator) indicator.textContent = open ? '−' : '+';
+    selectSection(group.dataset.section);
   }));
 
   input.addEventListener('input', render);
   input.addEventListener('focus', () => { tagPanel.hidden = false; });
   input.addEventListener('blur', () => setTimeout(() => { tagPanel.hidden = true; }, 140));
-
   tagItems.forEach(item => item.addEventListener('mousedown', event => event.preventDefault()));
   tagItems.forEach(item => item.addEventListener('click', () => {
     input.value = item.dataset.tag;
@@ -272,11 +220,7 @@ layout: default
   const params = new URLSearchParams(location.search);
   const initial = params.get('section');
   const initialTag = params.get('tag');
-  if (initial && labels[initial]) {
-    current = initial;
-    buttons.forEach(button => button.classList.toggle('active', button.dataset.section === current));
-    openParentFor(initial);
-  }
+  if (initial && labels[initial]) selectSection(initial, false);
   if (initialTag) {
     input.value = initialTag;
     current = 'all';
