@@ -1,74 +1,46 @@
 ---
 layout: post
-title: "Java 데이터 처리 — Generic, Garbage Collection, Serialization"
+title: "Java Serialization — 객체를 데이터로 변환하는 직렬화"
 date: 2026-10-30 12:10:00 +0900
 categories: [Spring]
-tags: [Java]
+tags: [Java, Serialization]
 ---
 
-오늘은 Generic, Garbage Collection, Serialization을 같이 정리했다.
+객체를 프로그램 내부에서 사용하는 것과 파일이나 네트워크를 통해 전달하는 것은 다르다. 객체를 저장하거나 전송할 수 있는 형태로 바꾸는 과정을 직렬화라고 한다.
 
-## 1. Generic
+## 1. 직렬화와 역직렬화
 
-Generic은 클래스나 메서드에서 사용할 타입을 지정할 수 있게 해주는 기능이다.
+- **직렬화(Serialization)**: 객체를 바이트 또는 데이터 형식으로 변환하는 과정
+- **역직렬화(Deserialization)**: 변환된 데이터를 다시 객체로 복원하는 과정
+
+```text
+객체 ── 직렬화 ──> 데이터 ── 저장 또는 전송
+객체 <─ 역직렬화 ── 데이터
+```
+
+## 2. JSON 직렬화 예시
+
+서버에서 객체를 JSON으로 변환해 클라이언트에 응답하는 상황을 생각해 볼 수 있다.
 
 ```java
-List<String> names = new ArrayList<>();
-names.add("홍길동");
-// names.add(100); // 컴파일 오류
+public class Member {
+    private String name;
+    private int age;
+
+    public Member(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}
 ```
-
-`String`을 지정했기 때문에 다른 타입의 값을 넣으면 컴파일 단계에서 확인할 수 있다. `Object`로 관리한 뒤 직접 형변환하는 방식보다 타입을 명확하게 유지할 수 있다.
-
-## 2. Garbage Collection
-
-Java에서는 객체의 메모리를 직접 해제하지 않는다.
-
-```java
-Member member = new Member();
-member = null;
-```
-
-더 이상 참조되지 않는 객체는 GC의 대상이 될 수 있다.
-
-```text
-member ───→ Member 객체
-
-member = null
-
-Member 객체
-참조 없음
-   ↓
-GC 대상이 될 수 있음
-```
-
-다만 `null`을 대입했다고 바로 GC가 실행되는 것은 아니다. 실제 실행 시점은 JVM이 결정한다.
-
-## 3. Serialization
-
-객체를 저장하거나 전송할 수 있는 데이터 형태로 변환하는 것을 직렬화라고 한다.
-
-```text
-객체
- ↓
-직렬화
- ↓
-데이터
- ↓
-저장 / 전송
-```
-
-반대로 데이터를 객체로 다시 만드는 것이 역직렬화다.
-
-```text
-데이터
- ↓
-역직렬화
- ↓
-객체
-```
-
-실제 서버에서는 JSON 같은 형식을 많이 사용한다.
 
 ```json
 {
@@ -77,4 +49,12 @@ GC 대상이 될 수 있음
 }
 ```
 
-객체를 단순히 메모리 안에서 사용하는 것과 저장·전송을 위해 데이터로 변환하는 것은 다른 작업이라는 점을 구분했다.
+Spring Boot에서는 Jackson과 같은 라이브러리가 객체와 JSON 사이의 변환을 처리한다. 컨트롤러에서 객체를 반환하면 HTTP 응답 본문으로 JSON이 만들어지는 방식이다.
+
+## 3. 실제 사용 사례
+
+- REST API에서 서버가 DTO를 JSON 응답으로 변환
+- 외부 API에 요청 데이터를 JSON으로 전달
+- 객체 상태를 파일이나 저장소에 기록
+
+직렬화는 단순히 객체를 출력하는 작업이 아니다. 서로 다른 프로그램이나 시스템이 데이터를 주고받을 수 있도록 표현 형식을 맞추는 과정이라는 점을 기억하자.
