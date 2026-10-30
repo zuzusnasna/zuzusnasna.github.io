@@ -3,6 +3,7 @@ layout: post
 title: "JPA Flush와 Commit — SQL 실행 시점과 트랜잭션의 차이"
 date: 2026-10-30 00:00:00 +0900
 categories: [Spring]
+section: spring-data
 tags: [Spring, JPA, Flush, Commit, Transaction]
 ---
 ## Flush와 Commit은 같은 말이 아니다
