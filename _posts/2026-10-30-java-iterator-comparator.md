@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Java Iterator와 Comparator — 컬렉션 순회와 정렬 기준"
 date: 2026-10-30
 categories: [Spring]
