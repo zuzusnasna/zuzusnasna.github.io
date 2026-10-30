@@ -6,6 +6,10 @@ layout: default
   {% assign display_title = page.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
   <h1>{{ display_title }}</h1>
   <div class="post-tags">{% for tag in page.tags %}<a href="{{ '/' | relative_url }}?tag={{ tag | slugify }}">#{{ tag }}</a>{% endfor %}</div>
+  <div class="post-manage">
+    <button type="button" id="delete-post" class="post-delete">게시글 삭제</button>
+    <span>삭제는 GitHub에서 최종 확인 후 진행됩니다.</span>
+  </div>
   <nav class="post-toc" id="post-toc" aria-label="목차" hidden>
     <h2 class="toc-title">목차</h2>
     <ul id="post-toc-list"></ul>
@@ -13,6 +17,9 @@ layout: default
   <div class="post-content" id="post-content">{{ content }}</div>
 </article>
 <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+<style>
+.post-manage{display:flex;align-items:center;gap:10px;margin:-12px 0 28px}.post-manage span{font-size:11px;color:#9299a2}.post-delete{padding:6px 10px;border:1px solid #d8dde3;border-radius:5px;background:#fff;color:#6f7780;font:inherit;font-size:11px;cursor:pointer}.post-delete:hover{border-color:#c3c9d0;background:#f7f8fa;color:#30363d}@media(max-width:600px){.post-manage{align-items:flex-start;flex-direction:column;gap:5px}}
+</style>
 <script>
 (() => {
   const content = document.getElementById('post-content');
@@ -40,6 +47,17 @@ layout: default
     list.appendChild(item);
   });
   if (headings.length >= 3) toc.hidden = false;
+
+  const deleteButton = document.getElementById('delete-post');
+  if (deleteButton) {
+    deleteButton.addEventListener('click', () => {
+      const confirmed = window.confirm('이 게시글을 삭제하려면 GitHub의 파일 삭제 화면으로 이동합니다. 계속하시겠습니까?');
+      if (!confirmed) return;
+      const githubEditUrl = 'https://github.com/zuzusnasna/zuzusnasna.github.io/edit/main/{{ page.path | uri_escape }}';
+      window.location.href = githubEditUrl;
+    });
+  }
+
   const progress = document.getElementById('reading-progress');
   const updateProgress = () => {
     if (!progress) return;
