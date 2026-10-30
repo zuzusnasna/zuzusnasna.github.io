@@ -40,6 +40,7 @@ permalink: /write/
               <option value="MVC / REST API">MVC / REST API</option>
               <option value="Security / JWT / OAuth2">Security / JWT / OAuth2</option>
               <option value="테스트 / 품질 관리">테스트 / 품질 관리</option>
+              <option value="Spring AI">Spring AI</option>
               <option value="Database">Database</option>
               <option value="Oracle / SQL / PL-SQL">Oracle / SQL / PL-SQL</option>
               <option value="Redis">Redis</option>
@@ -178,7 +179,7 @@ permalink: /write/
     'JVM': ['Java', 'java-jvm'], '동시성': ['Java', 'java-concurrency'], '입출력 / NIO': ['Java', 'java-io'],
     'Spring': ['Spring', 'spring-core'], 'Spring Core / DI / AOP': ['Spring', 'spring-core'],
     'JPA / MyBatis': ['Spring', 'spring-data'], 'MVC / REST API': ['Spring', 'spring-web'],
-    'Security / JWT / OAuth2': ['Spring', 'spring-security'], '테스트 / 품질 관리': ['Spring', 'spring-testing'],
+    'Security / JWT / OAuth2': ['Spring', 'spring-security'], '테스트 / 품질 관리': ['Spring', 'spring-testing'], 'Spring AI': ['Spring', 'spring-ai'],
     'Database': ['Database', 'database-oracle'], 'Oracle / SQL / PL-SQL': ['Database', 'database-oracle'],
     'Redis': ['Database', 'database-redis'], 'Backend': ['Backend', 'backend-performance'],
     '실시간 / 메시징': ['Backend', 'backend-messaging'], '성능 / 부하 테스트': ['Backend', 'backend-performance'],
@@ -189,6 +190,7 @@ permalink: /write/
   };
 
   const classifyRules = [
+    ['spring-ai','Spring',/\\b(spring ai|spring-ai|spring ai alibaba|spring ai model|chatclient|prompttemplate|ollama|openai api|embedding|vector store|retrieval augmented generation|\\brag\\b)\\b|생성형.?ai|벡터.?스토어/i],
     ['java-jvm','Java',/\b(jvm|jit|gc|garbage collection|heap|metaspace|class loading|classloader)\b|가비지 컬렉션|클래스 로딩/i],
     ['java-collections','Java',/\b(collection|arraylist|linkedlist|hashmap|hashset|treeset|deque|iterator|comparator|list|set|map)\b|컬렉션/i],
     ['java-concurrency','Java',/\b(concurrency|synchronized|reentrantlock|executorservice|completablefuture|volatile|atomic|threadlocal|deadlock|thread|lock)\b|동시성|스레드/i],
@@ -320,7 +322,7 @@ permalink: /write/
   function saveCustomCategories() {
     const builtIn = new Set([
       'Java', 'Java 기본', '객체지향 / SOLID', '디자인 패턴', 'Generic', '함수형 / Lambda / Stream', '컬렉션', 'JVM', '동시성', '입출력 / NIO',
-      'Spring', 'Spring Core / DI / AOP', 'JPA / MyBatis', 'MVC / REST API', 'Security / JWT / OAuth2', '테스트 / 품질 관리',
+      'Spring', 'Spring Core / DI / AOP', 'JPA / MyBatis', 'MVC / REST API', 'Security / JWT / OAuth2', '테스트 / 품질 관리', 'Spring AI',
       'Database', 'Oracle / SQL / PL-SQL', 'Redis', 'Backend', '실시간 / 메시징', '성능 / 부하 테스트',
       'Frontend', 'HTML / CSS / JavaScript', 'React', 'Infra', 'Linux', 'AWS / EC2', 'Docker', 'GitHub Actions / CI-CD',
       'ML', 'Machine Learning', '기타'
