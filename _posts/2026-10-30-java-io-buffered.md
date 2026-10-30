@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Java Buffered I/O — 버퍼를 이용한 효율적인 입출력"
 date: 2026-10-30
 categories: [Spring]
