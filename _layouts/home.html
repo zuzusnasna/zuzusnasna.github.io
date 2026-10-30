@@ -150,6 +150,7 @@ layout: default
       {% elsif haystack contains 'java' %}
         {% assign classification = 'java-core' %}{% assign parent_classification = 'java' %}
       {% endif %}
+      {% if post.section %}{% assign classification = post.section %}{% assign parent_classification = 'spring' %}{% endif %}
       {% assign display_title = post.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
       <article class="study-card" data-section="{{ classification }}" data-parent-section="{{ parent_classification }}" data-search="{{ display_title | append: ' ' | append: post.excerpt | append: ' ' | append: post.tags | strip_html | downcase | escape }}">
         <div class="card-date">{{ post.date | date: "%Y.%m.%d" }}</div>
