@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Java Files API — 파일 생성·복사·이동·삭제"
 date: 2026-10-30
 categories: [Spring]
