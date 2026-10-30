@@ -1,5 +1,6 @@
 ---
 layout: post
+layout: post
 title: "JVM Class Loading — 클래스 로딩과 초기화 과정"
 date: 2026-10-30
 categories: [Spring]
