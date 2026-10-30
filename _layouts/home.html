@@ -1,6 +1,10 @@
 ---
 layout: default
 ---
+{% assign study_count = 0 %}
+{% for post in site.posts %}
+  {% if post.categories contains '학습' or post.categories contains 'Spring' %}{% assign study_count = study_count | plus: 1 %}{% endif %}
+{% endfor %}
 <section class="study-hero">
   <div>
     <p class="eyebrow">DEVELOPMENT STUDY</p>
@@ -8,7 +12,7 @@ layout: default
     <p class="hero-copy">Java부터 Spring, MyBatis, 인증, 데이터베이스까지 실제 개발에 필요한 내용을 공부한 순서대로 정리합니다.</p>
   </div>
   <div class="study-stats">
-    <div><strong>{{ site.posts | where_exp: "post", "post.categories contains '학습' or post.categories contains 'Spring'" | size }}</strong><span>학습 글</span></div>
+    <div><strong>{{ study_count }}</strong><span>학습 글</span></div>
     <div><strong>{{ site.posts | map: "tags" | join: "," | split: "," | uniq | size }}</strong><span>기술 태그</span></div>
   </div>
 </section>
@@ -23,9 +27,11 @@ layout: default
     <div class="nav-group open"><button class="nav-group-title" type="button">Spring <span>−</span></button><div class="nav-children">
       <button data-section="spring-core">Spring / DI / AOP</button><button data-section="spring-mybatis">MyBatis</button><button data-section="spring-security">Security / JWT / OAuth2</button><button data-section="spring-jpa">JPA</button><button data-section="spring-web">MVC / REST</button>
     </div></div>
-    <div class="nav-group"><button class="nav-group-title" type="button">Database <span>+</span></button><div class="nav-children"><button data-section="database">Oracle / SQL / PL-SQL</button></div></div>
-    <div class="nav-group"><button class="nav-group-title" type="button">Frontend <span>+</span></button><div class="nav-children"><button data-section="frontend">HTML / CSS / JavaScript / React</button></div></div>
-    <div class="nav-group"><button class="nav-group-title" type="button">Infra <span>+</span></button><div class="nav-children"><button data-section="infra">Linux / AWS / Docker / Redis / CI-CD</button></div></div>
+    <div class="nav-group open"><button class="nav-group-title" type="button">Database <span>−</span></button><div class="nav-children">
+      <button data-section="database-oracle">Oracle / SQL / PL-SQL</button><button data-section="database-redis">Redis</button><button data-section="database-mysql">MySQL</button>
+    </div></div>
+    <div class="nav-group"><button class="nav-group-title" type="button">Frontend <span>+</span></button><div class="nav-children"><button data-section="frontend-html">HTML / CSS / JavaScript</button><button data-section="frontend-react">React</button></div></div>
+    <div class="nav-group"><button class="nav-group-title" type="button">Infra <span>+</span></button><div class="nav-children"><button data-section="infra-linux">Linux</button><button data-section="infra-aws">AWS / EC2</button><button data-section="infra-docker">Docker</button><button data-section="infra-cicd">GitHub Actions / CI-CD</button></div></div>
     <div class="nav-group"><button class="nav-group-title" type="button">ML <span>+</span></button><div class="nav-children"><button data-section="ml">Machine Learning</button></div></div>
   </aside>
 
@@ -38,9 +44,7 @@ layout: default
           <div class="tag-search-heading">자주 보는 기술</div>
           <div class="tag-search-list">
             {% assign study_tags = site.posts | map: "tags" | join: "," | split: "," | uniq | sort_natural %}
-            {% for tag in study_tags %}
-            {% unless tag == "" %}<button type="button" class="tag-search-item" data-tag="{{ tag | escape }}">#{{ tag }}</button>{% endunless %}
-            {% endfor %}
+            {% for tag in study_tags %}{% unless tag == "" %}<button type="button" class="tag-search-item" data-tag="{{ tag | escape }}">#{{ tag }}</button>{% endunless %}{% endfor %}
           </div>
         </div>
       </div>
@@ -55,11 +59,17 @@ layout: default
       {% elsif haystack contains 'jpa' or haystack contains 'hibernate' %}{% assign classification = 'spring-jpa' %}
       {% elsif haystack contains 'mvc' or haystack contains 'rest api' or haystack contains 'thymeleaf' %}{% assign classification = 'spring-web' %}
       {% elsif haystack contains 'spring' or haystack contains 'aop' or haystack contains 'di' or haystack contains 'ioc' %}{% assign classification = 'spring-core' %}
-      {% elsif haystack contains 'oracle' or haystack contains 'sql' or haystack contains 'pl/sql' or haystack contains 'database' %}{% assign classification = 'database' %}
-      {% elsif haystack contains 'react' or haystack contains 'javascript' or haystack contains 'html' or haystack contains 'css' %}{% assign classification = 'frontend' %}
-      {% elsif haystack contains 'linux' or haystack contains 'aws' or haystack contains 'docker' or haystack contains 'redis' or haystack contains 'ec2' or haystack contains 'ci/cd' %}{% assign classification = 'infra' %}
+      {% elsif haystack contains 'redis' %}{% assign classification = 'database-redis' %}
+      {% elsif haystack contains 'mysql' %}{% assign classification = 'database-mysql' %}
+      {% elsif haystack contains 'oracle' or haystack contains 'sql' or haystack contains 'pl/sql' or haystack contains 'database' %}{% assign classification = 'database-oracle' %}
+      {% elsif haystack contains 'react' %}{% assign classification = 'frontend-react' %}
+      {% elsif haystack contains 'javascript' or haystack contains 'html' or haystack contains 'css' %}{% assign classification = 'frontend-html' %}
+      {% elsif haystack contains 'linux' or haystack contains 'ubuntu' or haystack contains 'process' or haystack contains 'port' %}{% assign classification = 'infra-linux' %}
+      {% elsif haystack contains 'aws' or haystack contains 'ec2' %}{% assign classification = 'infra-aws' %}
+      {% elsif haystack contains 'docker' or haystack contains 'container' %}{% assign classification = 'infra-docker' %}
+      {% elsif haystack contains 'github actions' or haystack contains 'ci/cd' or haystack contains 'deploy' %}{% assign classification = 'infra-cicd' %}
       {% elsif haystack contains 'machine learning' or haystack contains '머신러닝' %}{% assign classification = 'ml' %}
-      {% elsif haystack contains 'generic' or haystack contains 'garbage collection' or haystack contains 'thread' or haystack contains 'process' or haystack contains 'serialization' %}{% assign classification = 'java-advanced' %}
+      {% elsif haystack contains 'generic' or haystack contains 'garbage collection' or haystack contains 'thread' or haystack contains 'serialization' %}{% assign classification = 'java-advanced' %}
       {% elsif haystack contains 'solid' or haystack contains 'oop' or haystack contains 'object' or haystack contains 'class' or haystack contains 'interface' or haystack contains 'overloading' or haystack contains 'overriding' %}{% assign classification = 'java-oop' %}
       {% elsif haystack contains 'java' %}{% assign classification = 'java-core' %}{% endif %}
       {% assign display_title = post.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
@@ -71,17 +81,14 @@ layout: default
 <script>
 (()=>{
   const cards=[...document.querySelectorAll('.study-card')],buttons=[...document.querySelectorAll('[data-section]')],groups=[...document.querySelectorAll('.nav-group-title')],input=document.getElementById('study-search-input'),empty=document.getElementById('empty'),title=document.getElementById('section-title'),tagPanel=document.getElementById('tag-search-panel'),tagItems=[...document.querySelectorAll('.tag-search-item')];
-  const labels={all:'전체 공부','java-core':'Java 기본','java-oop':'객체지향 / SOLID','java-pattern':'디자인 패턴','java-advanced':'Generic / GC / Thread','spring-core':'Spring / DI / AOP','spring-mybatis':'MyBatis','spring-security':'Security / JWT / OAuth2','spring-jpa':'JPA','spring-web':'MVC / REST',database:'Oracle / SQL / PL-SQL',frontend:'HTML / CSS / JavaScript / React',infra:'Linux / AWS / Docker / Redis / CI-CD',ml:'Machine Learning'};
+  const labels={all:'전체 공부','java-core':'Java 기본','java-oop':'객체지향 / SOLID','java-pattern':'디자인 패턴','java-advanced':'Generic / GC / Thread','spring-core':'Spring / DI / AOP','spring-mybatis':'MyBatis','spring-security':'Security / JWT / OAuth2','spring-jpa':'JPA','spring-web':'MVC / REST','database-oracle':'Oracle / SQL / PL-SQL','database-redis':'Redis','database-mysql':'MySQL','frontend-html':'HTML / CSS / JavaScript','frontend-react':'React','infra-linux':'Linux','infra-aws':'AWS / EC2','infra-docker':'Docker','infra-cicd':'GitHub Actions / CI-CD','ml':'Machine Learning'};
   let current='all';
   function render(){const q=input.value.trim().toLowerCase();let visible=0;cards.forEach(card=>{const okSection=current==='all'||card.dataset.section===current;const okSearch=!q||card.dataset.search.includes(q);card.hidden=!(okSection&&okSearch);if(!card.hidden)visible++});empty.hidden=visible!==0;title.textContent=q&&current==='all'?'검색 결과':(labels[current]||'전체 공부')}
   function setTag(tag){input.value=tag;current='all';buttons.forEach(b=>b.classList.toggle('active',b.dataset.section==='all'));render();tagPanel.hidden=true;history.replaceState(null,'',location.pathname+'?tag='+encodeURIComponent(tag));}
   buttons.forEach(button=>{if(!button.dataset.section)return;button.addEventListener('click',()=>{current=button.dataset.section;buttons.forEach(b=>b.classList.toggle('active',b.dataset.section===current));render();history.replaceState(null,'',current==='all'?location.pathname:location.pathname+'?section='+current)})});
   groups.forEach(group=>group.addEventListener('click',()=>{const parent=group.closest('.nav-group');parent.classList.toggle('open');group.querySelector('span').textContent=parent.classList.contains('open')?'−':'+'}));
-  input.addEventListener('input',render);
-  input.addEventListener('focus',()=>{tagPanel.hidden=false});
-  input.addEventListener('blur',()=>setTimeout(()=>{tagPanel.hidden=true},140));
-  tagItems.forEach(item=>item.addEventListener('mousedown',event=>event.preventDefault()));
-  tagItems.forEach(item=>item.addEventListener('click',()=>setTag(item.dataset.tag)));
+  input.addEventListener('input',render);input.addEventListener('focus',()=>{tagPanel.hidden=false});input.addEventListener('blur',()=>setTimeout(()=>{tagPanel.hidden=true},140));
+  tagItems.forEach(item=>item.addEventListener('mousedown',event=>event.preventDefault()));tagItems.forEach(item=>item.addEventListener('click',()=>setTag(item.dataset.tag)));
   const params=new URLSearchParams(location.search),initial=params.get('section'),initialTag=params.get('tag');
   if(initial&&labels[initial]){current=initial;buttons.forEach(b=>b.classList.toggle('active',b.dataset.section===current))}
   if(initialTag){input.value=initialTag.replace(/-/g,' ');current='all';buttons.forEach(b=>b.classList.toggle('active',b.dataset.section==='all'))}
