@@ -11,11 +11,21 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="{{ '/' | relative_url }}">주상혁 <span>· 개발 블로그</span></a>
-      <nav><a href="{{ '/' | relative_url }}">Posts</a><a href="{{ '/projects/' | relative_url }}">Projects</a><a href="https://zuzusnasna.github.io/portfolio/">Portfolio</a><a href="https://github.com/zuzusnasna">GitHub</a></nav>
+      <a class="brand" href="{{ '/' | relative_url }}">주상혁 <span>개발 공부 기록</span></a>
+      <nav class="main-nav">
+        <a href="{{ '/' | relative_url }}">Study</a>
+        <a href="{{ '/projects/' | relative_url }}">Projects</a>
+        <a href="https://zuzusnasna.github.io/portfolio/">Portfolio</a>
+        <a href="https://github.com/zuzusnasna">GitHub</a>
+      </nav>
     </div>
   </header>
   <main class="page-wrap">{{ content }}</main>
-  <footer><div>Java · Spring Boot · JPA · Database · Redis · AWS</div></footer>
+  <footer>
+    <div class="footer-inner">
+      <strong>주상혁의 개발 공부 기록</strong>
+      <span>Java · Spring · MyBatis · Database · React · AWS</span>
+    </div>
+  </footer>
 </body>
 </html>
