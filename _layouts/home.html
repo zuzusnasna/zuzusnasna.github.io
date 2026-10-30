@@ -30,7 +30,21 @@ layout: default
   </aside>
 
   <main class="study-main">
-    <div class="study-toolbar"><div><span class="toolbar-label">STUDY NOTES</span><h2 id="section-title">전체 공부</h2></div><label class="study-search"><span class="sr-only">공부 내용 검색</span><input id="study-search-input" type="search" placeholder="제목, 내용, 기술 검색"></label></div>
+    <div class="study-toolbar">
+      <div><span class="toolbar-label">STUDY NOTES</span><h2 id="section-title">전체 공부</h2></div>
+      <div class="study-search-wrap">
+        <label class="study-search"><span class="sr-only">공부 내용 검색</span><input id="study-search-input" type="search" autocomplete="off" placeholder="제목, 내용, 기술 검색"></label>
+        <div class="tag-search-panel" id="tag-search-panel" hidden aria-label="기술 태그 검색">
+          <div class="tag-search-heading">자주 보는 기술</div>
+          <div class="tag-search-list">
+            {% assign study_tags = site.posts | map: "tags" | join: "," | split: "," | uniq | sort_natural %}
+            {% for tag in study_tags %}
+            {% unless tag == "" %}<button type="button" class="tag-search-item" data-tag="{{ tag | escape }}">#{{ tag }}</button>{% endunless %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="post-list" id="post-list">
       {% for post in site.posts %}
       {% if post.categories contains '학습' or post.categories contains 'Spring' %}
@@ -55,5 +69,22 @@ layout: default
   </main>
 </div>
 <script>
-(()=>{const cards=[...document.querySelectorAll('.study-card')],buttons=[...document.querySelectorAll('[data-section]')],groups=[...document.querySelectorAll('.nav-group-title')],input=document.getElementById('study-search-input'),empty=document.getElementById('empty'),title=document.getElementById('section-title');const labels={all:'전체 공부','java-core':'Java 기본','java-oop':'객체지향 / SOLID','java-pattern':'디자인 패턴','java-advanced':'Generic / GC / Thread','spring-core':'Spring / DI / AOP','spring-mybatis':'MyBatis','spring-security':'Security / JWT / OAuth2','spring-jpa':'JPA','spring-web':'MVC / REST',database:'Oracle / SQL / PL-SQL',frontend:'HTML / CSS / JavaScript / React',infra:'Linux / AWS / Docker / Redis / CI-CD',ml:'Machine Learning'};let current='all';function render(){const q=input.value.trim().toLowerCase();let visible=0;cards.forEach(card=>{const okSection=current==='all'||card.dataset.section===current;const okSearch=!q||card.dataset.search.includes(q);card.hidden=!(okSection&&okSearch);if(!card.hidden)visible++});empty.hidden=visible!==0;title.textContent=labels[current]||'전체 공부'}buttons.forEach(button=>{if(!button.dataset.section)return;button.addEventListener('click',()=>{current=button.dataset.section;buttons.forEach(b=>b.classList.toggle('active',b.dataset.section===current));render();history.replaceState(null,'',current==='all'?location.pathname:location.pathname+'?section='+current)})});groups.forEach(group=>group.addEventListener('click',()=>{const parent=group.closest('.nav-group');parent.classList.toggle('open');group.querySelector('span').textContent=parent.classList.contains('open')?'−':'+'}));input.addEventListener('input',render);const initial=new URLSearchParams(location.search).get('section');if(initial&&labels[initial]){current=initial;buttons.forEach(b=>b.classList.toggle('active',b.dataset.section===current))}render()})();
+(()=>{
+  const cards=[...document.querySelectorAll('.study-card')],buttons=[...document.querySelectorAll('[data-section]')],groups=[...document.querySelectorAll('.nav-group-title')],input=document.getElementById('study-search-input'),empty=document.getElementById('empty'),title=document.getElementById('section-title'),tagPanel=document.getElementById('tag-search-panel'),tagItems=[...document.querySelectorAll('.tag-search-item')];
+  const labels={all:'전체 공부','java-core':'Java 기본','java-oop':'객체지향 / SOLID','java-pattern':'디자인 패턴','java-advanced':'Generic / GC / Thread','spring-core':'Spring / DI / AOP','spring-mybatis':'MyBatis','spring-security':'Security / JWT / OAuth2','spring-jpa':'JPA','spring-web':'MVC / REST',database:'Oracle / SQL / PL-SQL',frontend:'HTML / CSS / JavaScript / React',infra:'Linux / AWS / Docker / Redis / CI-CD',ml:'Machine Learning'};
+  let current='all';
+  function render(){const q=input.value.trim().toLowerCase();let visible=0;cards.forEach(card=>{const okSection=current==='all'||card.dataset.section===current;const okSearch=!q||card.dataset.search.includes(q);card.hidden=!(okSection&&okSearch);if(!card.hidden)visible++});empty.hidden=visible!==0;title.textContent=q&&current==='all'?'검색 결과':(labels[current]||'전체 공부')}
+  function setTag(tag){input.value=tag;current='all';buttons.forEach(b=>b.classList.toggle('active',b.dataset.section==='all'));render();tagPanel.hidden=true;history.replaceState(null,'',location.pathname+'?tag='+encodeURIComponent(tag));}
+  buttons.forEach(button=>{if(!button.dataset.section)return;button.addEventListener('click',()=>{current=button.dataset.section;buttons.forEach(b=>b.classList.toggle('active',b.dataset.section===current));render();history.replaceState(null,'',current==='all'?location.pathname:location.pathname+'?section='+current)})});
+  groups.forEach(group=>group.addEventListener('click',()=>{const parent=group.closest('.nav-group');parent.classList.toggle('open');group.querySelector('span').textContent=parent.classList.contains('open')?'−':'+'}));
+  input.addEventListener('input',render);
+  input.addEventListener('focus',()=>{tagPanel.hidden=false});
+  input.addEventListener('blur',()=>setTimeout(()=>{tagPanel.hidden=true},140));
+  tagItems.forEach(item=>item.addEventListener('mousedown',event=>event.preventDefault()));
+  tagItems.forEach(item=>item.addEventListener('click',()=>setTag(item.dataset.tag)));
+  const params=new URLSearchParams(location.search),initial=params.get('section'),initialTag=params.get('tag');
+  if(initial&&labels[initial]){current=initial;buttons.forEach(b=>b.classList.toggle('active',b.dataset.section===current))}
+  if(initialTag){input.value=initialTag.replace(/-/g,' ');current='all';buttons.forEach(b=>b.classList.toggle('active',b.dataset.section==='all'))}
+  render();
+})();
 </script>
