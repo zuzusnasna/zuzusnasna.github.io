@@ -20,19 +20,62 @@ layout: default
 <div class="study-layout">
   <aside class="study-nav">
     <div class="nav-title">STUDY</div>
-    <button class="study-nav-item active" data-section="all">전체 공부</button>
-    <div class="nav-group open"><button class="nav-group-title" type="button">Java <span>−</span></button><div class="nav-children">
-      <button data-section="java-core">Java 기본</button><button data-section="java-oop">객체지향 / SOLID</button><button data-section="java-pattern">디자인 패턴</button><button data-section="java-advanced">Generic / GC / Thread</button>
-    </div></div>
-    <div class="nav-group open"><button class="nav-group-title" type="button">Spring <span>−</span></button><div class="nav-children">
-      <button data-section="spring-core">Spring / DI / AOP</button><button data-section="spring-mybatis">MyBatis</button><button data-section="spring-security">Security / JWT / OAuth2</button><button data-section="spring-jpa">JPA</button><button data-section="spring-web">MVC / REST</button>
-    </div></div>
-    <div class="nav-group open"><button class="nav-group-title" type="button">Database <span>−</span></button><div class="nav-children">
-      <button data-section="database-oracle">Oracle / SQL / PL-SQL</button><button data-section="database-redis">Redis</button><button data-section="database-mysql">MySQL</button>
-    </div></div>
-    <div class="nav-group"><button class="nav-group-title" type="button">Frontend <span>+</span></button><div class="nav-children"><button data-section="frontend-html">HTML / CSS / JavaScript</button><button data-section="frontend-react">React</button></div></div>
-    <div class="nav-group"><button class="nav-group-title" type="button">Infra <span>+</span></button><div class="nav-children"><button data-section="infra-linux">Linux</button><button data-section="infra-aws">AWS / EC2</button><button data-section="infra-docker">Docker</button><button data-section="infra-cicd">GitHub Actions / CI-CD</button></div></div>
-    <div class="nav-group"><button class="nav-group-title" type="button">ML <span>+</span></button><div class="nav-children"><button data-section="ml">Machine Learning</button></div></div>
+    <button class="study-nav-item active" data-section="all" type="button">전체 공부</button>
+
+    <div class="nav-group open">
+      <button class="nav-group-title" data-section="java" type="button">Java <span>−</span></button>
+      <div class="nav-children">
+        <button data-section="java-core" type="button">Java 기본</button>
+        <button data-section="java-oop" type="button">객체지향 / SOLID</button>
+        <button data-section="java-pattern" type="button">디자인 패턴</button>
+        <button data-section="java-advanced" type="button">Generic / GC / Thread</button>
+      </div>
+    </div>
+
+    <div class="nav-group open">
+      <button class="nav-group-title" data-section="spring" type="button">Spring <span>−</span></button>
+      <div class="nav-children">
+        <button data-section="spring-core" type="button">Spring / DI / AOP</button>
+        <button data-section="spring-mybatis" type="button">MyBatis</button>
+        <button data-section="spring-security" type="button">Security / JWT / OAuth2</button>
+        <button data-section="spring-jpa" type="button">JPA</button>
+        <button data-section="spring-web" type="button">MVC / REST</button>
+      </div>
+    </div>
+
+    <div class="nav-group open">
+      <button class="nav-group-title" data-section="database" type="button">Database <span>−</span></button>
+      <div class="nav-children">
+        <button data-section="database-oracle" type="button">Oracle / SQL / PL-SQL</button>
+        <button data-section="database-redis" type="button">Redis</button>
+        <button data-section="database-mysql" type="button">MySQL</button>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <button class="nav-group-title" data-section="frontend" type="button">Frontend <span>+</span></button>
+      <div class="nav-children">
+        <button data-section="frontend-html" type="button">HTML / CSS / JavaScript</button>
+        <button data-section="frontend-react" type="button">React</button>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <button class="nav-group-title" data-section="infra" type="button">Infra <span>+</span></button>
+      <div class="nav-children">
+        <button data-section="infra-linux" type="button">Linux</button>
+        <button data-section="infra-aws" type="button">AWS / EC2</button>
+        <button data-section="infra-docker" type="button">Docker</button>
+        <button data-section="infra-cicd" type="button">GitHub Actions / CI-CD</button>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <button class="nav-group-title" data-section="ml" type="button">ML <span>+</span></button>
+      <div class="nav-children">
+        <button data-section="ml" type="button">Machine Learning</button>
+      </div>
+    </div>
   </aside>
 
   <main class="study-main">
@@ -49,49 +92,158 @@ layout: default
         </div>
       </div>
     </div>
+
     <div class="post-list" id="post-list">
       {% for post in site.posts %}
       {% if post.categories contains '학습' or post.categories contains 'Spring' %}
-      {% assign classification = 'other' %}{% assign haystack = post.title | append: ' ' | append: post.tags | downcase %}
-      {% if haystack contains 'design pattern' or haystack contains '디자인패턴' or haystack contains 'singleton' or haystack contains 'strategy' or haystack contains 'factory' or haystack contains 'template method' or haystack contains 'observer' or haystack contains 'command' or haystack contains 'decorator' or haystack contains 'composite' %}{% assign classification = 'java-pattern' %}
-      {% elsif haystack contains 'mybatis' or haystack contains 'mapper' or haystack contains 'jdbc' %}{% assign classification = 'spring-mybatis' %}
-      {% elsif haystack contains 'jwt' or haystack contains 'oauth' or haystack contains 'security' or haystack contains '인증' %}{% assign classification = 'spring-security' %}
-      {% elsif haystack contains 'jpa' or haystack contains 'hibernate' %}{% assign classification = 'spring-jpa' %}
-      {% elsif haystack contains 'mvc' or haystack contains 'rest api' or haystack contains 'thymeleaf' %}{% assign classification = 'spring-web' %}
-      {% elsif haystack contains 'spring' or haystack contains 'aop' or haystack contains 'di' or haystack contains 'ioc' %}{% assign classification = 'spring-core' %}
-      {% elsif haystack contains 'redis' %}{% assign classification = 'database-redis' %}
-      {% elsif haystack contains 'mysql' %}{% assign classification = 'database-mysql' %}
-      {% elsif haystack contains 'oracle' or haystack contains 'sql' or haystack contains 'pl/sql' or haystack contains 'database' %}{% assign classification = 'database-oracle' %}
-      {% elsif haystack contains 'react' %}{% assign classification = 'frontend-react' %}
-      {% elsif haystack contains 'javascript' or haystack contains 'html' or haystack contains 'css' %}{% assign classification = 'frontend-html' %}
-      {% elsif haystack contains 'linux' or haystack contains 'ubuntu' or haystack contains 'process' or haystack contains 'port' %}{% assign classification = 'infra-linux' %}
-      {% elsif haystack contains 'aws' or haystack contains 'ec2' %}{% assign classification = 'infra-aws' %}
-      {% elsif haystack contains 'docker' or haystack contains 'container' %}{% assign classification = 'infra-docker' %}
-      {% elsif haystack contains 'github actions' or haystack contains 'ci/cd' or haystack contains 'deploy' %}{% assign classification = 'infra-cicd' %}
-      {% elsif haystack contains 'machine learning' or haystack contains '머신러닝' %}{% assign classification = 'ml' %}
-      {% elsif haystack contains 'generic' or haystack contains 'garbage collection' or haystack contains 'thread' or haystack contains 'serialization' %}{% assign classification = 'java-advanced' %}
-      {% elsif haystack contains 'solid' or haystack contains 'oop' or haystack contains 'object' or haystack contains 'class' or haystack contains 'interface' or haystack contains 'overloading' or haystack contains 'overriding' %}{% assign classification = 'java-oop' %}
-      {% elsif haystack contains 'java' %}{% assign classification = 'java-core' %}{% endif %}
+      {% assign classification = 'other' %}
+      {% assign parent_classification = 'other' %}
+      {% assign haystack = post.title | append: ' ' | append: post.tags | downcase %}
+      {% if haystack contains 'design pattern' or haystack contains '디자인패턴' or haystack contains 'singleton' or haystack contains 'strategy' or haystack contains 'factory' or haystack contains 'template method' or haystack contains 'observer' or haystack contains 'command' or haystack contains 'decorator' or haystack contains 'composite' %}
+        {% assign classification = 'java-pattern' %}{% assign parent_classification = 'java' %}
+      {% elsif haystack contains 'mybatis' or haystack contains 'mapper' or haystack contains 'jdbc' %}
+        {% assign classification = 'spring-mybatis' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'jwt' or haystack contains 'oauth' or haystack contains 'security' or haystack contains '인증' %}
+        {% assign classification = 'spring-security' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'jpa' or haystack contains 'hibernate' %}
+        {% assign classification = 'spring-jpa' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'mvc' or haystack contains 'rest api' or haystack contains 'thymeleaf' %}
+        {% assign classification = 'spring-web' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'spring' or haystack contains 'aop' or haystack contains 'di' or haystack contains 'ioc' %}
+        {% assign classification = 'spring-core' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'redis' %}
+        {% assign classification = 'database-redis' %}{% assign parent_classification = 'database' %}
+      {% elsif haystack contains 'mysql' %}
+        {% assign classification = 'database-mysql' %}{% assign parent_classification = 'database' %}
+      {% elsif haystack contains 'oracle' or haystack contains 'sql' or haystack contains 'pl/sql' or haystack contains 'database' %}
+        {% assign classification = 'database-oracle' %}{% assign parent_classification = 'database' %}
+      {% elsif haystack contains 'react' %}
+        {% assign classification = 'frontend-react' %}{% assign parent_classification = 'frontend' %}
+      {% elsif haystack contains 'javascript' or haystack contains 'html' or haystack contains 'css' %}
+        {% assign classification = 'frontend-html' %}{% assign parent_classification = 'frontend' %}
+      {% elsif haystack contains 'linux' or haystack contains 'ubuntu' or haystack contains 'process' or haystack contains 'port' %}
+        {% assign classification = 'infra-linux' %}{% assign parent_classification = 'infra' %}
+      {% elsif haystack contains 'aws' or haystack contains 'ec2' %}
+        {% assign classification = 'infra-aws' %}{% assign parent_classification = 'infra' %}
+      {% elsif haystack contains 'docker' or haystack contains 'container' %}
+        {% assign classification = 'infra-docker' %}{% assign parent_classification = 'infra' %}
+      {% elsif haystack contains 'github actions' or haystack contains 'ci/cd' or haystack contains 'deploy' %}
+        {% assign classification = 'infra-cicd' %}{% assign parent_classification = 'infra' %}
+      {% elsif haystack contains 'machine learning' or haystack contains '머신러닝' %}
+        {% assign classification = 'ml' %}{% assign parent_classification = 'ml' %}
+      {% elsif haystack contains 'generic' or haystack contains 'garbage collection' or haystack contains 'thread' or haystack contains 'serialization' %}
+        {% assign classification = 'java-advanced' %}{% assign parent_classification = 'java' %}
+      {% elsif haystack contains 'solid' or haystack contains 'oop' or haystack contains 'object' or haystack contains 'class' or haystack contains 'interface' or haystack contains 'overloading' or haystack contains 'overriding' %}
+        {% assign classification = 'java-oop' %}{% assign parent_classification = 'java' %}
+      {% elsif haystack contains 'java' %}
+        {% assign classification = 'java-core' %}{% assign parent_classification = 'java' %}
+      {% endif %}
       {% assign display_title = post.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
-      <article class="study-card" data-section="{{ classification }}" data-search="{{ display_title | append: ' ' | append: post.excerpt | append: ' ' | append: post.tags | strip_html | downcase | escape }}"><div class="card-date">{{ post.date | date: "%Y.%m.%d" }}</div><div class="card-body"><h3><a href="{{ post.url | relative_url }}">{{ display_title }}</a></h3><p>{{ post.excerpt | strip_html | strip_newlines | truncate: 180 }}</p><div class="post-tags">{% for tag in post.tags %}<span>#{{ tag }}</span>{% endfor %}</div></div></article>
+      <article class="study-card" data-section="{{ classification }}" data-parent-section="{{ parent_classification }}" data-search="{{ display_title | append: ' ' | append: post.excerpt | append: ' ' | append: post.tags | strip_html | downcase | escape }}">
+        <div class="card-date">{{ post.date | date: "%Y.%m.%d" }}</div>
+        <div class="card-body"><h3><a href="{{ post.url | relative_url }}">{{ display_title }}</a></h3><p>{{ post.excerpt | strip_html | strip_newlines | truncate: 180 }}</p><div class="post-tags">{% for tag in post.tags %}<span>#{{ tag }}</span>{% endfor %}</div></div>
+      </article>
       {% endif %}{% endfor %}
-    </div><div class="empty" id="empty" hidden>검색 조건에 맞는 공부 글이 없습니다.</div>
+    </div>
+    <div class="empty" id="empty" hidden>검색 조건에 맞는 공부 글이 없습니다.</div>
   </main>
 </div>
+
 <script>
-(()=>{
-  const cards=[...document.querySelectorAll('.study-card')],buttons=[...document.querySelectorAll('[data-section]')],groups=[...document.querySelectorAll('.nav-group-title')],input=document.getElementById('study-search-input'),empty=document.getElementById('empty'),title=document.getElementById('section-title'),tagPanel=document.getElementById('tag-search-panel'),tagItems=[...document.querySelectorAll('.tag-search-item')];
-  const labels={all:'전체 공부','java-core':'Java 기본','java-oop':'객체지향 / SOLID','java-pattern':'디자인 패턴','java-advanced':'Generic / GC / Thread','spring-core':'Spring / DI / AOP','spring-mybatis':'MyBatis','spring-security':'Security / JWT / OAuth2','spring-jpa':'JPA','spring-web':'MVC / REST','database-oracle':'Oracle / SQL / PL-SQL','database-redis':'Redis','database-mysql':'MySQL','frontend-html':'HTML / CSS / JavaScript','frontend-react':'React','infra-linux':'Linux','infra-aws':'AWS / EC2','infra-docker':'Docker','infra-cicd':'GitHub Actions / CI-CD','ml':'Machine Learning'};
-  let current='all';
-  function render(){const q=input.value.trim().toLowerCase();let visible=0;cards.forEach(card=>{const okSection=current==='all'||card.dataset.section===current;const okSearch=!q||card.dataset.search.includes(q);const show=okSection&&okSearch;card.classList.toggle('is-hidden',!show);if(show)visible++});empty.hidden=visible!==0;title.textContent=q&&current==='all'?'검색 결과':(labels[current]||'전체 공부')}
-  function setTag(tag){input.value=tag;current='all';buttons.forEach(b=>b.classList.toggle('active',b.dataset.section==='all'));render();tagPanel.hidden=true;history.replaceState(null,'',location.pathname+'?tag='+encodeURIComponent(tag));}
-  buttons.forEach(button=>{if(!button.dataset.section)return;button.addEventListener('click',()=>{current=button.dataset.section;input.value='';buttons.forEach(b=>b.classList.toggle('active',b.dataset.section===current));render();history.replaceState(null,'',current==='all'?location.pathname:location.pathname+'?section='+current)})});
-  groups.forEach(group=>group.addEventListener('click',()=>{const parent=group.closest('.nav-group');parent.classList.toggle('open');group.querySelector('span').textContent=parent.classList.contains('open')?'−':'+'});
-  input.addEventListener('input',render);input.addEventListener('focus',()=>{tagPanel.hidden=false});input.addEventListener('blur',()=>setTimeout(()=>{tagPanel.hidden=true},140));
-  tagItems.forEach(item=>item.addEventListener('mousedown',event=>event.preventDefault()));tagItems.forEach(item=>item.addEventListener('click',()=>setTag(item.dataset.tag)));
-  const params=new URLSearchParams(location.search),initial=params.get('section'),initialTag=params.get('tag');
-  if(initial&&labels[initial]){current=initial;buttons.forEach(b=>b.classList.toggle('active',b.dataset.section===current))}
-  if(initialTag){input.value=initialTag.replace(/-/g,' ');current='all';buttons.forEach(b=>b.classList.toggle('active',b.dataset.section==='all'))}
+(() => {
+  const cards = [...document.querySelectorAll('.study-card')];
+  const buttons = [...document.querySelectorAll('.study-nav [data-section]')];
+  const groups = [...document.querySelectorAll('.nav-group-title')];
+  const input = document.getElementById('study-search-input');
+  const empty = document.getElementById('empty');
+  const title = document.getElementById('section-title');
+  const tagPanel = document.getElementById('tag-search-panel');
+  const tagItems = [...document.querySelectorAll('.tag-search-item')];
+
+  const labels = {
+    all:'전체 공부', java:'Java', 'java-core':'Java 기본', 'java-oop':'객체지향 / SOLID', 'java-pattern':'디자인 패턴', 'java-advanced':'Generic / GC / Thread',
+    spring:'Spring', 'spring-core':'Spring / DI / AOP', 'spring-mybatis':'MyBatis', 'spring-security':'Security / JWT / OAuth2', 'spring-jpa':'JPA', 'spring-web':'MVC / REST',
+    database:'Database', 'database-oracle':'Oracle / SQL / PL-SQL', 'database-redis':'Redis', 'database-mysql':'MySQL',
+    frontend:'Frontend', 'frontend-html':'HTML / CSS / JavaScript', 'frontend-react':'React',
+    infra:'Infra', 'infra-linux':'Linux', 'infra-aws':'AWS / EC2', 'infra-docker':'Docker', 'infra-cicd':'GitHub Actions / CI-CD', ml:'Machine Learning'
+  };
+
+  let current = 'all';
+
+  function render() {
+    const q = input.value.trim().toLowerCase();
+    let visible = 0;
+
+    cards.forEach(card => {
+      const matchesSection = current === 'all'
+        || card.dataset.section === current
+        || card.dataset.parentSection === current;
+      const matchesSearch = !q || card.dataset.search.includes(q);
+      const show = matchesSection && matchesSearch;
+
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    empty.hidden = visible !== 0;
+    title.textContent = q && current === 'all' ? '검색 결과' : (labels[current] || '전체 공부');
+  }
+
+  function selectSection(section) {
+    current = section;
+    input.value = '';
+    buttons.forEach(button => button.classList.toggle('active', button.dataset.section === current));
+    render();
+    const url = current === 'all' ? location.pathname : location.pathname + '?section=' + encodeURIComponent(current);
+    history.replaceState(null, '', url);
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      selectSection(button.dataset.section);
+    });
+  });
+
+  groups.forEach(group => group.addEventListener('click', event => {
+    const isFilterClick = group.dataset.section;
+    if (isFilterClick) {
+      event.preventDefault();
+      selectSection(isFilterClick);
+      return;
+    }
+    const parent = group.closest('.nav-group');
+    parent.classList.toggle('open');
+    group.querySelector('span').textContent = parent.classList.contains('open') ? '−' : '+';
+  }));
+
+  input.addEventListener('input', render);
+  input.addEventListener('focus', () => { tagPanel.hidden = false; });
+  input.addEventListener('blur', () => setTimeout(() => { tagPanel.hidden = true; }, 140));
+
+  tagItems.forEach(item => item.addEventListener('mousedown', event => event.preventDefault()));
+  tagItems.forEach(item => item.addEventListener('click', () => {
+    input.value = item.dataset.tag;
+    current = 'all';
+    buttons.forEach(button => button.classList.toggle('active', button.dataset.section === 'all'));
+    render();
+    tagPanel.hidden = true;
+    history.replaceState(null, '', location.pathname + '?tag=' + encodeURIComponent(item.dataset.tag));
+  }));
+
+  const params = new URLSearchParams(location.search);
+  const initial = params.get('section');
+  const initialTag = params.get('tag');
+  if (initial && labels[initial]) {
+    current = initial;
+    buttons.forEach(button => button.classList.toggle('active', button.dataset.section === current));
+  }
+  if (initialTag) {
+    input.value = initialTag;
+    current = 'all';
+    buttons.forEach(button => button.classList.toggle('active', button.dataset.section === 'all'));
+  }
   render();
 })();
 </script>
