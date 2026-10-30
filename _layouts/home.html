@@ -75,9 +75,48 @@ layout: default
         {% else %}{% assign classification = 'infra-linux' %}{% endif %}{% assign parent_classification = 'infra' %}
       {% elsif category == 'ml' or category == 'machine learning' %}{% assign classification = 'ml' %}{% assign parent_classification = 'ml' %}
       {% elsif category == '학습' %}
-        {% if haystack contains 'websocket' or haystack contains 'stomp' or haystack contains 'kafka' or haystack contains 'redis pubsub' or haystack contains 'pub/sub' or haystack contains 'messaging' or haystack contains 'outbox' %}{% assign classification = 'backend-messaging' %}{% assign parent_classification = 'backend' %}
-        {% elsif haystack contains 'react' %}{% assign classification = 'frontend-react' %}{% assign parent_classification = 'frontend' %}
-        {% else %}{% assign classification = 'other' %}{% endif %}
+        {% if tags_text contains 'java' or haystack contains 'java' %}
+          {% assign parent_classification = 'java' %}
+          {% if haystack contains 'jvm' or haystack contains 'jit' or haystack contains 'gc' or haystack contains 'garbage collection' or haystack contains 'heap' or haystack contains 'stack memory' or haystack contains '클래스 로딩' or haystack contains '메모리 누수' %}{% assign classification = 'java-jvm' %}
+          {% elsif haystack contains 'collection' or haystack contains 'arraylist' or haystack contains 'linkedlist' or haystack contains 'hashmap' or haystack contains 'hashset' or haystack contains 'treeset' or haystack contains 'iterator' or haystack contains 'comparator' or haystack contains '컬렉션' or haystack contains 'list' or haystack contains 'set' or haystack contains 'map' or haystack contains 'queue' or haystack contains 'deque' %}{% assign classification = 'java-collections' %}
+          {% elsif haystack contains 'concurrency' or haystack contains 'thread' or haystack contains 'synchronized' or haystack contains 'volatile' or haystack contains 'atomic' or haystack contains 'lock' or haystack contains 'deadlock' or haystack contains '동시성' or haystack contains '스레드' %}{% assign classification = 'java-concurrency' %}
+          {% elsif haystack contains 'nio' or haystack contains 'filechannel' or haystack contains 'inputstream' or haystack contains 'outputstream' or haystack contains 'buffered' or haystack contains '입출력' or haystack contains '직렬화' %}{% assign classification = 'java-io' %}
+          {% elsif haystack contains 'design pattern' or haystack contains '디자인 패턴' or haystack contains '디자인패턴' or haystack contains 'singleton' or haystack contains 'strategy' or haystack contains 'factory' or haystack contains 'observer' or haystack contains 'command' or haystack contains 'decorator' or haystack contains 'adapter' or haystack contains 'facade' or haystack contains 'proxy' or haystack contains 'builder' or haystack contains 'prototype' %}{% assign classification = 'java-pattern' %}
+          {% elsif haystack contains 'solid' or haystack contains 'oop' or haystack contains 'inheritance' or haystack contains 'composition' or haystack contains 'coupling' or haystack contains 'cohesion' or haystack contains 'interface' or haystack contains '객체지향' or haystack contains '상속' or haystack contains '다형성' or haystack contains '캡슐화' or haystack contains '추상화' %}{% assign classification = 'java-oop' %}
+          {% elsif haystack contains 'generic' or haystack contains 'stream' or haystack contains 'lambda' or haystack contains '람다' or haystack contains '함수형' or haystack contains '제네릭' %}{% assign classification = 'java-advanced' %}
+          {% else %}{% assign classification = 'java-core' %}{% endif %}
+        {% elsif haystack contains 'redis' %}
+          {% assign classification = 'database-redis' %}{% assign parent_classification = 'database' %}
+        {% elsif haystack contains 'oracle' or haystack contains 'sql' or haystack contains 'pl/sql' or haystack contains 'plsql' or haystack contains 'database' or haystack contains 'mysql' or haystack contains 'transaction' or haystack contains 'index' or haystack contains 'join' or haystack contains '쿼리' or haystack contains '테이블' %}
+          {% assign classification = 'database-oracle' %}{% assign parent_classification = 'database' %}
+        {% elsif haystack contains 'spring' or haystack contains 'jpa' or haystack contains 'mybatis' or haystack contains 'hibernate' or haystack contains 'aop' or haystack contains 'di' or haystack contains 'jwt' or haystack contains 'oauth' %}
+          {% assign parent_classification = 'spring' %}
+          {% if haystack contains 'jpa' or haystack contains 'mybatis' or haystack contains 'hibernate' %}{% assign classification = 'spring-data' %}
+          {% elsif haystack contains 'security' or haystack contains 'jwt' or haystack contains 'oauth' %}{% assign classification = 'spring-security' %}
+          {% elsif haystack contains 'rest' or haystack contains 'api' or haystack contains 'controller' or haystack contains 'mvc' %}{% assign classification = 'spring-web' %}
+          {% elsif haystack contains 'test' or haystack contains 'junit' or haystack contains 'mockito' %}{% assign classification = 'spring-testing' %}
+          {% else %}{% assign classification = 'spring-core' %}{% endif %}
+        {% elsif haystack contains 'websocket' or haystack contains 'stomp' or haystack contains 'kafka' or haystack contains 'pub/sub' or haystack contains 'messaging' or haystack contains 'outbox' %}
+          {% assign classification = 'backend-messaging' %}{% assign parent_classification = 'backend' %}
+        {% elsif haystack contains 'k6' or haystack contains 'load test' or haystack contains 'performance' or haystack contains '부하 테스트' or haystack contains '성능' %}
+          {% assign classification = 'backend-performance' %}{% assign parent_classification = 'backend' %}
+        {% elsif haystack contains 'react' %}
+          {% assign classification = 'frontend-react' %}{% assign parent_classification = 'frontend' %}
+        {% elsif haystack contains 'html' or haystack contains 'css' or haystack contains 'javascript' or haystack contains 'dom' %}
+          {% assign classification = 'frontend-html' %}{% assign parent_classification = 'frontend' %}
+        {% elsif haystack contains 'docker' or haystack contains 'container' %}
+          {% assign classification = 'infra-docker' %}{% assign parent_classification = 'infra' %}
+        {% elsif haystack contains 'aws' or haystack contains 'ec2' %}
+          {% assign classification = 'infra-aws' %}{% assign parent_classification = 'infra' %}
+        {% elsif haystack contains 'github actions' or haystack contains 'ci/cd' or haystack contains 'deploy' or haystack contains '배포' %}
+          {% assign classification = 'infra-cicd' %}{% assign parent_classification = 'infra' %}
+        {% elsif haystack contains 'linux' or haystack contains 'ubuntu' or haystack contains 'nginx' %}
+          {% assign classification = 'infra-linux' %}{% assign parent_classification = 'infra' %}
+        {% elsif haystack contains 'machine learning' or haystack contains '머신러닝' or haystack contains 'sklearn' or haystack contains 'iris' or haystack contains 'ml' %}
+          {% assign classification = 'ml' %}{% assign parent_classification = 'ml' %}
+        {% else %}
+          {% assign classification = 'other' %}{% assign parent_classification = 'other' %}
+        {% endif %}
       {% endif %}
 
       {% assign display_title = post.title | remove_first: '개인 프로젝트 : ' | remove_first: '팀 프로젝트 : ' | remove_first: '설계 : ' | remove_first: '부트캠프 : ' %}
