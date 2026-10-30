@@ -391,18 +391,21 @@ permalink: /write/
     const mapped = !selectedMap || selectedMap[0] === category.value
       ? [inferred.category, inferred.section]
       : selectedMap;
-    const frontMatter = [
+    const frontMatterLines = [
       '---',
       'layout: post',
-      'title: "' + safeTitle.replace(/"/g, '\\"') + '"',
+      'title: "' + safeTitle.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"',
       'date: ' + postDate + ' 00:00:00 +0900',
       'categories: [' + mapped[0] + ']',
-      mapped[1] ? 'section: ' + mapped[1] : '',
+      mapped[1] ? 'section: ' + mapped[1] : null,
       'tags: [' + tagList.join(', ') + ']',
-      '---',
-      ''
-    ].filter(Boolean).join('\n');
-    const blob = new Blob([frontMatter + body.value], {type: 'text/markdown;charset=utf-8'});
+      '---'
+    ].filter(line => line !== null);
+    // Front Matter 종료 구분선 뒤에는 반드시 빈 줄을 둔다.
+    // 빈 문자열을 filter(Boolean)으로 제거하면 본문 첫 줄과 ---가 붙을 수 있다.
+    const frontMatter = frontMatterLines.join('\n') + '\n\n';
+    const postBody = body.value.replace(/^\n+/, '');
+    const blob = new Blob([frontMatter, postBody], {type: 'text/markdown;charset=utf-8'});
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = postDate + '-' + slug + '.md';
