@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Java Set — HashSet과 TreeSet의 중복·정렬 관리"
 date: 2026-10-30
 categories: [Spring]
