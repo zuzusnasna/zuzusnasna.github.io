@@ -170,6 +170,23 @@ layout: default
 
   let current = 'all';
 
+  function setGroupOpen(section, open) {
+    const group = groups.find(button => button.dataset.section === section)?.closest('.nav-group');
+    if (!group) return;
+    group.classList.toggle('open', open);
+    const indicator = group.querySelector('.nav-group-title span');
+    if (indicator) indicator.textContent = open ? '−' : '+';
+  }
+
+  function openParentFor(section) {
+    const parent = buttons.find(button => button.dataset.section === section)?.closest('.nav-group');
+    if (parent) {
+      parent.classList.add('open');
+      const indicator = parent.querySelector('.nav-group-title span');
+      if (indicator) indicator.textContent = '−';
+    }
+  }
+
   function render() {
     const q = input.value.trim().toLowerCase();
     let visible = 0;
@@ -189,16 +206,18 @@ layout: default
     title.textContent = q && current === 'all' ? '검색 결과' : (labels[current] || '전체 공부');
   }
 
-  function selectSection(section) {
+  function selectSection(section, expandParent = true) {
     current = section;
     input.value = '';
     buttons.forEach(button => button.classList.toggle('active', button.dataset.section === current));
+    if (expandParent) openParentFor(section);
     render();
     const url = current === 'all' ? location.pathname : location.pathname + '?section=' + encodeURIComponent(current);
     history.replaceState(null, '', url);
   }
 
   buttons.forEach(button => {
+    if (button.classList.contains('nav-group-title')) return;
     button.addEventListener('click', event => {
       event.preventDefault();
       event.stopPropagation();
@@ -207,15 +226,13 @@ layout: default
   });
 
   groups.forEach(group => group.addEventListener('click', event => {
-    const isFilterClick = group.dataset.section;
-    if (isFilterClick) {
-      event.preventDefault();
-      selectSection(isFilterClick);
-      return;
-    }
+    event.preventDefault();
+    event.stopPropagation();
     const parent = group.closest('.nav-group');
-    parent.classList.toggle('open');
-    group.querySelector('span').textContent = parent.classList.contains('open') ? '−' : '+';
+    const willOpen = !parent.classList.contains('open');
+
+    selectSection(group.dataset.section, false);
+    setGroupOpen(group.dataset.section, willOpen);
   }));
 
   input.addEventListener('input', render);
@@ -238,6 +255,7 @@ layout: default
   if (initial && labels[initial]) {
     current = initial;
     buttons.forEach(button => button.classList.toggle('active', button.dataset.section === current));
+    openParentFor(initial);
   }
   if (initialTag) {
     input.value = initialTag;
