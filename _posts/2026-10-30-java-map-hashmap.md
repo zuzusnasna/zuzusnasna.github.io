@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Java Map — HashMap의 Key 조회와 해시 동작"
 date: 2026-10-30
 categories: [Spring]
