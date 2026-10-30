@@ -40,8 +40,8 @@ JPQL 벌크 UPDATE나 DELETE는 영속성 컨텍스트의 개별 Entity 상태�
 entityManager.flush();
 int updated = entityManager.createQuery("""
     update Member m set m.active = false
-    where m.lastLoginAt < : 기준일
-    """).setParameter("기준일", cutoff)
+    where m.lastLoginAt < :cutoff
+    """).setParameter("cutoff", cutoff)
       .executeUpdate();
 entityManager.clear();
 ```
