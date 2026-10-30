@@ -8,7 +8,7 @@ permalink: /write/
     <div>
       <div class="eyebrow">POST EDITOR</div>
       <h1>개발 공부 기록 작성</h1>
-      <p>작성한 내용을 Markdown 글로 바로 저장할 수 있습니다. 굵게, 밑줄, 코드 블록을 포함한 기본 서식을 버튼으로 넣을 수 있습니다.</p>
+      <p>작성한 내용을 Markdown 글로 바로 저장할 수 있습니다. 카테고리를 선택하면 생성되는 MD 파일의 Jekyll 카테고리에 그대로 반영됩니다.</p>
     </div>
     <div class="write-actions">
       <button type="button" id="save-draft">임시 저장</button>
@@ -22,8 +22,21 @@ permalink: /write/
         <input id="post-title" type="text" placeholder="게시글 제목">
         <div class="editor-row">
           <input id="post-date" type="date">
-          <input id="post-tags" type="text" placeholder="태그: Java, Spring, JPA">
+          <select id="post-category" aria-label="게시글 카테고리">
+            <option value="Java">Java</option>
+            <option value="Spring">Spring</option>
+            <option value="Spring Core / DI / AOP">Spring Core / DI / AOP</option>
+            <option value="JPA / MyBatis">JPA / MyBatis</option>
+            <option value="MVC / REST API">MVC / REST API</option>
+            <option value="Security / JWT / OAuth2">Security / JWT / OAuth2</option>
+            <option value="테스트 / 품질 관리">테스트 / 품질 관리</option>
+            <option value="Database">Database</option>
+            <option value="PL/SQL">PL/SQL</option>
+            <option value="React">React</option>
+            <option value="기타">기타</option>
+          </select>
         </div>
+        <input id="post-tags" type="text" placeholder="태그: Java, Spring, JPA">
       </div>
 
       <div class="editor-toolbar" aria-label="서식 도구">
@@ -36,7 +49,7 @@ permalink: /write/
         <button type="button" data-action="link">링크</button>
       </div>
 
-      <textarea id="post-body" spellcheck="false" placeholder="공부한 내용을 작성하세요.&#10;&#10;## 실행 흐름&#10;&#10;여기에 내용을 입력합니다.&#10;&#10;코드 블록도 버튼으로 넣을 수 있습니다."></textarea>
+      <textarea id="post-body" spellcheck="false" placeholder="공부한 내용을 작성하세요.\n\n## 실행 흐름\n\n여기에 내용을 입력합니다.\n\n코드 블록도 버튼으로 넣을 수 있습니다."></textarea>
     </section>
 
     <section class="preview-panel">
@@ -47,7 +60,7 @@ permalink: /write/
 
   <div class="write-note">
     <strong>저장 방식</strong>
-    <span>이 사이트는 GitHub Pages 기반이라 브라우저에서 GitHub 저장소를 직접 수정하지 않습니다. <b>Markdown 저장</b>을 누르면 Jekyll용 게시글 파일이 내려받아지며, 파일을 <code>_posts</code>에 넣으면 바로 게시할 수 있습니다.</span>
+    <span>카테고리를 선택한 뒤 <b>Markdown 저장</b>을 누르면 Jekyll용 게시글 파일이 생성됩니다. 다운로드한 파일을 <code>_posts</code>에 넣으면 선택한 카테고리로 게시됩니다.</span>
   </div>
 </section>
 
@@ -55,6 +68,7 @@ permalink: /write/
 (() => {
   const title = document.getElementById('post-title');
   const date = document.getElementById('post-date');
+  const category = document.getElementById('post-category');
   const tags = document.getElementById('post-tags');
   const body = document.getElementById('post-body');
   const preview = document.getElementById('post-preview');
@@ -111,7 +125,7 @@ permalink: /write/
 
   function updatePreview() {
     preview.innerHTML = renderMarkdown(body.value);
-    localStorage.setItem(draftKey, JSON.stringify({title: title.value, date: date.value, tags: tags.value, body: body.value}));
+    localStorage.setItem(draftKey, JSON.stringify({title: title.value, date: date.value, category: category.value, tags: tags.value, body: body.value}));
   }
 
   function insertAround(before, after = before, placeholder = '내용') {
@@ -134,7 +148,8 @@ permalink: /write/
     if (action === 'link') insertAround('[', '](https://example.com)', '링크 텍스트');
   }));
 
-  [title, date, tags, body].forEach(input => input.addEventListener('input', updatePreview));
+  [title, date, category, tags, body].forEach(input => input.addEventListener('input', updatePreview));
+  category.addEventListener('change', updatePreview);
 
   document.getElementById('save-draft').addEventListener('click', () => {
     updatePreview();
@@ -151,7 +166,7 @@ permalink: /write/
       'layout: post',
       'title: "' + safeTitle.replace(/"/g, '\\"') + '"',
       'date: ' + postDate + ' 00:00:00 +0900',
-      'categories: [학습]',
+      'categories: [' + category.value + ']',
       'tags: [' + tagList.join(', ') + ']',
       '---',
       ''
@@ -170,6 +185,7 @@ permalink: /write/
       const draft = JSON.parse(saved);
       title.value = draft.title || '';
       date.value = draft.date || date.value;
+      category.value = draft.category || 'Java';
       tags.value = draft.tags || '';
       body.value = draft.body || '';
     } catch (_) {}
