@@ -25,6 +25,14 @@ permalink: /write/
           <div class="category-control">
             <select id="post-category" aria-label="게시글 카테고리">
               <option value="Java">Java</option>
+              <option value="Java 기본">Java 기본</option>
+              <option value="객체지향 / SOLID">객체지향 / SOLID</option>
+              <option value="디자인 패턴">디자인 패턴</option>
+              <option value="Generic / GC / Thread">Generic / GC / Thread</option>
+              <option value="컬렉션">컬렉션</option>
+              <option value="JVM">JVM</option>
+              <option value="동시성">동시성</option>
+              <option value="입출력 / NIO">입출력 / NIO</option>
               <option value="Spring">Spring</option>
               <option value="Spring Core / DI / AOP">Spring Core / DI / AOP</option>
               <option value="JPA / MyBatis">JPA / MyBatis</option>
@@ -32,8 +40,21 @@ permalink: /write/
               <option value="Security / JWT / OAuth2">Security / JWT / OAuth2</option>
               <option value="테스트 / 품질 관리">테스트 / 품질 관리</option>
               <option value="Database">Database</option>
-              <option value="PL/SQL">PL/SQL</option>
+              <option value="Oracle / SQL / PL-SQL">Oracle / SQL / PL-SQL</option>
+              <option value="Redis">Redis</option>
+              <option value="Backend">Backend</option>
+              <option value="실시간 / 메시징">실시간 / 메시징</option>
+              <option value="성능 / 부하 테스트">성능 / 부하 테스트</option>
+              <option value="Frontend">Frontend</option>
+              <option value="HTML / CSS / JavaScript">HTML / CSS / JavaScript</option>
               <option value="React">React</option>
+              <option value="Infra">Infra</option>
+              <option value="Linux">Linux</option>
+              <option value="AWS / EC2">AWS / EC2</option>
+              <option value="Docker">Docker</option>
+              <option value="GitHub Actions / CI-CD">GitHub Actions / CI-CD</option>
+              <option value="ML">ML</option>
+              <option value="Machine Learning">Machine Learning</option>
               <option value="기타">기타</option>
             </select>
             <button type="button" id="add-category" class="category-add">+ 카테고리 추가</button>
@@ -92,7 +113,7 @@ permalink: /write/
   date.value = today.toISOString().slice(0, 10);
 
   function escapeHtml(value) {
-    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');
   }
 
   function renderMarkdown(source) {
@@ -175,7 +196,13 @@ permalink: /write/
   }
 
   function saveCustomCategories() {
-    const builtIn = new Set(['Java', 'Spring', 'Spring Core / DI / AOP', 'JPA / MyBatis', 'MVC / REST API', 'Security / JWT / OAuth2', '테스트 / 품질 관리', 'Database', 'PL/SQL', 'React', '기타']);
+    const builtIn = new Set([
+      'Java', 'Java 기본', '객체지향 / SOLID', '디자인 패턴', 'Generic / GC / Thread', '컬렉션', 'JVM', '동시성', '입출력 / NIO',
+      'Spring', 'Spring Core / DI / AOP', 'JPA / MyBatis', 'MVC / REST API', 'Security / JWT / OAuth2', '테스트 / 품질 관리',
+      'Database', 'Oracle / SQL / PL-SQL', 'Redis', 'Backend', '실시간 / 메시징', '성능 / 부하 테스트',
+      'Frontend', 'HTML / CSS / JavaScript', 'React', 'Infra', 'Linux', 'AWS / EC2', 'Docker', 'GitHub Actions / CI-CD',
+      'ML', 'Machine Learning', '기타'
+    ]);
     const custom = Array.from(category.options).map(option => option.value).filter(value => !builtIn.has(value));
     localStorage.setItem(categoryKey, JSON.stringify(custom));
   }
