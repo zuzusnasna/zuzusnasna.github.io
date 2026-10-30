@@ -1,5 +1,6 @@
 ---
 layout: post
+layout: post
 title: "Java Queue와 Deque — 대기열과 양방향 큐"
 date: 2026-10-30
 categories: [Spring]
