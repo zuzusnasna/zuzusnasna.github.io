@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "JVM GC Roots — 객체가 메모리에서 살아남는 기준"
 date: 2026-10-30
 categories: [Spring]
