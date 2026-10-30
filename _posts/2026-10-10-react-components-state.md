@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "React 컴포넌트와 Props, State를 정리한 내용"
-date: 2026-10-10 09:00:00 +0900
+date: 2026-08-24 00:00:00 +0900
 categories: [학습]
 tags: [React, JavaScript]
 ---

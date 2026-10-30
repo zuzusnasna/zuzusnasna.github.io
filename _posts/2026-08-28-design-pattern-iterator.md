@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Iterator Pattern — 내부 구조를 숨기고 요소를 순회하는 반복자 패턴"
-date: 2026-08-28 09:00:00 +0900
+date: 2026-10-27 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, Iterator]
 ---

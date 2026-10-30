@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "React Study : useEffect와 API 호출 흐름"
-date: 2026-09-27 09:00:00 +0900
+date: 2026-10-21 00:00:00 +0900
 categories: [학습]
 tags: [React, JavaScript, REST API]
 ---

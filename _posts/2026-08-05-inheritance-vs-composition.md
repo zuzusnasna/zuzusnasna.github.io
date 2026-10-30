@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "상속과 조합(Composition), 어떤 설계를 선택할까?"
-date: 2026-08-05 09:00:00 +0900
+date: 2026-10-01 00:00:00 +0900
 categories: [학습]
 tags: [Java, 객체지향, 상속, Composition]
 ---

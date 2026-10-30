@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring AOP와 JDBC — 공통 기능과 DB 접근"
-date: 2026-10-30 15:30:00 +0900
+date: 2026-10-23 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, AOP, JDBC]
 ---

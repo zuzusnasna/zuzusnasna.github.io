@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "실시간 시스템 : Redis Pub/Sub과 Kafka를 구분해서 사용하기"
-date: 2026-10-30 23:00:00 +0900
+date: 2026-09-21 00:00:00 +0900
 categories: [학습]
 tags: [Redis, Kafka, WebSocket, Spring Boot]
 ---

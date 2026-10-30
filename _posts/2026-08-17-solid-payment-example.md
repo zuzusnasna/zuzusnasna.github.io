@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "결제 서비스로 이해하는 SOLID 5원칙 적용"
-date: 2026-08-17 09:00:00 +0900
+date: 2026-07-15 00:00:00 +0900
 categories: [학습]
 tags: [Java, SOLID, 객체지향, 설계]
 ---

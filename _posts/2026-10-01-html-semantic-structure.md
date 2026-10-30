@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "부트캠프 : HTML 문서 구조와 시맨틱 태그"
-date: 2026-10-01 09:00:00 +0900
+date: 2026-09-18 00:00:00 +0900
 categories: [학습]
 tags: [HTML]
 ---

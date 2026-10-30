@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle 계층형 질의: CONNECT BY로 조직도 조회하기"
-date: 2026-10-29 14:00:00 +0900
+date: 2026-09-23 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, Hierarchical Query, CONNECT BY]
 ---

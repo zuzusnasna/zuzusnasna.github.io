@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Builder Pattern — 복잡한 객체를 단계적으로 생성하는 빌더 패턴"
-date: 2026-08-26 09:00:00 +0900
+date: 2026-10-02 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, Builder]
 ---

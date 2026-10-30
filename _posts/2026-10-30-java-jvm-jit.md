@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "JVM JIT Compiler — 바이트코드가 실행되는 방식"
-date: 2026-10-30 10:30:00 +0900
+date: 2026-09-12 00:00:00 +0900
 categories: [Spring]
 tags: [Java, JVM, JIT, Bytecode, Compiler, HotSpot]
 ---

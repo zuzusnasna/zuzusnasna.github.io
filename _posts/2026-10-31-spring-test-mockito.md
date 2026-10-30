@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Mockito Service 단위 테스트 — Mock과 실제 검증의 경계"
-date: 2026-10-30 00:00:00 +0900
+date: 2026-10-15 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, Testing, Mockito, Unit Test]
 ---

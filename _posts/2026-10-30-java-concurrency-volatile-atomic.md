@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java volatile과 Atomic — 가시성, 원자성과 CAS"
-date: 2026-10-30 13:00:00 +0900
+date: 2026-10-20 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Concurrency, volatile, AtomicInteger, Thread]
 ---

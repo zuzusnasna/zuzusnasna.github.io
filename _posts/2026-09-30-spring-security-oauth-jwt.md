@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring Security : 세션, JWT, OAuth2를 구분해서 이해하기"
-date: 2026-09-30 09:00:00 +0900
+date: 2026-09-29 00:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, Spring Security, OAuth2, JWT]
 ---

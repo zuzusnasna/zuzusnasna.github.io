@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle SQL: 서브쿼리와 다중행 조건"
-date: 2026-10-29 11:00:00 +0900
+date: 2026-08-16 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, Subquery, Database]
 ---

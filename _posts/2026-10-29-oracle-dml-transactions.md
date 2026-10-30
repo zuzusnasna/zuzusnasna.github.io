@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle SQL: INSERT, UPDATE, DELETE, MERGE와 트랜잭션"
-date: 2026-10-29 12:00:00 +0900
+date: 2026-10-16 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, DML, Transaction]
 ---

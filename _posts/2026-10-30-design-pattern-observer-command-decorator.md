@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Design Pattern — Observer, Command, Decorator"
-date: 2026-10-30 13:10:00 +0900
+date: 2026-09-24 00:00:00 +0900
 categories: [Spring]
 tags: [Design Pattern]
 ---

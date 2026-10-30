@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "State Pattern — 객체의 상태에 따라 동작을 바꾸는 상태 패턴"
-date: 2026-08-24 09:00:00 +0900
+date: 2026-09-05 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, State]
 ---

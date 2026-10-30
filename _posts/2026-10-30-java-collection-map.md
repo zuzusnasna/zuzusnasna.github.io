@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "부트캠프 : Java Collection을 상황에 맞게 선택하는 기준"
-date: 2026-10-30 10:00:00 +0900
+date: 2026-07-22 00:00:00 +0900
 categories: [학습]
 tags: [Java]
 ---

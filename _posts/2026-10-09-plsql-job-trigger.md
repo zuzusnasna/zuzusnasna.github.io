@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "PL/SQL에서 JOB과 TRIGGER를 구분해서 사용하는 기준"
-date: 2026-10-09 09:00:00 +0900
+date: 2026-07-24 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, PL/SQL]
 ---

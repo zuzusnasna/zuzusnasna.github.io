@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "백엔드 : 중복 요청을 막기 위한 멱등성 설계"
-date: 2026-10-30 15:00:00 +0900
+date: 2026-09-14 00:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, REST API, 동시성]
 ---

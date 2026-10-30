@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Chain of Responsibility Pattern — 요청을 단계별로 전달하는 책임 연쇄 패턴"
-date: 2026-08-25 09:00:00 +0900
+date: 2026-08-31 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, Chain of Responsibility]
 ---

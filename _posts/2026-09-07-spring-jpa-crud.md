@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "JPA와 CRUD 흐름"
-date: 2026-09-07 09:00:00 +0900
+date: 2026-07-27 00:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, JPA]
 ---

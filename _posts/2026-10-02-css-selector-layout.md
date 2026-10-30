@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "부트캠프 : CSS 선택자와 레이아웃을 이해한 과정"
-date: 2026-10-02 09:00:00 +0900
+date: 2026-07-30 00:00:00 +0900
 categories: [학습]
 tags: [CSS, HTML]
 ---

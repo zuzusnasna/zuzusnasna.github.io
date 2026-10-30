@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "OAuth 2.0 로그인 — Authorization Code와 Spring Security 연동"
-date: 2026-10-30 00:00:00 +0900
+date: 2026-09-13 00:00:00 +0900
 categories: [Spring]
 tags: [Spring Security, OAuth2, OpenID Connect, Authorization Code]
 ---

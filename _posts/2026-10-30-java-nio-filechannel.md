@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java FileChannel과 ByteBuffer — NIO 파일 처리 원리"
-date: 2026-10-30 14:00:00 +0900
+date: 2026-08-22 00:00:00 +0900
 permalink: /spring/2026/10/30/java-nio-filechannel/
 categories: [Spring]
 tags: [Java, NIO, FileChannel, ByteBuffer, Channel]

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "배포 : GitHub Actions로 빌드와 배포를 자동화한 흐름"
-date: 2026-10-30 21:00:00 +0900
+date: 2026-07-25 00:00:00 +0900
 categories: [학습]
 tags: [GitHub Actions, CI/CD, Docker, AWS]
 ---

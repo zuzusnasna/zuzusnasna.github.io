@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle SQL: 조인 종류와 테이블 연결"
-date: 2026-10-29 10:00:00 +0900
+date: 2026-07-26 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, JOIN, Database]
 ---

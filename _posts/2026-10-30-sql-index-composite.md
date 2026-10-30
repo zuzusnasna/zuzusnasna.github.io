@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "SQL Tuning : 인덱스는 컬럼보다 조회 조건을 보고 설계한다"
-date: 2026-10-30 16:00:00 +0900
+date: 2026-07-28 00:00:00 +0900
 categories: [학습]
 tags: [SQL Tuning, Oracle, MySQL]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Serialization — 객체 직렬화, JSON 변환과 보안 주의점"
-date: 2026-10-30 12:20:00 +0900
+date: 2026-08-25 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Serialization, JSON, ObjectInputStream, Jackson]
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Java JVM Memory — Stack과 Heap의 역할"
-date: 2026-10-30
+date: 2026-07-17 00:00:00 +0900
 categories: [Spring]
 tags: [Java, JVM, Stack, Heap, Memory]
 ---

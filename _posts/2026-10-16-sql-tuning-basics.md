@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "SQL 튜닝을 공부하면서 먼저 확인한 것"
-date: 2026-10-16 09:00:00 +0900
+date: 2026-08-04 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL Tuning, performance tuning]
 ---

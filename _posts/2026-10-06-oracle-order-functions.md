@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle SQL: ORDER BY와 문자열·숫자·날짜 함수"
-date: 2026-10-06 12:00:00 +0900
+date: 2026-10-28 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, ORDER BY, 함수]
 ---

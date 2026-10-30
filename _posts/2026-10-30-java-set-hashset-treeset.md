@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Set — HashSet, LinkedHashSet, TreeSet의 동작 원리"
-date: 2026-10-30 11:00:00 +0900
+date: 2026-09-11 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Collection, Set, HashSet, TreeSet]
 ---

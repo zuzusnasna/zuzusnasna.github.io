@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "REST 목록 API 페이징 — Offset과 Cursor 기반 조회"
-date: 2026-10-30 00:00:00 +0900
+date: 2026-08-09 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, REST, Pagination, Pageable, Cursor]
 ---

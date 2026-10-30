@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Redis Pub/Sub의 개념과 메시지 전달 방식"
-date: 2026-10-30 09:20:00 +0900
+date: 2026-07-31 00:00:00 +0900
 categories: [학습]
 tags: [Redis, Pub/Sub, Spring Boot]
 ---

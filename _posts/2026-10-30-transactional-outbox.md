@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Transactional Outbox의 개념과 이벤트를 안전하게 전달하는 방법"
-date: 2026-10-30 09:50:00 +0900
+date: 2026-09-11 00:00:00 +0900
 categories: [학습]
 tags: [Transactional Outbox, Transaction, Kafka, Event]
 ---

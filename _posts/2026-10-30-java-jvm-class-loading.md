@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "JVM Class Loading — 클래스 로딩, 검증, 초기화"
-date: 2026-10-30 12:00:00 +0900
+date: 2026-08-15 00:00:00 +0900
 categories: [Spring]
 tags: [Java, JVM, ClassLoader, Class Loading]
 ---

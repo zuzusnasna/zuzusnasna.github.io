@@ -1,6 +1,6 @@
 ---
 title: "Java ExecutorService — 스레드 풀과 CompletableFuture"
-date: 2026-10-30
+date: 2026-09-01 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Concurrency, ExecutorService, CompletableFuture, ThreadPool]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Iris 데이터로 KNN, SVM, Logistic Regression, Decision Tree 비교"
-date: 2026-10-15 09:00:00 +0900
+date: 2026-08-19 00:00:00 +0900
 categories: [학습]
 tags: [머신러닝, Python]
 ---

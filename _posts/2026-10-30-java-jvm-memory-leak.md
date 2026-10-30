@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java Memory Leak — 메모리 누수 원인과 Heap Dump 분석"
-date: 2026-10-30 12:00:00 +0900
+date: 2026-09-25 00:00:00 +0900
 categories: [Spring]
 tags: [Java, JVM, Heap Dump, Memory Leak, OutOfMemoryError]
 ---

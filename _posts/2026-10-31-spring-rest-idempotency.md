@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "REST API 멱등성 — 중복 요청과 재시도에 안전한 서버 설계"
-date: 2026-10-30 00:00:00 +0900
+date: 2026-10-13 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, REST, HTTP, Idempotency, API Design]
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Java Synchronization — synchronized와 Lock으로 동시성 제어하기"
-date: 2026-10-30
+date: 2026-10-24 00:00:00 +0900
 categories: [Spring]
 tags: [Java, Concurrency, Thread, synchronized, Lock]
 ---

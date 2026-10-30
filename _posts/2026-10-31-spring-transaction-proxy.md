@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring @Transactional 동작 원리 — 프록시와 트랜잭션 경계"
-date: 2026-10-30 00:00:00 +0900
+date: 2026-07-25 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, Transaction, Transactional, AOP, Proxy]
 ---

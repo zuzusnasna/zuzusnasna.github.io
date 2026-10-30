@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle SQL: WHERE 조건 검색과 집합 연산자"
-date: 2026-10-06 11:00:00 +0900
+date: 2026-07-18 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, WHERE, UNION]
 ---

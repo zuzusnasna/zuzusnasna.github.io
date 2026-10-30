@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "WebSocket과 STOMP의 개념과 사용 방법"
-date: 2026-10-30 09:10:00 +0900
+date: 2026-08-08 00:00:00 +0900
 categories: [학습]
 tags: [WebSocket, STOMP, Spring Boot]
 ---

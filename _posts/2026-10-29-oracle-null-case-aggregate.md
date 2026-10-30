@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle SQL: NULL 처리, 조건식과 그룹 함수"
-date: 2026-10-29 09:00:00 +0900
+date: 2026-09-07 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, NULL, CASE, GROUP BY]
 ---

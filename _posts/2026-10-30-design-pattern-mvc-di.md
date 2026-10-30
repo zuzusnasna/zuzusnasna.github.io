@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Design Pattern — MVC Architecture와 DI"
-date: 2026-10-30 13:40:00 +0900
+date: 2026-09-17 00:00:00 +0900
 categories: [Spring]
 tags: [Design Pattern, MVC, DI]
 ---

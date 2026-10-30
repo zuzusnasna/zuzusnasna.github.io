@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "부트캠프 : Spring @Transactional을 제대로 이해하기"
-date: 2026-10-30 12:00:00 +0900
+date: 2026-10-18 00:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, Transaction, JPA]
 ---

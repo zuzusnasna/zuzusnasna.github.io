@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Facade Pattern — 복잡한 기능을 하나의 진입점으로 제공하는 퍼사드 패턴"
-date: 2026-08-22 09:00:00 +0900
+date: 2026-09-06 00:00:00 +0900
 categories: [학습]
 tags: [Java, 디자인패턴, Facade]
 ---

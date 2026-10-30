@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring Security CORS와 CSRF — 브라우저 요청을 구분해서 이해하기"
-date: 2026-10-30 00:00:00 +0900
+date: 2026-09-19 00:00:00 +0900
 categories: [Spring]
 tags: [Spring Security, CORS, CSRF, Cookie, Browser]
 ---

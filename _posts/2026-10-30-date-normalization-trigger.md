@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "날짜 정리 작업"
-date: 2026-10-30 00:00:00 +0900
+date: 2026-09-13 00:00:00 +0900
 published: false
 categories: [학습]
 tags: [관리]

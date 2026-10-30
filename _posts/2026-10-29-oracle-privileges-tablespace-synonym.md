@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Oracle 사용자 권한, ROLE, SYNONYM과 TABLESPACE"
-date: 2026-10-29 13:00:00 +0900
+date: 2026-09-02 00:00:00 +0900
 categories: [학습]
 tags: [Oracle, SQL, Privilege, User, Tablespace]
 ---

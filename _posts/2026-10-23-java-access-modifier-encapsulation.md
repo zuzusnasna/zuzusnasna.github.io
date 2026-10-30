@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Java 접근 제어자와 캡슐화"
-date: 2026-10-23 09:00:00 +0900
+date: 2026-08-01 00:00:00 +0900
 categories: [학습]
 tags: [Java, 접근 제어자, 캡슐화]
 ---
