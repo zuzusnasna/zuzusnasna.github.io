@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Spring Boot 학습 : JDBC와 MyBatis 비교"
+title: "JDBC와 MyBatis 비교"
 date: 2026-09-04 09:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, JDBC, MyBatis, Database]
