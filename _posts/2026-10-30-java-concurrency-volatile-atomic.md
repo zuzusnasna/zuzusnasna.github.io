@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Java volatile과 Atomic — 가시성과 원자성 이해하기"
 date: 2026-10-30
 categories: [Spring]
