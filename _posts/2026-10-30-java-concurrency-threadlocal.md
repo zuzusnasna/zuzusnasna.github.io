@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Java ThreadLocal — 스레드별 데이터를 격리하는 방법"
 date: 2026-10-30
 categories: [Spring]
