@@ -3,6 +3,7 @@ layout: post
 title: "JPA와 MyBatis 비교 — ORM과 SQL Mapper를 선택하는 기준"
 date: 2026-10-30 00:00:00 +0900
 categories: [Spring]
+section: spring-data
 tags: [Spring, JPA, MyBatis, ORM, SQL Mapper]
 ---
 ## 두 기술의 관점 차이
