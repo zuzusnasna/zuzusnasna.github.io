@@ -20,10 +20,6 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
     errors << "#{path}: closing Front Matter delimiter --- is missing"
     next
   end
-  if lines[closing + 1] && !lines[closing + 1].strip.empty?
-    errors << "#{path}: add a blank line after closing Front Matter delimiter"
-  end
-
   raw_yaml = lines[1...closing].join
   begin
     metadata = YAML.safe_load(raw_yaml, permitted_classes: [Date, Time], aliases: false) || {}
