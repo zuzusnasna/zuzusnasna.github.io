@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Spring Boot 학습 : DI, IoC, AOP, Lombok"
+title: "DI, IoC, AOP, Lombok"
 date: 2026-09-03 09:00:00 +0900
 categories: [학습]
 tags: [Spring Boot, Java]
