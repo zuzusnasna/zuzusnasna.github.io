@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "Java Deadlock — 교착 상태의 발생 조건과 예방"
 date: 2026-10-30
 categories: [Spring]
