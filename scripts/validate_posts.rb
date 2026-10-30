@@ -40,12 +40,12 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
 
   # Keep Jekyll category and sidebar section in the same top-level group.
   section_parent = case section
-                   when /\\Ajava-/ then "Java"
-                   when /\\Aspring-/ then "Spring"
-                   when /\\Adatabase-/ then "Database"
-                   when /\\Abackend-/ then "Backend"
-                   when /\\Afrontend-/ then "Frontend"
-                   when /\\Ainfra-/ then "Infra"
+                   when /\Ajava-/ then "Java"
+                   when /\Aspring-/ then "Spring"
+                   when /\Adatabase-/ then "Database"
+                   when /\Abackend-/ then "Backend"
+                   when /\Afrontend-/ then "Frontend"
+                   when /\Ainfra-/ then "Infra"
                    when "ml" then "ML"
                    else nil
                    end
@@ -54,7 +54,7 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
     errors << "#{path}: categories[0] '#{category}' does not match section '#{section}' (expected '#{section_parent}')"
   end
 
-  unless File.basename(path).match?(/\\A\\d{4}-\\d{2}-\\d{2}-.+\\.(md|markdown)\\z/)
+  unless File.basename(path).match?(/\A\d{4}-\d{2}-\d{2}-.+\.(md|markdown)\\z/)
     errors << "#{path}: filename must start with YYYY-MM-DD- for Jekyll posts"
   end
 end
