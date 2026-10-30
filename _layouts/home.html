@@ -131,10 +131,10 @@ layout: default
         {% assign classification = 'infra-cicd' %}{% assign parent_classification = 'infra' %}
       {% elsif haystack contains 'machine learning' or haystack contains '머신러닝' %}
         {% assign classification = 'ml' %}{% assign parent_classification = 'ml' %}
+      {% elsif haystack contains 'solid' or haystack contains 'oop' or haystack contains 'object' or haystack contains 'class' or haystack contains 'interface' or haystack contains 'overloading' or haystack contains 'overriding' or haystack contains 'inheritance' or haystack contains 'composition' or haystack contains 'coupling' or haystack contains 'cohesion' or haystack contains 'dip' or haystack contains '상속' or haystack contains '조합' or haystack contains '결합도' or haystack contains '응집도' or haystack contains '의존 역전' %}
+        {% assign classification = 'java-oop' %}{% assign parent_classification = 'java' %}
       {% elsif haystack contains 'generic' or haystack contains 'garbage collection' or haystack contains 'thread' or haystack contains 'serialization' %}
         {% assign classification = 'java-advanced' %}{% assign parent_classification = 'java' %}
-      {% elsif haystack contains 'solid' or haystack contains 'oop' or haystack contains 'object' or haystack contains 'class' or haystack contains 'interface' or haystack contains 'overloading' or haystack contains 'overriding' %}
-        {% assign classification = 'java-oop' %}{% assign parent_classification = 'java' %}
       {% elsif haystack contains 'java' %}
         {% assign classification = 'java-core' %}{% assign parent_classification = 'java' %}
       {% endif %}
