@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Spring MVC 테스트 — @WebMvcTest와 MockMvc로 HTTP 계약 검증"
-date: 2026-10-31 12:20:00 +0900
+date: 2026-10-30 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, Testing, WebMvcTest, MockMvc, Controller]
 ---
