@@ -230,7 +230,7 @@ permalink: /write/
     // 예: categories: [Spring] + section: java-pattern 같은 오래된 조합은 재분류한다.
     const section = String(currentSection || '').trim().toLowerCase();
     if (validSections.has(section) &&
-        (!normalized || roots.includes(normalized) || validSections.get(section) === normalized)) {
+        (!normalized || validSections.get(section) === normalized)) {
       const mapped = Object.values(categoryMap).find(item => item[1] === section);
       return {category: mapped[0], section};
     }
@@ -408,7 +408,7 @@ permalink: /write/
       title.focus();
       return;
     }
-    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(postDate) || Number.isNaN(Date.parse(postDate))) {
+    if (!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(postDate) || Number.isNaN(Date.parse(postDate))) {
       alert('게시글 날짜를 올바르게 선택해 주세요.');
       date.focus();
       return;
