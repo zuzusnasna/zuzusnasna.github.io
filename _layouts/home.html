@@ -39,11 +39,11 @@ layout: default
     <div class="nav-group open">
       <button class="nav-group-title" data-section="spring" type="button">Spring <span>−</span></button>
       <div class="nav-children">
-        <button data-section="spring-core" type="button">Spring / DI / AOP</button>
-        <button data-section="spring-mybatis" type="button">MyBatis</button>
+        <button data-section="spring-core" type="button">Spring Core / DI / AOP</button>
+        <button data-section="spring-data" type="button">JPA / MyBatis</button>
+        <button data-section="spring-web" type="button">MVC / REST API</button>
         <button data-section="spring-security" type="button">Security / JWT / OAuth2</button>
-        <button data-section="spring-jpa" type="button">JPA</button>
-        <button data-section="spring-web" type="button">MVC / REST</button>
+        <button data-section="spring-testing" type="button">테스트 / 품질 관리</button>
       </div>
     </div>
 
@@ -105,24 +105,24 @@ layout: default
       {% assign haystack = post.title | append: ' ' | append: post.tags | downcase %}
       {% if haystack contains 'design pattern' or haystack contains '디자인패턴' or haystack contains 'singleton' or haystack contains 'strategy' or haystack contains 'factory' or haystack contains 'template method' or haystack contains 'observer' or haystack contains 'command' or haystack contains 'decorator' or haystack contains 'composite' %}
         {% assign classification = 'java-pattern' %}{% assign parent_classification = 'java' %}
-      {% elsif haystack contains 'mybatis' or haystack contains 'mapper' or haystack contains 'jdbc' %}
-        {% assign classification = 'spring-mybatis' %}{% assign parent_classification = 'spring' %}
-      {% elsif haystack contains 'jwt' or haystack contains 'oauth' or haystack contains 'security' or haystack contains '인증' %}
-        {% assign classification = 'spring-security' %}{% assign parent_classification = 'spring' %}
-      {% elsif haystack contains 'jpa' or haystack contains 'hibernate' %}
-        {% assign classification = 'spring-jpa' %}{% assign parent_classification = 'spring' %}
-      {% elsif haystack contains 'mvc' or haystack contains 'rest api' or haystack contains 'thymeleaf' %}
-        {% assign classification = 'spring-web' %}{% assign parent_classification = 'spring' %}
-      {% elsif haystack contains 'spring' or haystack contains 'aop' or haystack contains 'di' or haystack contains 'ioc' %}
-        {% assign classification = 'spring-core' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'oracle' or haystack contains 'sql' or haystack contains 'pl/sql' or haystack contains 'database' %}
+        {% assign classification = 'database-oracle' %}{% assign parent_classification = 'database' %}
       {% elsif haystack contains 'redis' %}
         {% assign classification = 'database-redis' %}{% assign parent_classification = 'database' %}
       {% elsif haystack contains 'mysql' %}
         {% assign classification = 'database-mysql' %}{% assign parent_classification = 'database' %}
-      {% elsif haystack contains 'oracle' or haystack contains 'sql' or haystack contains 'pl/sql' or haystack contains 'database' %}
-        {% assign classification = 'database-oracle' %}{% assign parent_classification = 'database' %}
       {% elsif haystack contains 'react' %}
         {% assign classification = 'frontend-react' %}{% assign parent_classification = 'frontend' %}
+      {% elsif haystack contains 'test' or haystack contains 'junit' or haystack contains 'mockito' or haystack contains '테스트' %}
+        {% assign classification = 'spring-testing' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'mybatis' or haystack contains 'mapper' or haystack contains 'jdbc' or haystack contains 'jpa' or haystack contains 'hibernate' or haystack contains 'entity' or haystack contains '영속성' %}
+        {% assign classification = 'spring-data' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'jwt' or haystack contains 'oauth' or haystack contains 'security' or haystack contains '인증' %}
+        {% assign classification = 'spring-security' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'mvc' or haystack contains 'rest' or haystack contains 'controller' or haystack contains 'thymeleaf' or haystack contains 'http' %}
+        {% assign classification = 'spring-web' %}{% assign parent_classification = 'spring' %}
+      {% elsif haystack contains 'spring' or haystack contains 'aop' or haystack contains 'di' or haystack contains 'ioc' or haystack contains 'bean' %}
+        {% assign classification = 'spring-core' %}{% assign parent_classification = 'spring' %}
       {% elsif haystack contains 'javascript' or haystack contains 'html' or haystack contains 'css' %}
         {% assign classification = 'frontend-html' %}{% assign parent_classification = 'frontend' %}
       {% elsif haystack contains 'linux' or haystack contains 'ubuntu' or haystack contains 'process' or haystack contains 'port' %}
