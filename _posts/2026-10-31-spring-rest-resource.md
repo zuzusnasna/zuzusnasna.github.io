@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "REST 리소스 URI 설계 — 중첩 리소스와 검색 조건 표현"
-date: 2026-10-31 11:30:00 +0900
+date: 2026-10-30 00:00:00 +0900
 categories: [Spring]
 tags: [Spring, REST, URI Design, Resource, Query Parameter]
 ---
