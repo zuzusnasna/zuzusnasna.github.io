@@ -13,6 +13,7 @@ permalink: /write/
     <div class="write-actions">
       <button type="button" id="save-draft">임시 저장</button>
       <button type="button" id="download-post" class="primary">Markdown 저장</button>
+      <p class="editor-help">저장한 파일은 자동 게시되지 않습니다. GitHub 저장소의 <code>_posts</code> 폴더에 추가하고 <code>main</code>에 반영해야 블로그에 표시됩니다.</p>
     </div>
   </div>
 
@@ -385,24 +386,44 @@ permalink: /write/
 
   document.getElementById('download-post').addEventListener('click', () => {
     const postDate = date.value || new Date().toISOString().slice(0, 10);
-    const safeTitle = (title.value || 'new-post').trim();
+    const safeTitle = title.value.trim();
     const slug = safeTitle.toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-|-$/g, '') || 'new-post';
     const tagList = tags.value.split(',').map(tag => tag.trim()).filter(Boolean);
+    if (!safeTitle) {
+      alert('게시글 제목을 입력해 주세요.');
+      title.focus();
+      return;
+    }
+    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(postDate) || Number.isNaN(Date.parse(postDate))) {
+      alert('게시글 날짜를 올바르게 선택해 주세요.');
+      date.focus();
+      return;
+    }
+    if (!body.value.trim()) {
+      alert('게시글 본문을 입력해 주세요.');
+      body.focus();
+      return;
+    }
     const inferred = classifyPost([safeTitle, tagList.join(' '), body.value].join(' '), category.value, '');
     const selectedMap = categoryMap[category.value];
     const mapped = !selectedMap || selectedMap[0] === category.value
       ? [inferred.category, inferred.section]
       : selectedMap;
+    if (!mapped || !mapped[0] || !mapped[1]) {
+      alert('카테고리 연결 정보가 없습니다. 카테고리 설정을 확인해 주세요.');
+      return;
+    }
+    const quoteYaml = value => '"' + String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
     const frontMatterLines = [
       '---',
       'layout: post',
-      'title: "' + safeTitle.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"',
+      'title: ' + quoteYaml(safeTitle),
       'date: ' + postDate + ' 00:00:00 +0900',
-      'categories: [' + mapped[0] + ']',
-      mapped[1] ? 'section: ' + mapped[1] : null,
-      'tags: [' + tagList.join(', ') + ']',
+      'categories: [' + quoteYaml(mapped[0]) + ']',
+      'section: ' + mapped[1],
+      'tags: [' + tagList.map(quoteYaml).join(', ') + ']',
       '---'
-    ].filter(line => line !== null);
+    ];
     // Front Matter 종료 구분선 뒤에는 반드시 빈 줄을 둔다.
     // 빈 문자열을 filter(Boolean)으로 제거하면 본문 첫 줄과 ---가 붙을 수 있다.
     const frontMatter = frontMatterLines.join('\n') + '\n\n';
