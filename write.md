@@ -384,7 +384,6 @@ permalink: /write/
     const safeTitle = (title.value || 'new-post').trim();
     const slug = safeTitle.toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-|-$/g, '') || 'new-post';
     const tagList = tags.value.split(',').map(tag => tag.trim()).filter(Boolean);
-    const tagList = tags.value.split(',').map(tag => tag.trim()).filter(Boolean);
     const inferred = classifyPost([safeTitle, tagList.join(' '), body.value].join(' '), category.value, '');
     const selectedMap = categoryMap[category.value];
     const mapped = !selectedMap || selectedMap[0] === category.value
