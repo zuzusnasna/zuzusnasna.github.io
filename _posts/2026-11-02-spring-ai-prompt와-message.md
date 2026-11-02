@@ -2,7 +2,7 @@
 layout: post
 title: "Spring AI Prompt와 Message"
 date: 2026-11-02 00:00:00 +0900
-categories: [Spring AI]
+categories: [Spring]
 section: spring-ai
 tags: [Spring AI, Prompt, PromptTemplate, Message, LLM]
 ---
