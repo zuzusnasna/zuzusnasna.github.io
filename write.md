@@ -172,7 +172,6 @@ permalink: /write/
     localStorage.setItem(draftKey, JSON.stringify({title: title.value, date: date.value, category: category.value, tags: tags.value, body: body.value}));
   }
 
-  // 홈페이지 카테고리 ID와 글쓰기 선택지를 연결한다.
   const categoryMap = {
     'Java': ['Java', 'java-core'], 'Java 기본': ['Java', 'java-core'],
     '객체지향 / SOLID': ['Java', 'java-oop'], '디자인 패턴': ['Java', 'java-pattern'],
@@ -222,32 +221,17 @@ permalink: /write/
     const normalized = String(currentCategory || '').trim().toLowerCase();
     const roots = ['java','spring','database','backend','frontend','infra','ml'];
     const validSections = new Map();
-    Object.values(categoryMap).forEach(([parent, section]) => {
-      if (section) validSections.set(section, parent.toLowerCase());
-    });
-
-    // 가져온 Markdown의 section은 categories와 상위 분류가 일치할 때만 신뢰한다.
-    // 예: categories: [Spring] + section: java-pattern 같은 오래된 조합은 재분류한다.
+    Object.values(categoryMap).forEach(([parent, section]) => { if (section) validSections.set(section, parent.toLowerCase()); });
     const section = String(currentSection || '').trim().toLowerCase();
-    if (validSections.has(section) &&
-        (!normalized || validSections.get(section) === normalized)) {
+    if (validSections.has(section) && (!normalized || validSections.get(section) === normalized)) {
       const mapped = Object.values(categoryMap).find(item => item[1] === section);
       return {category: mapped[0], section};
     }
-
     const selected = Object.entries(categoryMap).find(([label]) => label.toLowerCase() === normalized);
-    if (selected && !roots.includes(normalized) && selected[1][1]) {
-      return {category: selected[1][0], section: selected[1][1]};
-    }
+    if (selected && !roots.includes(normalized) && selected[1][1]) return {category: selected[1][0], section: selected[1][1]};
     const source = (text + ' ' + normalized).toLowerCase();
-    for (const [id, parent, pattern] of classifyRules) {
-      if (pattern.test(source)) return {category: parent, section: id};
-    }
-    const rootMap = {
-      java:['Java','java-core'], spring:['Spring','spring-core'], database:['Database','database-oracle'],
-      backend:['Backend','backend-performance'], frontend:['Frontend','frontend-html'],
-      infra:['Infra','infra-linux'], ml:['ML','ml'], 'machine learning':['ML','ml']
-    };
+    for (const [id, parent, pattern] of classifyRules) if (pattern.test(source)) return {category: parent, section: id};
+    const rootMap = {java:['Java','java-core'], spring:['Spring','spring-core'], database:['Database','database-oracle'], backend:['Backend','backend-performance'], frontend:['Frontend','frontend-html'], infra:['Infra','infra-linux'], ml:['ML','ml'], 'machine learning':['ML','ml']};
     const root = rootMap[normalized];
     return root ? {category: root[0], section: root[1]} : {category:'', section:''};
   }
@@ -260,11 +244,8 @@ permalink: /write/
       const item = line.match(/^([\w-]+):\s*(.*)$/);
       if (!item) return;
       const value = item[2].trim();
-      if (value.startsWith('[') && value.endsWith(']')) {
-        meta[item[1]] = value.slice(1,-1).split(',').map(v => v.trim().replace(/^['"]|['"]$/g,''));
-      } else {
-        meta[item[1]] = value.replace(/^['"]|['"]$/g,'');
-      }
+      if (value.startsWith('[') && value.endsWith(']')) meta[item[1]] = value.slice(1,-1).split(',').map(v => v.trim().replace(/^['"]|['"]$/g,''));
+      else meta[item[1]] = value.replace(/^['"]|['"]$/g,'');
     });
     return {meta, content:markdown.slice(match[0].length)};
   }
@@ -310,10 +291,7 @@ permalink: /write/
     const trimmed = name.trim();
     if (!trimmed) return false;
     const exists = Array.from(category.options).some(option => option.value.toLowerCase() === trimmed.toLowerCase());
-    if (exists) {
-      if (selectIt) category.value = trimmed;
-      return false;
-    }
+    if (exists) { if (selectIt) category.value = trimmed; return false; }
     const option = document.createElement('option');
     option.value = trimmed;
     option.textContent = trimmed;
@@ -330,49 +308,20 @@ permalink: /write/
   }
 
   function saveCustomCategories() {
-    const builtIn = new Set([
-      'Java', 'Java 기본', '객체지향 / SOLID', '디자인 패턴', 'Generic', '함수형 / Lambda / Stream', '컬렉션', 'JVM', '동시성', '입출력 / NIO',
-      'Spring', 'Spring Core / DI / AOP', 'JPA / MyBatis', 'MVC / REST API', 'Security / JWT / OAuth2', '테스트 / 품질 관리', 'Spring AI',
-      'Database', 'Oracle / SQL / PL-SQL', 'Redis', 'Backend', '실시간 / 메시징', '성능 / 부하 테스트',
-      'Frontend', 'HTML / CSS / JavaScript', 'React', 'Infra', 'Linux', 'AWS / EC2', 'Docker', 'GitHub Actions / CI-CD',
-      'ML', 'Machine Learning', '기타'
-    ]);
+    const builtIn = new Set(['Java','Java 기본','객체지향 / SOLID','디자인 패턴','Generic','함수형 / Lambda / Stream','컬렉션','JVM','동시성','입출력 / NIO','Spring','Spring Core / DI / AOP','JPA / MyBatis','MVC / REST API','Security / JWT / OAuth2','테스트 / 품질 관리','Spring AI','Database','Oracle / SQL / PL-SQL','Redis','Backend','실시간 / 메시징','성능 / 부하 테스트','Frontend','HTML / CSS / JavaScript','React','Infra','Linux','AWS / EC2','Docker','GitHub Actions / CI-CD','ML','Machine Learning','기타']);
     const custom = Array.from(category.options).map(option => option.value).filter(value => !builtIn.has(value));
     localStorage.setItem(categoryKey, JSON.stringify(custom));
   }
 
-  addCategory.addEventListener('click', () => {
-    newCategoryRow.hidden = false;
-    newCategory.focus();
-  });
-
+  addCategory.addEventListener('click', () => { newCategoryRow.hidden = false; newCategory.focus(); });
   confirmCategory.addEventListener('click', () => {
     const name = newCategory.value.trim();
-    if (!name) {
-      newCategory.focus();
-      return;
-    }
-    if (!addCategoryOption(name)) {
-      alert('이미 있는 카테고리입니다.');
-      newCategory.focus();
-      newCategory.select();
-      return;
-    }
-    saveCustomCategories();
-    newCategory.value = '';
-    newCategoryRow.hidden = true;
-    updatePreview();
+    if (!name) { newCategory.focus(); return; }
+    if (!addCategoryOption(name)) { alert('이미 있는 카테고리입니다.'); newCategory.focus(); newCategory.select(); return; }
+    saveCustomCategories(); newCategory.value = ''; newCategoryRow.hidden = true; updatePreview();
   });
-
-  cancelCategory.addEventListener('click', () => {
-    newCategory.value = '';
-    newCategoryRow.hidden = true;
-  });
-
-  newCategory.addEventListener('keydown', event => {
-    if (event.key === 'Enter') confirmCategory.click();
-    if (event.key === 'Escape') cancelCategory.click();
-  });
+  cancelCategory.addEventListener('click', () => { newCategory.value = ''; newCategoryRow.hidden = true; });
+  newCategory.addEventListener('keydown', event => { if (event.key === 'Enter') confirmCategory.click(); if (event.key === 'Escape') cancelCategory.click(); });
 
   document.querySelectorAll('.editor-toolbar button').forEach(button => button.addEventListener('click', () => {
     const action = button.dataset.action;
@@ -388,61 +337,42 @@ permalink: /write/
   [title, date, category, tags, body].forEach(input => input.addEventListener('input', updatePreview));
   category.addEventListener('change', updatePreview);
 
-  document.getElementById('save-draft').addEventListener('click', () => {
-    updatePreview();
-    alert('현재 작성 내용이 이 브라우저에 임시 저장되었습니다.');
-  });
+  document.getElementById('save-draft').addEventListener('click', () => { updatePreview(); alert('현재 작성 내용이 이 브라우저에 임시 저장되었습니다.'); });
 
   document.getElementById('download-post').addEventListener('click', () => {
     const postDate = date.value || new Date().toISOString().slice(0, 10);
     const safeTitle = title.value.trim();
     const slug = safeTitle.normalize('NFKC').toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '') || 'new-post';
     const tagList = tags.value.split(',').map(tag => tag.trim()).filter(Boolean);
-    if (!safeTitle) {
-      alert('게시글 제목을 입력해 주세요.');
-      title.focus();
-      return;
-    }
-    if (!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(postDate) || Number.isNaN(Date.parse(postDate))) {
-      alert('게시글 날짜를 올바르게 선택해 주세요.');
-      date.focus();
-      return;
-    }
-    if (!body.value.trim()) {
-      alert('게시글 본문을 입력해 주세요.');
-      body.focus();
-      return;
-    }
+    if (!safeTitle) { alert('게시글 제목을 입력해 주세요.'); title.focus(); return; }
+    if (!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(postDate) || Number.isNaN(Date.parse(postDate))) { alert('게시글 날짜를 올바르게 선택해 주세요.'); date.focus(); return; }
+    if (!body.value.trim()) { alert('게시글 본문을 입력해 주세요.'); body.focus(); return; }
     const inferred = classifyPost([safeTitle, tagList.join(' '), body.value].join(' '), category.value, '');
     const selectedMap = categoryMap[category.value];
-    const mapped = !selectedMap || selectedMap[0] === category.value
-      ? [inferred.category, inferred.section]
-      : selectedMap;
-    if (!mapped || !mapped[0] || !mapped[1]) {
-      alert('선택한 카테고리를 블로그 메뉴에서 찾을 수 없습니다. 기존 카테고리를 선택하거나 본문에 기술 키워드를 추가해 주세요.');
-      return;
-    }
+    const mapped = !selectedMap || selectedMap[0] === category.value ? [inferred.category, inferred.section] : selectedMap;
+    if (!mapped || !mapped[0] || !mapped[1]) { alert('선택한 카테고리를 블로그 메뉴에서 찾을 수 없습니다. 기존 카테고리를 선택하거나 본문에 기술 키워드를 추가해 주세요.'); return; }
     const quoteYaml = value => '"' + String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
-    const frontMatterLines = [
-      '---',
-      'layout: post',
-      'title: ' + quoteYaml(safeTitle),
-      'date: ' + postDate + ' 00:00:00 +0900',
-      'categories: [' + quoteYaml(mapped[0]) + ']',
-      'section: ' + mapped[1],
-      'tags: [' + tagList.map(quoteYaml).join(', ') + ']',
-      '---'
-    ];
-    // Front Matter 종료 구분선 뒤에는 반드시 빈 줄을 둔다.
-    // 빈 문자열을 filter(Boolean)으로 제거하면 본문 첫 줄과 ---가 붙을 수 있다.
+    const frontMatterLines = ['---','layout: post','title: ' + quoteYaml(safeTitle),'date: ' + postDate + ' 00:00:00 +0900','categories: [' + quoteYaml(mapped[0]) + ']','section: ' + mapped[1],'tags: [' + tagList.map(quoteYaml).join(', ') + ']','---'];
     const frontMatter = frontMatterLines.join('\n') + '\n\n';
-    const postBody = body.value.replace(/^\n+/, '');
+
+    // 사용자가 본문에 Front Matter를 실수로 붙여넣어도 제거하고,
+    // 다운로드 파일에는 생성된 Front Matter만 한 번 들어가도록 한다.
+    const stripLeadingFrontMatter = source => {
+      let cleaned = String(source || '').replace(/^\uFEFF/, '').trimStart();
+      let previous = null;
+      while (cleaned !== previous) {
+        previous = cleaned;
+        const match = cleaned.match(/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/);
+        if (!match) break;
+        cleaned = cleaned.slice(match[0].length).trimStart();
+      }
+      return cleaned;
+    };
+
+    const postBody = stripLeadingFrontMatter(body.value);
+    if (!postBody) { alert('게시글 본문을 입력해 주세요. Front Matter만 입력된 경우 본문을 추가해 주세요.'); body.focus(); return; }
     const markdown = frontMatter + postBody;
-    // 저장 전에 Jekyll Front Matter 구조를 검사해 잘못된 파일 다운로드를 차단한다.
-    if (!/^---\r?\n[\s\S]*?\r?\n---\r?\n\r?\n/.test(markdown)) {
-      alert('게시글 형식이 올바르지 않습니다. 다시 저장해 주세요.');
-      return;
-    }
+    if (!/^---\r?\n[\s\S]*?\r?\n---\r?\n\r?\n/.test(markdown)) { alert('게시글 형식이 올바르지 않습니다. 다시 저장해 주세요.'); return; }
     const blob = new Blob([markdown], {type: 'text/markdown;charset=utf-8'});
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -452,7 +382,6 @@ permalink: /write/
   });
 
   loadCustomCategories();
-
   const saved = localStorage.getItem(draftKey);
   if (saved) {
     try {
