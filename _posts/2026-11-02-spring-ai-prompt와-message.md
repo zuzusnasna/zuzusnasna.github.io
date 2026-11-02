@@ -1,14 +1,5 @@
 ---
 layout: post
-title: "Spring AI - Prompt와 Message"
-date: 2026-11-02 00:00:00 +0900
-categories: [Java]
-section: java-collections
-tags: [GitHub Actions와 CI/CD]
----
-
----
-layout: post
 title: "Spring AI Prompt와 Message"
 date: 2026-11-02 00:00:00 +0900
 categories: [Spring AI]
