@@ -4,7 +4,7 @@ title: "Spring AI RAG(검색 증강 생성)"
 date: 2026-11-02 00:00:00 +0900
 categories: ["Spring"]
 section: spring-ai
-tags: ["GitHub Actions와 CI/CD"]
+tags: ["Spring AI", "RAG", "검색 증강 생성", "Embedding", "VectorStore", "pgvector"]
 ---
 
 # Spring AI RAG(검색 증강 생성)
