@@ -4,15 +4,6 @@ title: "GitHub Actions와 CI/CD"
 date: 2026-11-02 00:00:00 +0900
 categories: [Infra]
 section: infra-cicd
-tags: [GitHub Actions와 CI/CD]
----
-
----
-layout: post
-title: "GitHub Actions와 CI/CD"
-date: 2026-11-02 00:00:00 +0900
-categories: [Infra]
-section: infra-cicd
 tags: [GitHub Actions, CI/CD, DevOps, Docker]
 ---
 
