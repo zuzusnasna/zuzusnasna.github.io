@@ -5,15 +5,17 @@ permalink: /write/
 ---
 <section class="write-page">
   <div class="write-head">
-    <div>
+    <div class="write-head-copy">
       <div class="eyebrow">POST EDITOR</div>
       <h1>개발 공부 기록 작성</h1>
-      <p>작성한 내용을 Markdown 글로 바로 저장할 수 있습니다. 카테고리를 선택하면 생성되는 MD 파일의 Jekyll 카테고리에 그대로 반영됩니다.</p>
+      <p>Markdown을 그대로 붙여넣으면 제목·날짜·태그를 자동으로 읽고 카테고리도 본문에서 자동 분류합니다.</p>
     </div>
     <div class="write-actions">
-      <button type="button" id="save-draft">임시 저장</button>
-      <button type="button" id="download-post" class="primary">Markdown 저장</button>
-      <p class="editor-help">다운로드한 파일을 저장소의 <code>_posts</code> 폴더에 업로드하고 <code>main</code>에 커밋하면 Actions가 검증·배포합니다. 카테고리와 하위 분류는 블로그 메뉴 기준으로 자동 지정됩니다.</p>
+      <div class="write-action-buttons">
+        <button type="button" id="save-draft">임시 저장</button>
+        <button type="button" id="download-post" class="primary">Markdown 저장</button>
+      </div>
+      <p class="editor-help">저장된 파일은 <code>_posts</code> 폴더에 업로드하면 됩니다. 카테고리 입력은 더 이상 필요하지 않습니다.</p>
     </div>
   </div>
 
@@ -21,58 +23,11 @@ permalink: /write/
     <section class="editor-panel">
       <div class="editor-meta">
         <input id="post-title" type="text" placeholder="게시글 제목">
-        <div class="editor-row">
-          <input id="post-date" type="date">
-          <div class="category-control">
-            <select id="post-category" aria-label="게시글 카테고리">
-              <option value="Java">Java</option>
-              <option value="Java 기본">Java 기본</option>
-              <option value="객체지향 / SOLID">객체지향 / SOLID</option>
-              <option value="디자인 패턴">디자인 패턴</option>
-              <option value="Generic">Generic</option>
-              <option value="함수형 / Lambda / Stream">함수형 / Lambda / Stream</option>
-              <option value="컬렉션">컬렉션</option>
-              <option value="JVM">JVM</option>
-              <option value="동시성">동시성</option>
-              <option value="입출력 / NIO">입출력 / NIO</option>
-              <option value="Spring">Spring</option>
-              <option value="Spring Core / DI / AOP">Spring Core / DI / AOP</option>
-              <option value="JPA / MyBatis">JPA / MyBatis</option>
-              <option value="MVC / REST API">MVC / REST API</option>
-              <option value="Security / JWT / OAuth2">Security / JWT / OAuth2</option>
-              <option value="테스트 / 품질 관리">테스트 / 품질 관리</option>
-              <option value="Spring AI">Spring AI</option>
-              <option value="Database">Database</option>
-              <option value="Oracle / SQL / PL-SQL">Oracle / SQL / PL-SQL</option>
-              <option value="Redis">Redis</option>
-              <option value="Backend">Backend</option>
-              <option value="실시간 / 메시징">실시간 / 메시징</option>
-              <option value="성능 / 부하 테스트">성능 / 부하 테스트</option>
-              <option value="Frontend">Frontend</option>
-              <option value="HTML / CSS / JavaScript">HTML / CSS / JavaScript</option>
-              <option value="React">React</option>
-              <option value="Infra">Infra</option>
-              <option value="Linux">Linux</option>
-              <option value="AWS / EC2">AWS / EC2</option>
-              <option value="Docker">Docker</option>
-              <option value="GitHub Actions / CI-CD">GitHub Actions / CI-CD</option>
-              <option value="ML">ML</option>
-              <option value="Machine Learning">Machine Learning</option>
-              <option value="기타">기타</option>
-            </select>
-            <button type="button" id="add-category" class="category-add">+ 카테고리 추가</button>
-          </div>
-        </div>
-        <div id="new-category-row" class="new-category-row" hidden>
-          <input id="new-category" type="text" placeholder="새 카테고리 이름">
-          <button type="button" id="confirm-category">추가</button>
-          <button type="button" id="cancel-category">취소</button>
-        </div>
+        <input id="post-date" type="date" aria-label="게시글 날짜">
         <input id="post-tags" type="text" placeholder="태그: Java, Spring, JPA">
-        <div class="markdown-upload">
-          <label for="markdown-file">기존 Markdown 파일 불러오기</label>
-          <input id="markdown-file" type="file" accept=".md,.markdown,text/markdown">
-          <small>기존 front matter와 제목·태그·본문을 읽어 홈페이지 카테고리로 자동 분류합니다.</small>
+        <div class="paste-guide">
+          <strong>Markdown 그대로 붙여넣기</strong>
+          <span>기존 .md 내용을 통째로 붙여넣어도 됩니다. Front Matter의 제목·날짜·태그를 자동으로 가져오고, 저장할 때 Front Matter는 본문에서 제거해 한 번만 생성합니다.</span>
         </div>
       </div>
 
@@ -86,7 +41,7 @@ permalink: /write/
         <button type="button" data-action="link">링크</button>
       </div>
 
-      <textarea id="post-body" spellcheck="false" placeholder="공부한 내용을 작성하세요.\n\n## 실행 흐름\n\n여기에 내용을 입력합니다.\n\n코드 블록도 버튼으로 넣을 수 있습니다."></textarea>
+      <textarea id="post-body" spellcheck="false" placeholder="Markdown 글 전체를 붙여넣거나 본문만 작성하세요.\n\n## 실행 흐름\n\n여기에 내용을 입력합니다."></textarea>
     </section>
 
     <section class="preview-panel">
@@ -96,8 +51,8 @@ permalink: /write/
   </div>
 
   <div class="write-note">
-    <strong>저장 방식</strong>
-    <span>기존 카테고리를 선택한 뒤 <b>Markdown 저장</b>을 누르세요. 생성된 <code>YYYY-MM-DD-제목.md</code> 파일을 저장소의 <code>_posts</code> 폴더에 업로드해 <code>main</code>에 커밋하면 Actions가 Front Matter와 메뉴 분류를 검사한 뒤 배포합니다. 새 사이드바 분류가 필요하면 메뉴에도 분류 ID를 먼저 추가해야 합니다.</span>
+    <strong>자동 처리</strong>
+    <span>Spring AI, Java, Database, Backend, Frontend, Infra, ML 및 하위 메뉴를 제목·태그·본문의 기술 키워드로 자동 분류합니다.</span>
   </div>
 </section>
 
@@ -105,28 +60,82 @@ permalink: /write/
 (() => {
   const title = document.getElementById('post-title');
   const date = document.getElementById('post-date');
-  const category = document.getElementById('post-category');
   const tags = document.getElementById('post-tags');
   const body = document.getElementById('post-body');
-  const markdownFile = document.getElementById('markdown-file');
   const preview = document.getElementById('post-preview');
-  const addCategory = document.getElementById('add-category');
-  const newCategoryRow = document.getElementById('new-category-row');
-  const newCategory = document.getElementById('new-category');
-  const confirmCategory = document.getElementById('confirm-category');
-  const cancelCategory = document.getElementById('cancel-category');
   const draftKey = 'zuzusnasna-study-draft';
-  const categoryKey = 'zuzusnasna-post-categories';
 
-  const today = new Date();
-  date.value = today.toISOString().slice(0, 10);
+  const now = new Date();
+  const localToday = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+  date.value = localToday.toISOString().slice(0, 10);
 
   function escapeHtml(value) {
-    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');
+    return String(value || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;');
+  }
+
+  function parseYamlValue(value) {
+    const text = String(value || '').trim();
+    if (!text) return '';
+    if (text.startsWith('[') && text.endsWith(']')) {
+      return text.slice(1, -1).split(',').map(item => item.trim().replace(/^['\"]|['\"]$/g, '')).filter(Boolean);
+    }
+    return text.replace(/^['\"]|['\"]$/g, '');
+  }
+
+  function readFrontMatter(source) {
+    const cleaned = String(source || '').replace(/^\uFEFF/, '').trimStart();
+    const match = cleaned.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+    if (!match) return null;
+    const data = {};
+    match[1].split(/\r?\n/).forEach(line => {
+      const separator = line.indexOf(':');
+      if (separator < 0) return;
+      data[line.slice(0, separator).trim()] = parseYamlValue(line.slice(separator + 1));
+    });
+    return { data, body: cleaned.slice(match[0].length).trimStart() };
+  }
+
+  function stripLeadingFrontMatter(source) {
+    let cleaned = String(source || '').replace(/^\uFEFF/, '').trimStart();
+    let previous = null;
+    while (cleaned !== previous) {
+      previous = cleaned;
+      const match = cleaned.match(/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/);
+      if (!match) break;
+      cleaned = cleaned.slice(match[0].length).trimStart();
+    }
+    return cleaned;
+  }
+
+  function normalizeDate(value) {
+    const match = String(value || '').match(/(\d{4}-\d{2}-\d{2})/);
+    return match ? match[1] : '';
+  }
+
+  function normalizeTags(value) {
+    if (Array.isArray(value)) return value.join(', ');
+    return String(value || '').replace(/^\[|\]$/g, '').split(',')
+      .map(v => v.trim().replace(/^['\"]|['\"]$/g, '')).filter(Boolean).join(', ');
+  }
+
+  function importMarkdown(source) {
+    const parsed = readFrontMatter(source);
+    if (!parsed) {
+      body.value = stripLeadingFrontMatter(source);
+      updatePreview(false);
+      return;
+    }
+    if (parsed.data.title) title.value = parsed.data.title;
+    if (parsed.data.date) date.value = normalizeDate(parsed.data.date) || date.value;
+    if (parsed.data.tags) tags.value = normalizeTags(parsed.data.tags);
+    body.value = parsed.body;
+    updatePreview(false);
   }
 
   function renderMarkdown(source) {
-    const lines = source.replace(/\r/g, '').split('\n');
+    const lines = stripLeadingFrontMatter(source).replace(/\r/g, '').split('\n');
     let html = '';
     let inCode = false;
     let code = [];
@@ -135,7 +144,7 @@ permalink: /write/
     const inline = text => escapeHtml(text)
       .replace(/`([^`]+)`/g, '<code>$1</code>')
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/<u>(.*?)<\/u>/g, '<u>$1</u>')
+      .replace(/__([^_]+)__/g, '<strong>$1</strong>')
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
     const closeList = () => { if (listOpen) { html += '</ul>'; listOpen = false; } };
@@ -162,238 +171,149 @@ permalink: /write/
       if (!line.trim()) return;
       html += '<p>' + inline(line) + '</p>';
     });
+
     closeList();
     if (inCode) html += '<pre><code>' + escapeHtml(code.join('\n')) + '</code></pre>';
     return html || '<p class="preview-empty">작성한 내용이 여기에 표시됩니다.</p>';
   }
 
-  function updatePreview() {
+  function updatePreview(save = true) {
     preview.innerHTML = renderMarkdown(body.value);
-    localStorage.setItem(draftKey, JSON.stringify({title: title.value, date: date.value, category: category.value, tags: tags.value, body: body.value}));
+    if (save) localStorage.setItem(draftKey, JSON.stringify({ title: title.value, date: date.value, tags: tags.value, body: body.value }));
   }
-
-  const categoryMap = {
-    'Java': ['Java', 'java-core'], 'Java 기본': ['Java', 'java-core'],
-    '객체지향 / SOLID': ['Java', 'java-oop'], '디자인 패턴': ['Java', 'java-pattern'],
-    'Generic': ['Java', 'java-generics'], '함수형 / Lambda / Stream': ['Java', 'java-functional'], '컬렉션': ['Java', 'java-collections'],
-    'JVM': ['Java', 'java-jvm'], '동시성': ['Java', 'java-concurrency'], '입출력 / NIO': ['Java', 'java-io'],
-    'Spring': ['Spring', 'spring-core'], 'Spring Core / DI / AOP': ['Spring', 'spring-core'],
-    'JPA / MyBatis': ['Spring', 'spring-data'], 'MVC / REST API': ['Spring', 'spring-web'],
-    'Security / JWT / OAuth2': ['Spring', 'spring-security'], '테스트 / 품질 관리': ['Spring', 'spring-testing'], 'Spring AI': ['Spring', 'spring-ai'],
-    'Database': ['Database', 'database-oracle'], 'Oracle / SQL / PL-SQL': ['Database', 'database-oracle'],
-    'Redis': ['Database', 'database-redis'], 'Backend': ['Backend', 'backend-performance'],
-    '실시간 / 메시징': ['Backend', 'backend-messaging'], '성능 / 부하 테스트': ['Backend', 'backend-performance'],
-    'Frontend': ['Frontend', 'frontend-html'], 'HTML / CSS / JavaScript': ['Frontend', 'frontend-html'],
-    'React': ['Frontend', 'frontend-react'], 'Infra': ['Infra', 'infra-linux'], 'Linux': ['Infra', 'infra-linux'],
-    'AWS / EC2': ['Infra', 'infra-aws'], 'Docker': ['Infra', 'infra-docker'],
-    'GitHub Actions / CI-CD': ['Infra', 'infra-cicd'], 'ML': ['ML', 'ml'], 'Machine Learning': ['ML', 'ml']
-  };
 
   const classifyRules = [
-    ['spring-ai','Spring',/\b(spring ai|spring-ai|spring ai alibaba|spring ai model|chatclient|prompttemplate|ollama|openai api|embedding|vector store|retrieval augmented generation|model context protocol|mcp|\brag\b)\b|생성형.?ai|벡터.?스토어/i],
-    ['java-jvm','Java',/\b(jvm|jit|gc|garbage collection|heap|metaspace|class loading|classloader)\b|가비지 컬렉션|클래스 로딩/i],
-    ['java-collections','Java',/\b(collection|arraylist|linkedlist|hashmap|hashset|treeset|deque|iterator|comparator|list|set|map)\b|컬렉션/i],
-    ['java-concurrency','Java',/\b(concurrency|synchronized|reentrantlock|executorservice|completablefuture|volatile|atomic|threadlocal|deadlock|thread|lock)\b|동시성|스레드/i],
-    ['java-io','Java',/\b(filechannel|nio|inputstream|outputstream|bufferedreader|bufferedinputstream|serialization)\b|입출력|직렬화/i],
-    ['java-pattern','Java',/\b(design pattern|singleton|strategy|factory|observer|command|decorator|adapter|facade|builder|prototype)\b|디자인.?패턴/i],
-    ['java-oop','Java',/\b(solid|oop|inheritance|composition|coupling|cohesion|abstract class)\b|객체지향|상속|다형성|캡슐화|추상화/i],
-    ['java-functional','Java',/\b(lambda|stream|functional programming)\b|람다|함수형/i],
-    ['java-generics','Java',/\bgeneric\b|제네릭/i],
-    ['spring-data','Spring',/\b(jpa|mybatis|hibernate|entitymanager|orm|fetch join)\b/i],
-    ['spring-security','Spring',/\b(spring security|jwt|oauth2|oauth|csrf|cors|filter chain)\b/i],
-    ['spring-testing','Spring',/\b(junit|mockito|mockmvc|integration test|test slice)\b|테스트|품질 관리/i],
-    ['spring-web','Spring',/\b(rest api|spring mvc|controller|http status|pagination|idempotency)\b|웹.?mvc/i],
-    ['spring-core','Spring',/\b(spring|di|ioc|aop|bean|applicationcontext|transaction|proxy)\b/i],
-    ['database-redis','Database',/\b(redis|sorted set|zset|pub.?sub)\b/i],
-    ['database-oracle','Database',/\b(oracle|sql|pl.?sql|cursor|procedure|trigger|job|query|index|execution plan|mysql|database)\b|데이터베이스|커서|프로시저|트리거/i],
-    ['backend-messaging','Backend',/\b(websocket|stomp|kafka|rabbitmq|message broker|pub.?sub|outbox)\b|실시간.?메시징/i],
-    ['backend-performance','Backend',/\b(k6|load test|stress test|performance|throughput|latency|benchmark)\b|부하.?테스트|성능/i],
-    ['frontend-react','Frontend',/\b(react|jsx|vite|react router)\b/i],
-    ['frontend-html','Frontend',/\b(html|css|javascript|typescript|dom|browser|frontend)\b|프론트엔드/i],
-    ['infra-docker','Infra',/\b(docker|docker compose|container|image layer)\b/i],
-    ['infra-aws','Infra',/\b(aws|ec2|s3|rds|vpc|iam|cloudwatch)\b/i],
-    ['infra-cicd','Infra',/\b(github actions|ci.?cd|deployment pipeline|workflow)\b|배포 자동화/i],
-    ['infra-linux','Infra',/\b(linux|ubuntu|nginx|systemd|shell|bash)\b/i],
-    ['ml','ML',/\b(machine learning|scikit.?learn|pandas|numpy|classification|regression|decision tree|knn|svm)\b|머신러닝|기계학습/i]
+    ['spring-ai', 'Spring', /\b(spring ai|spring-ai|chatclient|prompttemplate|ollama|openai api|embedding|vector store|retrieval augmented generation|model context protocol|mcp|rag|chat memory|chatmemory|chatmemoryrepository|messagechatmemoryadvisor)\b|생성형.?ai|벡터.?스토어|대화 기억/i],
+    ['java-jvm', 'Java', /\b(jvm|jit|gc|garbage collection|heap|metaspace|class loading|classloader)\b|가비지 컬렉션|클래스 로딩/i],
+    ['java-collections', 'Java', /\b(collection|arraylist|linkedlist|hashmap|hashset|treeset|deque|iterator|comparator)\b|컬렉션/i],
+    ['java-concurrency', 'Java', /\b(concurrency|synchronized|reentrantlock|executorservice|completablefuture|volatile|atomic|threadlocal|deadlock|thread|lock)\b|동시성|스레드/i],
+    ['java-io', 'Java', /\b(filechannel|nio|inputstream|outputstream|bufferedreader|bufferedinputstream|serialization)\b|입출력|직렬화/i],
+    ['java-pattern', 'Java', /\b(design pattern|singleton|strategy|factory|observer|command|decorator|adapter|facade|builder|prototype)\b|디자인.?패턴/i],
+    ['java-oop', 'Java', /\b(solid|oop|inheritance|composition|coupling|cohesion|abstract class)\b|객체지향|상속|다형성|캡슐화|추상화/i],
+    ['java-functional', 'Java', /\b(lambda|stream|functional programming)\b|람다|함수형/i],
+    ['java-generics', 'Java', /\bgeneric\b|제네릭/i],
+    ['spring-data', 'Spring', /\b(jpa|mybatis|hibernate|entitymanager|orm|fetch join)\b/i],
+    ['spring-security', 'Spring', /\b(spring security|jwt|oauth2|oauth|csrf|cors|filter chain)\b/i],
+    ['spring-testing', 'Spring', /\b(junit|mockito|mockmvc|integration test|test slice)\b|테스트|품질 관리/i],
+    ['spring-web', 'Spring', /\b(rest api|spring mvc|controller|http status|pagination|idempotency)\b|웹.?mvc/i],
+    ['spring-core', 'Spring', /\b(spring|di|ioc|aop|bean|applicationcontext|transaction|proxy)\b/i],
+    ['database-redis', 'Database', /\b(redis|sorted set|zset|pub.?sub)\b/i],
+    ['database-oracle', 'Database', /\b(oracle|sql|pl.?sql|cursor|procedure|trigger|job|query|index|execution plan|mysql|database)\b|데이터베이스|쿼리|테이블/i],
+    ['backend-messaging', 'Backend', /\b(websocket|stomp|kafka|rabbitmq|message broker|pub.?sub|outbox)\b|실시간.?메시징/i],
+    ['backend-performance', 'Backend', /\b(k6|load test|performance|throughput|latency|p95|benchmark)\b|성능|부하 테스트/i],
+    ['frontend-react', 'Frontend', /\b(react|vite|jsx|react router)\b/i],
+    ['frontend-html', 'Frontend', /\b(html|css|javascript|js|dom)\b|프론트엔드/i],
+    ['infra-cicd', 'Infra', /\b(github actions|ci\/cd|cicd|continuous integration|deployment pipeline)\b|배포 자동화/i],
+    ['infra-docker', 'Infra', /\b(docker|container|docker compose)\b/i],
+    ['infra-aws', 'Infra', /\b(aws|ec2|amazon web services)\b/i],
+    ['infra-linux', 'Infra', /\b(linux|ubuntu|shell|bash)\b/i],
+    ['ml', 'ML', /\b(machine learning|knn|logistic regression|decision tree|random forest|svc|scikit.?learn|classification)\b|머신러닝|분류 모델/i]
   ];
 
-  function classifyPost(text, currentCategory, currentSection) {
-    const normalized = String(currentCategory || '').trim().toLowerCase();
-    const roots = ['java','spring','database','backend','frontend','infra','ml'];
-    const validSections = new Map();
-    Object.values(categoryMap).forEach(([parent, section]) => { if (section) validSections.set(section, parent.toLowerCase()); });
-    const section = String(currentSection || '').trim().toLowerCase();
-    if (validSections.has(section) && (!normalized || validSections.get(section) === normalized)) {
-      const mapped = Object.values(categoryMap).find(item => item[1] === section);
-      return {category: mapped[0], section};
+  function classifyPost() {
+    const text = [title.value, tags.value, body.value].join(' ').replace(/\s+/g, ' ').trim();
+    for (const [section, parent, rule] of classifyRules) {
+      if (rule.test(text)) return [parent, section];
     }
-    const selected = Object.entries(categoryMap).find(([label]) => label.toLowerCase() === normalized);
-    if (selected && !roots.includes(normalized) && selected[1][1]) return {category: selected[1][0], section: selected[1][1]};
-    const source = (text + ' ' + normalized).toLowerCase();
-    for (const [id, parent, pattern] of classifyRules) if (pattern.test(source)) return {category: parent, section: id};
-    const rootMap = {java:['Java','java-core'], spring:['Spring','spring-core'], database:['Database','database-oracle'], backend:['Backend','backend-performance'], frontend:['Frontend','frontend-html'], infra:['Infra','infra-linux'], ml:['ML','ml'], 'machine learning':['ML','ml']};
-    const root = rootMap[normalized];
-    return root ? {category: root[0], section: root[1]} : {category:'', section:''};
+    return ['', ''];
   }
 
-  function parseMarkdownFile(markdown) {
-    const match = markdown.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/);
-    if (!match) return {meta:{}, content:markdown};
-    const meta = {};
-    match[1].split(/\r?\n/).forEach(line => {
-      const item = line.match(/^([\w-]+):\s*(.*)$/);
-      if (!item) return;
-      const value = item[2].trim();
-      if (value.startsWith('[') && value.endsWith(']')) meta[item[1]] = value.slice(1,-1).split(',').map(v => v.trim().replace(/^['"]|['"]$/g,''));
-      else meta[item[1]] = value.replace(/^['"]|['"]$/g,'');
-    });
-    return {meta, content:markdown.slice(match[0].length)};
+  function yamlQuote(value) {
+    return '"' + String(value || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
   }
 
-  markdownFile.addEventListener('change', () => {
-    const file = markdownFile.files && markdownFile.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const parsed = parseMarkdownFile(String(reader.result || ''));
-      const meta = parsed.meta;
-      const importedTitle = String(meta.title || file.name.replace(/\.(md|markdown)$/i,''));
-      const importedTags = Array.isArray(meta.tags) ? meta.tags : (meta.tags ? [meta.tags] : []);
-      const importedCategories = Array.isArray(meta.categories) ? meta.categories : (meta.categories ? [meta.categories] : []);
-      const allText = [importedTitle, importedTags.join(' '), importedCategories.join(' '), parsed.content].join(' ');
-      const inferred = classifyPost(allText, importedCategories[0] || '', meta.section || '');
-      const inferredOption = Object.entries(categoryMap).find(([, value]) => value[0] === inferred.category && value[1] === inferred.section);
-      title.value = importedTitle;
-      const dateMatch = String(meta.date || '').match(/\d{4}-\d{2}-\d{2}/);
-      if (dateMatch) date.value = dateMatch[0];
-      const categoryLabel = inferredOption ? inferredOption[0] : inferred.category;
-      if (!Array.from(category.options).some(option => option.value === categoryLabel)) addCategoryOption(categoryLabel, false);
-      category.value = categoryLabel;
-      tags.value = importedTags.join(', ');
-      body.value = parsed.content.trim();
+  function makeFrontMatter() {
+    const [parent, section] = classifyPost();
+    const tagList = tags.value.split(',').map(tag => tag.trim()).filter(Boolean);
+    const safeParent = parent || 'Spring';
+    const safeSection = section || 'spring-core';
+    const lines = [
+      '---',
+      'layout: post',
+      'title: ' + yamlQuote(title.value.trim()),
+      'date: ' + date.value + ' 00:00:00 +0900',
+      'categories: [' + yamlQuote(safeParent) + ']',
+      'section: ' + safeSection,
+      'tags: [' + tagList.map(yamlQuote).join(', ') + ']',
+      '---',
+      ''
+    ];
+    return { text: lines.join('\n'), parent: safeParent, section: safeSection };
+  }
+
+  function slugify(value) {
+    return String(value || 'post').trim().toLowerCase()
+      .replace(/[^a-z0-9가-힣]+/gi, '-')
+      .replace(/^-+|-+$/g, '') || 'post';
+  }
+
+  document.querySelectorAll('.editor-toolbar button').forEach(button => {
+    button.addEventListener('click', () => {
+      const action = button.dataset.action;
+      const start = body.selectionStart;
+      const end = body.selectionEnd;
+      const selected = body.value.slice(start, end);
+      let replacement = selected;
+      if (action === 'bold') replacement = '**' + (selected || '강조할 내용') + '**';
+      if (action === 'underline') replacement = '<u>' + (selected || '밑줄 내용') + '</u>';
+      if (action === 'heading') replacement = '## ' + (selected || '제목');
+      if (action === 'code') replacement = '```java\n' + (selected || '코드') + '\n```';
+      if (action === 'quote') replacement = '> ' + (selected || '인용 내용');
+      if (action === 'list') replacement = (selected || '목록 항목').split('\n').map(line => '- ' + line.replace(/^[-*]\s+/, '')).join('\n');
+      if (action === 'link') replacement = '[' + (selected || '링크') + '](https://)';
+      body.setRangeText(replacement, start, end, 'end');
+      body.focus();
       updatePreview();
-      alert('Markdown 파일을 불러왔습니다. 자동 분류: ' + inferred.category + ' / ' + inferred.section);
-    };
-    reader.onerror = () => alert('Markdown 파일을 읽지 못했습니다.');
-    reader.readAsText(file, 'UTF-8');
+    });
   });
 
-  function insertAround(before, after = before, placeholder = '내용') {
-    const start = body.selectionStart;
-    const end = body.selectionEnd;
-    const selected = body.value.slice(start, end) || placeholder;
-    body.setRangeText(before + selected + after, start, end, 'select');
-    body.focus();
+  body.addEventListener('paste', event => {
+    const pasted = event.clipboardData?.getData('text/plain') || '';
+    if (!/^\s*---\r?\n/.test(pasted)) return;
+    event.preventDefault();
+    importMarkdown(pasted);
+  });
+
+  [title, date, tags, body].forEach(input => input.addEventListener('input', () => updatePreview()));
+
+  document.getElementById('save-draft').addEventListener('click', () => {
     updatePreview();
-  }
-
-  function addCategoryOption(name, selectIt = true) {
-    const trimmed = name.trim();
-    if (!trimmed) return false;
-    const exists = Array.from(category.options).some(option => option.value.toLowerCase() === trimmed.toLowerCase());
-    if (exists) { if (selectIt) category.value = trimmed; return false; }
-    const option = document.createElement('option');
-    option.value = trimmed;
-    option.textContent = trimmed;
-    category.appendChild(option);
-    if (selectIt) category.value = trimmed;
-    return true;
-  }
-
-  function loadCustomCategories() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(categoryKey) || '[]');
-      if (Array.isArray(saved)) saved.forEach(name => addCategoryOption(String(name), false));
-    } catch (_) {}
-  }
-
-  function saveCustomCategories() {
-    const builtIn = new Set(['Java','Java 기본','객체지향 / SOLID','디자인 패턴','Generic','함수형 / Lambda / Stream','컬렉션','JVM','동시성','입출력 / NIO','Spring','Spring Core / DI / AOP','JPA / MyBatis','MVC / REST API','Security / JWT / OAuth2','테스트 / 품질 관리','Spring AI','Database','Oracle / SQL / PL-SQL','Redis','Backend','실시간 / 메시징','성능 / 부하 테스트','Frontend','HTML / CSS / JavaScript','React','Infra','Linux','AWS / EC2','Docker','GitHub Actions / CI-CD','ML','Machine Learning','기타']);
-    const custom = Array.from(category.options).map(option => option.value).filter(value => !builtIn.has(value));
-    localStorage.setItem(categoryKey, JSON.stringify(custom));
-  }
-
-  addCategory.addEventListener('click', () => { newCategoryRow.hidden = false; newCategory.focus(); });
-  confirmCategory.addEventListener('click', () => {
-    const name = newCategory.value.trim();
-    if (!name) { newCategory.focus(); return; }
-    if (!addCategoryOption(name)) { alert('이미 있는 카테고리입니다.'); newCategory.focus(); newCategory.select(); return; }
-    saveCustomCategories(); newCategory.value = ''; newCategoryRow.hidden = true; updatePreview();
+    alert('현재 작성 내용을 브라우저에 임시 저장했습니다.');
   });
-  cancelCategory.addEventListener('click', () => { newCategory.value = ''; newCategoryRow.hidden = true; });
-  newCategory.addEventListener('keydown', event => { if (event.key === 'Enter') confirmCategory.click(); if (event.key === 'Escape') cancelCategory.click(); });
-
-  document.querySelectorAll('.editor-toolbar button').forEach(button => button.addEventListener('click', () => {
-    const action = button.dataset.action;
-    if (action === 'bold') insertAround('**', '**', '강조할 내용');
-    if (action === 'underline') insertAround('<u>', '</u>', '밑줄을 표시할 내용');
-    if (action === 'heading') insertAround('## ', '', '제목');
-    if (action === 'code') insertAround('```java\n', '\n```', 'System.out.println("hello");');
-    if (action === 'quote') insertAround('> ', '', '인용 내용');
-    if (action === 'list') insertAround('- ', '', '목록 내용');
-    if (action === 'link') insertAround('[', '](https://example.com)', '링크 텍스트');
-  }));
-
-  [title, date, category, tags, body].forEach(input => input.addEventListener('input', updatePreview));
-  category.addEventListener('change', updatePreview);
-
-  document.getElementById('save-draft').addEventListener('click', () => { updatePreview(); alert('현재 작성 내용이 이 브라우저에 임시 저장되었습니다.'); });
 
   document.getElementById('download-post').addEventListener('click', () => {
-    const postDate = date.value || new Date().toISOString().slice(0, 10);
-    const safeTitle = title.value.trim();
-    const slug = safeTitle.normalize('NFKC').toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '') || 'new-post';
-    const tagList = tags.value.split(',').map(tag => tag.trim()).filter(Boolean);
-    if (!safeTitle) { alert('게시글 제목을 입력해 주세요.'); title.focus(); return; }
-    if (!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(postDate) || Number.isNaN(Date.parse(postDate))) { alert('게시글 날짜를 올바르게 선택해 주세요.'); date.focus(); return; }
+    title.value = title.value.trim();
+    body.value = stripLeadingFrontMatter(body.value);
+    if (!title.value) { alert('게시글 제목을 입력해 주세요.'); title.focus(); return; }
+    if (!date.value) { alert('게시글 날짜를 입력해 주세요.'); date.focus(); return; }
     if (!body.value.trim()) { alert('게시글 본문을 입력해 주세요.'); body.focus(); return; }
-    const inferred = classifyPost([safeTitle, tagList.join(' '), body.value].join(' '), category.value, '');
-    const selectedMap = categoryMap[category.value];
-    const mapped = !selectedMap || selectedMap[0] === category.value ? [inferred.category, inferred.section] : selectedMap;
-    if (!mapped || !mapped[0] || !mapped[1]) { alert('선택한 카테고리를 블로그 메뉴에서 찾을 수 없습니다. 기존 카테고리를 선택하거나 본문에 기술 키워드를 추가해 주세요.'); return; }
-    const quoteYaml = value => '"' + String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
-    const frontMatterLines = ['---','layout: post','title: ' + quoteYaml(safeTitle),'date: ' + postDate + ' 00:00:00 +0900','categories: [' + quoteYaml(mapped[0]) + ']','section: ' + mapped[1],'tags: [' + tagList.map(quoteYaml).join(', ') + ']','---'];
-    const frontMatter = frontMatterLines.join('\n') + '\n\n';
 
-    // 사용자가 본문에 Front Matter를 실수로 붙여넣어도 제거하고,
-    // 다운로드 파일에는 생성된 Front Matter만 한 번 들어가도록 한다.
-    const stripLeadingFrontMatter = source => {
-      let cleaned = String(source || '').replace(/^\uFEFF/, '').trimStart();
-      let previous = null;
-      while (cleaned !== previous) {
-        previous = cleaned;
-        const match = cleaned.match(/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/);
-        if (!match) break;
-        cleaned = cleaned.slice(match[0].length).trimStart();
-      }
-      return cleaned;
-    };
-
-    const postBody = stripLeadingFrontMatter(body.value);
-    if (!postBody) { alert('게시글 본문을 입력해 주세요. Front Matter만 입력된 경우 본문을 추가해 주세요.'); body.focus(); return; }
-    const markdown = frontMatter + postBody;
-    if (!/^---\r?\n[\s\S]*?\r?\n---\r?\n\r?\n/.test(markdown)) { alert('게시글 형식이 올바르지 않습니다. 다시 저장해 주세요.'); return; }
-    const blob = new Blob([markdown], {type: 'text/markdown;charset=utf-8'});
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = postDate + '-' + slug + '.md';
-    link.click();
-    URL.revokeObjectURL(link.href);
+    const frontMatter = makeFrontMatter();
+    const markdown = frontMatter.text + body.value.trim() + '\n';
+    const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = date.value + '-' + slugify(title.value) + '.md';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+    localStorage.removeItem(draftKey);
+    alert('Markdown 파일을 저장했습니다. 자동 분류: ' + frontMatter.parent + ' / ' + frontMatter.section);
   });
 
-  loadCustomCategories();
   const saved = localStorage.getItem(draftKey);
   if (saved) {
     try {
-      const draft = JSON.parse(saved);
-      title.value = draft.title || '';
-      date.value = draft.date || date.value;
-      if (draft.category && !Array.from(category.options).some(option => option.value === draft.category)) addCategoryOption(draft.category, false);
-      category.value = draft.category || 'Java';
-      tags.value = draft.tags || '';
-      body.value = draft.body || '';
+      const data = JSON.parse(saved);
+      if (data.title) title.value = data.title;
+      if (data.date) date.value = data.date;
+      if (data.tags) tags.value = data.tags;
+      if (data.body) body.value = data.body;
     } catch (_) {}
   }
-  updatePreview();
+
+  updatePreview(false);
 })();
 </script>
