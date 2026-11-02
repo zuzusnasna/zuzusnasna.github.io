@@ -2,15 +2,6 @@
 layout: post
 title: "Spring AI 대화 기억(Chat Memory)"
 date: 2026-11-02 00:00:00 +0900
-categories: ["Spring"]
-section: spring-ai
-tags: ["GitHub Actions와 CI/CD"]
----
-
----
-layout: post
-title: "Spring AI 대화 기억(Chat Memory)"
-date: 2026-11-02 00:00:00 +0900
 categories: [Spring AI]
 section: spring-ai
 tags: [Spring AI, Chat Memory, ChatMemory, ChatMemoryRepository, RDBMS, VectorStore]
