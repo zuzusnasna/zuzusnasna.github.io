@@ -182,7 +182,7 @@ permalink: /write/
     let value = line.trim();
     if (value.startsWith('|')) value = value.slice(1);
     if (value.endsWith('|')) value = value.slice(0, -1);
-    return value.split(/(?<!\\\\)\\|/).map(cell => cell.trim().replace(/\\\\\\|/g, '|'));
+    return value.split(/(?<!\\)\|/).map(cell => cell.trim().replace(/\\\|/g, '|'));
   };
 
   const isTableDivider = line => {
@@ -191,14 +191,13 @@ permalink: /write/
   };
 
   function render(source) {
-    const lines = String(source || '').replace(/\\r/g,'').split('\\n');
+    const lines = String(source || '').replace(/\r/g,'').split('\n');
     let html='', code=[], inCode=false, list=false;
     const close=()=>{if(list){html+='</ul>';list=false;}};
     for(let i=0;i<lines.length;i++){
       const line = lines[i];
-      if(line.trim().startsWith('```')){if(inCode){html+='<pre><code>'+escapeHtml(code.join('\\n'))+'</code></pre>';code=[];inCode=false;}else{close();inCode=true;}continue;}
+      if(line.trim().startsWith('\`\`\`')){if(inCode){html+='<pre><code>'+escapeHtml(code.join('\n'))+'</code></pre>';code=[];inCode=false;}else{close();inCode=true;}continue;}
       if(inCode){code.push(line);continue;}
-
       if(i + 1 < lines.length && line.includes('|') && isTableDivider(lines[i + 1])) {
         close();
         const headers = splitTableRow(line);
@@ -206,7 +205,7 @@ permalink: /write/
         const align = dividers.map(cell => cell.startsWith(':') && cell.endsWith(':') ? 'center' : cell.endsWith(':') ? 'right' : 'left');
         html += '<table><thead><tr>' + headers.map((cell,index) => '<th style="text-align:'+(align[index] || 'left')+'">'+inline(cell)+'</th>').join('') + '</tr></thead><tbody>';
         i += 2;
-        while(i < lines.length && lines[i].trim() && lines[i].includes('|') && !lines[i].trim().startsWith('```')) {
+        while(i < lines.length && lines[i].trim() && lines[i].includes('|') && !lines[i].trim().startsWith('\`\`\`')) {
           const cells = splitTableRow(lines[i]);
           html += '<tr>' + headers.map((_,index) => '<td style="text-align:'+(align[index] || 'left')+'">'+inline(cells[index] || '')+'</td>').join('') + '</tr>';
           i++;
@@ -215,13 +214,12 @@ permalink: /write/
         i--;
         continue;
       }
-
-      if(/^###\\s+/.test(line)){close();html+='<h3>'+inline(line.replace(/^###\\s+/,''))+'</h3>';continue;}
-      if(/^##\\s+/.test(line)){close();html+='<h2>'+inline(line.replace(/^##\\s+/,''))+'</h2>';continue;}
-      if(/^#\\s+/.test(line)){close();html+='<h2>'+inline(line.replace(/^#\\s+/,''))+'</h2>';continue;}
-      if(/^[-*]\\s+/.test(line)){if(!list){html+='<ul>';list=true;}html+='<li>'+inline(line.replace(/^[-*]\\s+/,''))+'</li>';continue;}
+      if(/^###\s+/.test(line)){close();html+='<h3>'+inline(line.replace(/^###\s+/,''))+'</h3>';continue;}
+      if(/^##\s+/.test(line)){close();html+='<h2>'+inline(line.replace(/^##\s+/,''))+'</h2>';continue;}
+      if(/^#\s+/.test(line)){close();html+='<h2>'+inline(line.replace(/^#\s+/,''))+'</h2>';continue;}
+      if(/^[-*]\s+/.test(line)){if(!list){html+='<ul>';list=true;}html+='<li>'+inline(line.replace(/^[-*]\s+/,''))+'</li>';continue;}
       close();
-      if(/^>\\s?/.test(line)){html+='<blockquote>'+inline(line.replace(/^>\\s?/,''))+'</blockquote>';continue;}
+      if(/^>\s?/.test(line)){html+='<blockquote>'+inline(line.replace(/^>\s?/,''))+'</blockquote>';continue;}
       if(line.trim()) html+='<p>'+inline(line)+'</p>';
     }
     close();
