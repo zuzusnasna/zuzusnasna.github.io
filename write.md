@@ -4,7 +4,7 @@ title: 글쓰기
 permalink: /write/
 ---
 <style>
-.write-page{max-width:1240px;margin:0 auto}.write-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;padding:20px 0 28px;border-bottom:1px solid var(--line)}.write-head h1{margin:6px 0 8px;font-size:clamp(32px,4vw,48px);letter-spacing:-.055em;line-height:1.2}.write-head p{margin:0;color:var(--muted);font-size:14px}.write-actions{flex:0 0 auto}.write-action-buttons{display:flex;gap:8px}.write-actions button{border:1px solid #d9dee4;background:#fff;color:#3f4750;padding:10px 16px;border-radius:5px;font:inherit;font-size:13px;cursor:pointer}.write-actions .primary{background:var(--accent);border-color:var(--accent);color:#fff}.write-actions button:hover{filter:brightness(.97)}.editor-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:22px;align-items:stretch}.editor-panel,.preview-panel{min-width:0;background:#fff;border:1px solid #dfe3e8;border-radius:7px;overflow:hidden}.editor-meta{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:12px;padding:15px 18px;border-bottom:1px solid var(--line);background:#fafbfc}.meta-item{min-width:0}.meta-item label{display:block;margin-bottom:4px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;color:#9299a2}.meta-value{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:#30363d}.meta-tags{grid-column:1/-1;white-space:normal;line-height:1.6;color:#6d747e}.editor-toolbar{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line);background:#f7f8fa}.editor-toolbar button{min-width:36px;height:34px;padding:5px 9px;border:1px solid #d9dee4;background:#fff;border-radius:4px;color:#3f4750;font:inherit;font-size:12px;cursor:pointer}.editor-toolbar button:hover{border-color:#aeb7c2;background:#f0f2f5}.editor-panel textarea{display:block;width:100%;height:690px;resize:vertical;border:0;outline:0;padding:22px;font-family:'IBM Plex Mono',monospace;font-size:14px;line-height:1.85;color:#30363d;background:#fff}.editor-panel textarea::placeholder{color:#a3aab3}.paste-hint{padding:10px 18px;border-bottom:1px solid var(--line);font-size:11px;color:#858c95;background:#fff}.preview-panel{padding:0 22px 28px}.preview-label{padding:13px 0 11px;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:#707984}.preview-panel .post-content{margin-top:28px;font-size:15px;line-height:1.95}.preview-panel .post-content h2{margin-top:38px}.preview-panel .post-content pre{overflow:auto}.write-note{margin-top:14px;padding:13px 16px;border:1px solid var(--line);background:#fff;color:#707881;font-size:11px}.write-note strong{color:#4c545d}.status{margin-top:9px;font-size:11px;color:#737b86;min-height:18px}.status.ok{color:#28754b}.status.error{color:#b43d3d}.preview-empty{color:#9aa1aa}.post-content a{color:var(--accent)}.preview-panel .post-content table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px;line-height:1.65;display:block;overflow-x:auto}.preview-panel .post-content th,.preview-panel .post-content td{padding:10px 12px;border:1px solid #dfe3e8;text-align:left;white-space:normal}.preview-panel .post-content th{background:#f5f7f9;font-weight:650;color:#30363d}.preview-panel .post-content tbody tr:nth-child(even){background:#fafbfc}
+.write-page{max-width:1240px;margin:0 auto}.write-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;padding:20px 0 28px;border-bottom:1px solid var(--line)}.write-head h1{margin:6px 0 8px;font-size:clamp(32px,4vw,48px);letter-spacing:-.055em;line-height:1.2}.write-head p{margin:0;color:var(--muted);font-size:14px}.write-actions{flex:0 0 auto}.write-action-buttons{display:flex;gap:8px}.write-actions button{border:1px solid #d9dee4;background:#fff;color:#3f4750;padding:10px 16px;border-radius:5px;font:inherit;font-size:13px;cursor:pointer}.write-actions .primary{background:var(--accent);border-color:var(--accent);color:#fff}.write-actions button:hover{filter:brightness(.97)}.editor-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:22px;align-items:stretch}.editor-panel,.preview-panel{min-width:0;background:#fff;border:1px solid #dfe3e8;border-radius:7px;overflow:hidden}.editor-meta{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:12px;padding:15px 18px;border-bottom:1px solid var(--line);background:#fafbfc}.meta-item{min-width:0}.meta-item label{display:block;margin-bottom:4px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;color:#9299a2}.meta-value{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:#30363d}.meta-tags{grid-column:1/-1;white-space:normal;line-height:1.6;color:#6d747e}.editor-toolbar{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line);background:#f7f8fa}.editor-toolbar button{min-width:36px;height:34px;padding:5px 9px;border:1px solid #d9dee4;background:#fff;border-radius:4px;color:#3f4750;font:inherit;font-size:12px;cursor:pointer}.editor-toolbar button:hover{border-color:#aeb7c2;background:#f0f2f5}.editor-panel textarea{display:block;width:100%;height:690px;resize:vertical;border:0;outline:0;padding:22px;font-family:'IBM Plex Mono',monospace;font-size:14px;line-height:1.85;color:#30363d;background:#fff}.editor-panel textarea::placeholder{color:#a3aab3}.paste-hint{padding:10px 18px;border-bottom:1px solid var(--line);font-size:11px;color:#858c95;background:#fff}.preview-panel{padding:0 22px 28px}.preview-label{padding:13px 0 11px;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:#707984}.preview-panel .post-content{margin-top:28px;font-size:15px;line-height:1.95}.preview-panel .post-content h2{margin-top:38px}.preview-panel .post-content pre{overflow:auto}.write-note{margin-top:14px;padding:13px 16px;border:1px solid var(--line);background:#fff;color:#707881;font-size:11px}.write-note strong{color:#4c545d}.status{margin-top:9px;font-size:11px;color:#737b86;min-height:18px}.status.ok{color:#28754b}.status.error{color:#b43d3d}.preview-empty{color:#9aa1aa}.post-content a{color:var(--accent)}.preview-panel .post-content table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px;line-height:1.65;display:block;overflow-x:auto}.preview-panel .post-content th,.preview-panel .post-content td{min-width:90px}.preview-panel .post-content th,.preview-panel .post-content td{padding:10px 12px;border:1px solid #dfe3e8;text-align:left;white-space:normal}.preview-panel .post-content th{background:#f5f7f9;font-weight:650;color:#30363d}.preview-panel .post-content tbody tr:nth-child(even){background:#fafbfc}
 @media(max-width:900px){.write-head{display:block}.write-actions{margin-top:18px}.editor-grid{grid-template-columns:1fr}.editor-panel textarea{height:560px}.preview-panel{min-height:400px}}
 @media(max-width:600px){.write-page{width:100%}.write-head h1{font-size:31px}.write-action-buttons{display:grid;grid-template-columns:1fr 1fr}.write-actions button{width:100%}.editor-meta{grid-template-columns:1fr}.meta-tags{grid-column:auto}.editor-panel textarea{height:480px;padding:17px;font-size:13px}}
 </style>
@@ -54,6 +54,8 @@ permalink: /write/
   <div class="write-note"><strong>자동 처리</strong> · Spring AI, Java, Database, Backend, Frontend, Infra, ML 및 세부 카테고리를 제목·태그·본문 키워드로 자동 분류합니다.</div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
 <script>
 (() => {
   const body = document.getElementById('post-body');
@@ -191,39 +193,20 @@ permalink: /write/
   };
 
   function render(source) {
-    const lines = String(source || '').replace(/\r/g,'').split('\n');
-    let html='', code=[], inCode=false, list=false;
-    const close=()=>{if(list){html+='</ul>';list=false;}};
-    for(let i=0;i<lines.length;i++){
-      const line = lines[i];
-      if(line.trim().startsWith('\`\`\`')){if(inCode){html+='<pre><code>'+escapeHtml(code.join('\n'))+'</code></pre>';code=[];inCode=false;}else{close();inCode=true;}continue;}
-      if(inCode){code.push(line);continue;}
-      if(i + 1 < lines.length && line.includes('|') && isTableDivider(lines[i + 1])) {
-        close();
-        const headers = splitTableRow(line);
-        const dividers = splitTableRow(lines[i + 1]);
-        const align = dividers.map(cell => cell.startsWith(':') && cell.endsWith(':') ? 'center' : cell.endsWith(':') ? 'right' : 'left');
-        html += '<table><thead><tr>' + headers.map((cell,index) => '<th style="text-align:'+(align[index] || 'left')+'">'+inline(cell)+'</th>').join('') + '</tr></thead><tbody>';
-        i += 2;
-        while(i < lines.length && lines[i].trim() && lines[i].includes('|') && !lines[i].trim().startsWith('\`\`\`')) {
-          const cells = splitTableRow(lines[i]);
-          html += '<tr>' + headers.map((_,index) => '<td style="text-align:'+(align[index] || 'left')+'">'+inline(cells[index] || '')+'</td>').join('') + '</tr>';
-          i++;
-        }
-        html += '</tbody></table>';
-        i--;
-        continue;
-      }
-      if(/^###\s+/.test(line)){close();html+='<h3>'+inline(line.replace(/^###\s+/,''))+'</h3>';continue;}
-      if(/^##\s+/.test(line)){close();html+='<h2>'+inline(line.replace(/^##\s+/,''))+'</h2>';continue;}
-      if(/^#\s+/.test(line)){close();html+='<h2>'+inline(line.replace(/^#\s+/,''))+'</h2>';continue;}
-      if(/^[-*]\s+/.test(line)){if(!list){html+='<ul>';list=true;}html+='<li>'+inline(line.replace(/^[-*]\s+/,''))+'</li>';continue;}
-      close();
-      if(/^>\s?/.test(line)){html+='<blockquote>'+inline(line.replace(/^>\s?/,''))+'</blockquote>';continue;}
-      if(line.trim()) html+='<p>'+inline(line)+'</p>';
+    const markdown = String(source || '');
+    if (window.marked && window.DOMPurify) {
+      const html = window.marked.parse(markdown, {
+        gfm: true,
+        breaks: false,
+        headerIds: false,
+        mangle: false
+      });
+      return window.DOMPurify.sanitize(html, {
+        USE_PROFILES: { html: true },
+        ADD_ATTR: ['target', 'rel']
+      });
     }
-    close();
-    return html || '<p class="preview-empty">작성한 내용이 여기에 표시됩니다.</p>';
+    return '<pre class="preview-error">Markdown 렌더러를 불러오지 못했습니다. 페이지를 새로고침하거나 네트워크 연결을 확인해 주세요.</pre>';
   }
 
   const yamlQuote = value => '"' + String(value || '').replace(/\\/g,'\\\\').replace(/"/g,'\\"') + '"';
