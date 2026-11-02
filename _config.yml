@@ -3,6 +3,7 @@ description: "Backend Developer · Java · Spring Boot · Database"
 url: "https://zuzusnasna.github.io"
 baseurl: ""
 lang: "ko-KR"
+timezone: Asia/Seoul
 markdown: kramdown
 highlighter: rouge
 permalink: /:categories/:year/:month/:day/:title/
