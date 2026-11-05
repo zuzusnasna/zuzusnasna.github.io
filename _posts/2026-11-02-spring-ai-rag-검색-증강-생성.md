@@ -7,7 +7,6 @@ section: spring-ai
 tags: ["Spring AI", "RAG", "검색 증강 생성", "Embedding", "VectorStore", "pgvector"]
 ---
 
-# Spring AI RAG(검색 증강 생성)
 
 ## 1. RAG란?
 
@@ -35,7 +34,7 @@ RAG는 필요한 정보를 외부 데이터에서 검색하여 LLM에게 제공�
 
 ---
 
-# 2. RAG와 Fine-tuning
+## 2. RAG와 Fine-tuning
 
 | 구분 | RAG | Fine-tuning |
 |---|---|---|
@@ -51,7 +50,7 @@ RAG는 필요한 정보를 외부 데이터에서 검색하여 LLM에게 제공�
 
 ---
 
-# 3. RAG 전체 흐름
+## 3. RAG 전체 흐름
 
 RAG는 크게 **문서 적재(Ingestion)**와 **질의(Query)**로 나뉜다.
 
@@ -112,7 +111,7 @@ LLM
 
 ---
 
-# 4. RAG 핵심 개념
+## 4. RAG 핵심 개념
 
 | 개념 | 설명 | 실무 포인트 |
 |---|---|---|
@@ -127,7 +126,7 @@ LLM
 
 ---
 
-# 5. Embedding
+## 5. Embedding
 
 Embedding은 텍스트를 숫자 벡터로 변환하는 과정이다.
 
@@ -154,7 +153,7 @@ Embedding
 
 ---
 
-# 6. VectorStore
+## 6. VectorStore
 
 VectorStore는 Embedding된 벡터를 저장하고 유사한 벡터를 검색하는 저장소이다.
 
@@ -172,7 +171,7 @@ VectorStore
 
 ---
 
-# 7. Top-K와 Similarity Threshold
+## 7. Top-K와 Similarity Threshold
 
 RAG 검색 품질을 결정하는 중요한 설정이다.
 
@@ -244,7 +243,7 @@ Threshold
 
 ---
 
-# 8. Threshold가 필요한 이유
+## 8. Threshold가 필요한 이유
 
 관련 문서가 아예 없는 질문을 생각해보자.
 
@@ -282,7 +281,7 @@ Threshold
 
 ---
 
-# 9. RAG 검색 튜닝
+## 9. RAG 검색 튜닝
 
 처음부터 특정 값을 정하기보다 실제 질문을 테스트하면서 조정한다.
 
@@ -310,7 +309,7 @@ Threshold
 
 ---
 
-# 10. Metadata Filter
+## 10. Metadata Filter
 
 실제 서비스에서는 단순한 유사도 검색만으로 부족한 경우가 많다.
 
@@ -340,7 +339,7 @@ Top-K
 
 ---
 
-# 11. Spring AI에서의 RAG
+## 11. Spring AI에서의 RAG
 
 Spring AI에서는 RAG의 각 단계를 다음 구성요소로 연결할 수 있다.
 
@@ -392,7 +391,7 @@ LLM
 
 ---
 
-# 12. RAG와 Chat Memory
+## 12. RAG와 Chat Memory
 
 앞에서 배운 Chat Memory와 RAG는 목적이 다르다.
 
@@ -434,7 +433,7 @@ LLM
 
 ---
 
-# 13. 핵심 정리
+## 13. 핵심 정리
 
 ```text
 RAG

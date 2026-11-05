@@ -7,7 +7,6 @@ section: spring-ai
 tags: [Spring AI, Chat Memory, ChatMemory, ChatMemoryRepository, RDBMS, VectorStore]
 ---
 
-# Spring AI 대화 기억(Chat Memory)
 
 ## 1. Chat Memory란?
 
@@ -49,7 +48,7 @@ LLM
 
 ---
 
-# 2. Chat Memory의 주요 구성요소
+## 2. Chat Memory의 주요 구성요소
 
 Spring AI의 대화 기억은 여러 구성요소가 역할을 나누어 처리한다.
 
@@ -85,7 +84,7 @@ In-Memory / JDBC 등
 
 ---
 
-# 3. MessageChatMemoryAdvisor
+## 3. MessageChatMemoryAdvisor
 
 `Advisor`는 LLM을 호출하는 과정에 공통적인 처리를 추가할 수 있는 Spring AI의 기능이다.
 
@@ -103,7 +102,7 @@ In-Memory / JDBC 등
 
 ---
 
-# 4. ChatMemory 설정
+## 4. ChatMemory 설정
 
 예를 들어 최근 메시지를 최대 20개까지 기억하도록 설정할 수 있다.
 
@@ -158,7 +157,7 @@ Assistant  4
 
 ---
 
-# 5. conversationId
+## 5. conversationId
 
 대화 기억에서 중요한 개념이 `conversationId`이다.
 
@@ -178,7 +177,7 @@ conversationId = user2
 
 ---
 
-# 6. ChatController에서 사용하기
+## 6. ChatController에서 사용하기
 
 ```java
 @RestController
@@ -224,7 +223,7 @@ public class ChatController {
 
 ---
 
-# 7. 전체 동작 흐름
+## 7. 전체 동작 흐름
 
 ```text
 첫 번째 요청
@@ -266,7 +265,7 @@ LLM
 
 ---
 
-# 8. In-Memory 대화 기억
+## 8. In-Memory 대화 기억
 
 가장 간단한 방식은 서버의 메모리(RAM)에 대화 기록을 저장하는 것이다.
 
@@ -299,7 +298,7 @@ ChatMemory chatMemory() {
 
 ---
 
-# 9. ChatMemory 직접 조회
+## 9. ChatMemory 직접 조회
 
 필요하다면 저장된 대화를 직접 조회할 수도 있다.
 
@@ -336,7 +335,7 @@ A와 B가 서로 다른 대화 기록을 가지고 있는지 확인하면 `conve
 
 ---
 
-# 10. RDBMS에 대화 기억 저장
+## 10. RDBMS에 대화 기억 저장
 
 실제 서비스에서는 MySQL이나 PostgreSQL과 같은 **RDBMS에 대화 기록을 저장**하는 방법도 많이 고려한다.
 
@@ -360,7 +359,7 @@ MySQL / PostgreSQL
 
 ---
 
-# 11. JDBC 기반 ChatMemory
+## 11. JDBC 기반 ChatMemory
 
 Spring AI에서는 JDBC 기반의 `ChatMemoryRepository`를 사용할 수 있다.
 
@@ -387,7 +386,7 @@ Spring AI 버전에 따라 JDBC 저장소의 스키마 초기화 설정 방식�
 
 ---
 
-# 12. JDBC ChatMemory 설정
+## 12. JDBC ChatMemory 설정
 
 Repository를 Spring Bean으로 주입받아 `ChatMemory`를 구성할 수 있다.
 
@@ -422,7 +421,7 @@ public class MemoryConfig {
 
 ---
 
-# 13. VectorStore 기반 대화 기억
+## 13. VectorStore 기반 대화 기억
 
 일반적인 ChatMemory는 **최근 대화의 흐름을 유지하는 것**에 적합하다.
 
@@ -473,7 +472,7 @@ LLM
 
 ---
 
-# 14. 일반 ChatMemory와 VectorStore 비교
+## 14. 일반 ChatMemory와 VectorStore 비교
 
 | 구분 | 일반 ChatMemory | VectorStore |
 |---|---|---|
@@ -487,7 +486,7 @@ LLM
 
 ---
 
-# 15. VectorStore에 기억 저장
+## 15. VectorStore에 기억 저장
 
 예를 들어 대화 내용을 VectorStore에 저장할 수 있다.
 
@@ -532,7 +531,7 @@ List<Document> memories =
 
 ---
 
-# 16. Cassandra 기반 대화 기억
+## 16. Cassandra 기반 대화 기억
 
 대화 데이터가 매우 많고 여러 서버에서 높은 처리량이 필요한 경우에는 Cassandra와 같은 분산형 NoSQL 데이터베이스도 고려할 수 있다.
 
@@ -563,7 +562,7 @@ Cassandra는 대규모 분산 데이터 저장을 목적으로 하는 Wide-colum
 
 ---
 
-# 17. Chat Memory 저장 방식 비교
+## 17. Chat Memory 저장 방식 비교
 
 전체적으로 정리하면 다음과 같다.
 
@@ -576,7 +575,7 @@ Cassandra는 대규모 분산 데이터 저장을 목적으로 하는 Wide-colum
 
 ---
 
-# 18. Chat Memory 전체 구조
+## 18. Chat Memory 전체 구조
 
 ```text
                     ChatClient
@@ -618,7 +617,7 @@ LLM
 
 ---
 
-# 19. Chat Memory와 이전 Prompt 내용의 관계
+## 19. Chat Memory와 이전 Prompt 내용의 관계
 
 앞에서 배운 `AssistantMessage`와도 연결된다.
 
@@ -658,7 +657,7 @@ LLM
 
 ---
 
-# 20. 핵심 정리
+## 20. 핵심 정리
 
 ### ChatMemory
 

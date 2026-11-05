@@ -6,7 +6,6 @@ categories: ["Spring"]
 section: spring-ai
 tags: ["Spring", "Spring Boot", "Spring AI", "ChatClient", "Chat Memory", "Session", "LLM"]
 ---
-# Spring AI 다중 메시지와 Chat Memory
 
 ## 1. Chat Memory란?
 

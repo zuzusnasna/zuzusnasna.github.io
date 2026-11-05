@@ -7,7 +7,6 @@ section: spring-ai
 tags: [MCP]
 ---
 
-# MCP (Model Context Protocol)
 
 ## 1. MCP란?
 

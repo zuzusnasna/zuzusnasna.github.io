@@ -7,7 +7,6 @@ section: spring-ai
 tags: [Spring, AI]
 ---
 
-# Spring AI - Chatbot, Image Generation, Vision
 
 ## 1. Spring AI란?
 
@@ -37,7 +36,7 @@ OpenAI와 같은 AI 모델을 Spring Boot 프로젝트에 연동하여 다양한
 
 ---
 
-# 2. Spring AI 이미지 생성 (Image Generation)
+## 2. Spring AI 이미지 생성 (Image Generation)
 
 ## 2-1. 이미지 생성이란?
 
@@ -146,7 +145,7 @@ http://localhost:8080/imgGen?request=우주복 입은 고양이
 
 ---
 
-# 3. Spring AI를 활용한 쇼핑몰 챗봇
+## 3. Spring AI를 활용한 쇼핑몰 챗봇
 
 ## 3-1. 프로젝트 시나리오
 
@@ -199,7 +198,7 @@ API Key는 GitHub에 업로드하지 않는다.
 
 ---
 
-# 4. System Prompt (시스템 프롬프트)
+## 4. System Prompt (시스템 프롬프트)
 
 ## 4-1. 시스템 프롬프트란?
 
@@ -252,7 +251,7 @@ AI에게 상품 정보를 직접 제공하고 해당 정보를 기반으로 답�
 
 ---
 
-# 5. Postman을 이용한 챗봇 테스트
+## 5. Postman을 이용한 챗봇 테스트
 
 ## 5-1. API 요청 설정
 
@@ -337,7 +336,7 @@ Body → raw → JSON
 
 ---
 
-# 6. 시스템 프롬프트 변경에 따른 답변 제어
+## 6. 시스템 프롬프트 변경에 따른 답변 제어
 
 기존 프롬프트:
 
@@ -374,7 +373,7 @@ Body → raw → JSON
 
 ---
 
-# 7. Spring AI Vision (이미지 분석)
+## 7. Spring AI Vision (이미지 분석)
 
 ## 7-1. Vision이란?
 
@@ -439,7 +438,7 @@ UserMessage
 
 ---
 
-# 8. Spring AI Vision 구현 방법
+## 8. Spring AI Vision 구현 방법
 
 이미지를 전달하는 방법은 크게 세 가지로 나눌 수 있다.
 
@@ -536,7 +535,7 @@ AI 이미지 분석
 
 ---
 
-# 9. Vision의 실제 활용 분야
+## 9. Vision의 실제 활용 분야
 
 | 분야 | 활용 사례 |
 |---|---|
@@ -566,7 +565,7 @@ AI 이미지 분석
 
 ---
 
-# 10. 프론트엔드 실행 (React + Vite)
+## 10. 프론트엔드 실행 (React + Vite)
 
 Spring AI 챗봇을 웹 화면에서 사용하기 위해 React와 Vite 기반 프론트엔드를 실행한다.
 
@@ -646,7 +645,7 @@ npm audit fix
 
 ---
 
-# 11. 전체 학습 내용 정리
+## 11. 전체 학습 내용 정리
 
 | 개념 | 핵심 내용 |
 |---|---|

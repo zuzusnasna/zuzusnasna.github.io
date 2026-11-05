@@ -20,6 +20,32 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
     errors << "#{path}: closing Front Matter delimiter --- is missing"
     next
   end
+  body_lines = lines[(closing + 1)..] || []
+  in_code_block = false
+  previous_heading_level = 0
+  has_h2 = false
+  body_lines.each do |line|
+    if line.match?(/^\s*(\x60{3,}|~{3,})/)
+      in_code_block = !in_code_block
+      next
+    end
+    next if in_code_block
+
+    heading = line.match(/^(#+)\s+(.+)$/)
+    next unless heading
+
+    level = heading[1].length
+    errors << "#{path}: body must not repeat the page title as an H1" if level == 1
+    has_h2 = true if level == 2
+    if level == 3 && previous_heading_level < 2
+      errors << "#{path}: H3 heading has no preceding H2 section"
+    elsif previous_heading_level.positive? && level > previous_heading_level + 1
+      errors << "#{path}: heading level skips from H#{previous_heading_level} to H#{level}"
+    end
+    previous_heading_level = level
+  end
+  errors << "#{path}: code fence is not closed" if in_code_block
+  errors << "#{path}: at least one H2 section is required" unless has_h2
   raw_yaml = lines[1...closing].join
   begin
     metadata = YAML.safe_load(raw_yaml, permitted_classes: [Date, Time], aliases: false) || {}
@@ -32,6 +58,8 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
   errors << "#{path}: date is missing" if metadata["date"].nil?
   categories = metadata["categories"]
   errors << "#{path}: categories must be a non-empty array" unless categories.is_a?(Array) && categories.any?
+  tags = metadata["tags"]
+  errors << "#{path}: tags must be a non-empty array" unless tags.is_a?(Array) && tags.any?
   section = metadata["section"].to_s.strip
   if !section.empty? && !known_sections.include?(section)
     errors << "#{path}: section '#{section}' is not defined in the blog sidebar"

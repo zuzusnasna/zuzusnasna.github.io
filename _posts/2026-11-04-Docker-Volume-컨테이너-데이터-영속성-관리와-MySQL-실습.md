@@ -3,7 +3,7 @@ layout: post
 title: "Docker Volume - 컨테이너 데이터 영속성 관리와 MySQL 실습"
 date: 2026-11-04 00:00:00 +0900
 categories: ["Database"]
-section: database-redis
+section: database-storage
 tags: ["Docker", "Volume", "Bind Mount", "Named Volume", "MySQL", "Container"]
 ---
 ## 1. Docker 컨테이너의 문제점
@@ -269,13 +269,15 @@ Docker가 실제 저장 위치를 관리하므로 사용자가 직접 호스트 
 
 이제 Docker를 이용해 MySQL 컨테이너를 실행해 보자.
 
+> 아래의 root 비밀번호는 로컬 실습용 예시다. 실제 서비스에서는 저장소에 비밀번호를 남기지 말고 Secret 관리 방식을 사용한다.
+
 ### 5-1. MySQL 이미지 실행
 
 ```bash
 docker run \
   -p 3306:3306 \
   -e MYSQL_ROOT_PASSWORD=password123 \
-  -d mysql
+  -d mysql:8.0
 ```
 
 여기서 `docker pull` 명령어를 먼저 실행하지 않아도 된다.
@@ -290,7 +292,7 @@ docker run \
 | `-e` | 컨테이너 환경변수 설정 |
 | `MYSQL_ROOT_PASSWORD` | MySQL root 계정 비밀번호 |
 | `-d` | 백그라운드 실행 |
-| `mysql` | 실행할 이미지 |
+| `mysql:8.0` | 실행할 MySQL 8.0 이미지 |
 
 `-e`는 컨테이너 실행 시 환경변수를 설정하는 옵션이다.
 
@@ -376,7 +378,7 @@ port is already allocated
 docker run -d \
   -p 3307:3306 \
   -e MYSQL_ROOT_PASSWORD=password123 \
-  mysql
+  mysql:8.0
 ```
 
 ```text
@@ -417,7 +419,7 @@ services.msc
 docker run -d \
   -p 3306:3306 \
   -e MYSQL_ROOT_PASSWORD=password123 \
-  mysql
+  mysql:8.0
 ```
 
 ---
@@ -433,7 +435,7 @@ docker run -d \
   --name mysql-test \
   -p 3307:3306 \
   -e MYSQL_ROOT_PASSWORD=pass123 \
-  mysql
+  mysql:8.0
 ```
 
 ### 7-2. 데이터베이스 생성
@@ -479,7 +481,7 @@ docker run -d \
   --name mysql-test \
   -p 3307:3306 \
   -e MYSQL_ROOT_PASSWORD=pass123 \
-  mysql
+  mysql:8.0
 ```
 
 다시 MySQL에 접속한다.
@@ -771,7 +773,8 @@ SHOW DATABASES;
 | `docker volume ls` | Volume 목록 확인 |
 | `docker volume inspect [이름]` | Volume 상세 정보 확인 |
 | `docker volume rm [이름]` | Volume 삭제 |
-| `docker volume prune` | 사용하지 않는 Volume 삭제 |
+| `docker volume prune` | 사용하지 않는 익명 Volume 정리(기본값) |
+| `docker volume prune --all` | 사용하지 않는 Named 및 익명 Volume 정리 |
 
 여러 컨테이너를 한 번에 삭제할 수도 있다.
 
@@ -794,6 +797,8 @@ docker volume rm mysql_data
 ```
 
 **Volume을 삭제하면 그 안에 저장된 데이터도 함께 삭제되므로 주의해야 한다.**
+
+정리 전에 `docker volume ls`로 대상부터 확인한다. `--all` 옵션은 연결되지 않은 Named Volume도 정리하므로 더 주의가 필요하다.
 
 ---
 
@@ -840,3 +845,8 @@ Docker Container
 6. Volume을 삭제하면 데이터도 삭제되므로 백업과 삭제 명령에 주의해야 한다.
 
 **결론:** Docker Volume은 컨테이너의 생명주기와 데이터의 생명주기를 분리하기 위한 기능이다. 컨테이너는 언제든 교체할 수 있지만 데이터는 계속 유지해야 하는 MySQL, Redis 등의 서비스에서 중요한 역할을 한다.
+
+## 참고 자료
+
+- [Docker Docs: Volumes](https://docs.docker.com/engine/storage/volumes/)
+- [Docker Docs: Storage](https://docs.docker.com/engine/storage/)

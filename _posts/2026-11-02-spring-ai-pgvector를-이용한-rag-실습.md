@@ -4,10 +4,9 @@ title: "Spring AI PGVector를 이용한 RAG 실습"
 date: 2026-11-02 00:00:00 +0900
 categories: ["Spring"]
 section: spring-ai
-tags: []
+tags: [Spring AI, PGVector, RAG]
 ---
 
-# Spring AI PGVector를 이용한 RAG 실습
 
 앞서 RAG에서 문서를 **Embedding → VectorStore 저장 → 유사도 검색**하는 과정을 학습했다.
 
@@ -35,7 +34,7 @@ Similarity Search
 
 ---
 
-# 1. PGVector란?
+## 1. PGVector란?
 
 **pgvector**는 PostgreSQL에서 벡터 데이터를 저장하고 유사도 검색을 수행할 수 있도록 해주는 확장 기능이다.
 
@@ -52,7 +51,7 @@ Spring AI에서는 `VectorStore`를 통해 PGVector를 사용할 수 있다.
 
 ---
 
-# 2. Docker로 PostgreSQL + pgvector 실행
+## 2. Docker로 PostgreSQL + pgvector 실행
 
 가장 간단한 방법은 pgvector가 포함된 이미지를 사용하는 것이다.
 
@@ -76,7 +75,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 ---
 
-# 3. Spring Boot 의존성
+## 3. Spring Boot 의존성
 
 Spring AI에서 PGVector 기반 RAG를 구성하려면 다음과 같은 기능이 필요하다.
 
@@ -92,7 +91,7 @@ Spring AI
 
 ---
 
-# 4. PostgreSQL과 PGVector 설정
+## 4. PostgreSQL과 PGVector 설정
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/ragdb
@@ -139,7 +138,7 @@ spring.ai.vectorstore.pgvector.dimensions=1536
 
 ---
 
-# 5. VectorStore 테이블
+## 5. VectorStore 테이블
 
 Spring AI가 PGVector를 VectorStore로 사용하면 벡터와 문서 관련 정보를 저장할 수 있는 테이블이 생성된다.
 
@@ -158,7 +157,7 @@ vector_store
 
 ---
 
-# 6. PDF 문서 읽기
+## 6. PDF 문서 읽기
 
 RAG를 사용하려면 먼저 PDF의 내용을 Spring AI가 처리할 수 있는 `Document` 형태로 가져와야 한다.
 
@@ -197,7 +196,7 @@ List<Document> docs = pdfReader.get();
 
 ---
 
-# 7. 왜 PDF를 바로 Embedding하지 않을까?
+## 7. 왜 PDF를 바로 Embedding하지 않을까?
 
 PDF 전체를 하나의 Document로 만들면 문서가 너무 커질 수 있다.
 
@@ -229,7 +228,7 @@ VectorStore
 
 ---
 
-# 8. TokenTextSplitter
+## 8. TokenTextSplitter
 
 Spring AI에서는 `TokenTextSplitter` 등을 사용하여 문서를 토큰 기준으로 나눌 수 있다.
 
@@ -260,7 +259,7 @@ TokenTextSplitter splitter =
 
 ---
 
-# 9. Chunk Overlap
+## 9. Chunk Overlap
 
 특히 중요한 부분이 **Overlap**이다.
 
@@ -300,7 +299,7 @@ Overlap
 
 ---
 
-# 10. 전체 RAG 데이터 적재 과정
+## 10. 전체 RAG 데이터 적재 과정
 
 지금까지의 내용을 하나로 연결하면 다음과 같다.
 
@@ -335,7 +334,7 @@ PGVector
 
 ---
 
-# 11. 검색 과정
+## 11. 검색 과정
 
 문서가 PGVector에 저장되었다면 사용자의 질문을 기준으로 검색할 수 있다.
 
@@ -360,7 +359,7 @@ LLM Context
 
 ---
 
-# 12. PDF RAG 실습에서 확인할 것
+## 12. PDF RAG 실습에서 확인할 것
 
 실습에서는 다음 과정을 순서대로 확인하면 된다.
 
@@ -410,7 +409,7 @@ Postman 등을 이용하여 질문을 전달하고 관련 문서가 검색되는
 
 ---
 
-# 13. 핵심 정리
+## 13. 핵심 정리
 
 이번 실습에서 가장 중요한 것은 **PGVector가 RAG에서 어떤 역할을 하는지** 이해하는 것이다.
 

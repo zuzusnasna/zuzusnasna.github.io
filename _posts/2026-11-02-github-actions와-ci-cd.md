@@ -7,7 +7,6 @@ section: infra-cicd
 tags: [GitHub Actions, CI/CD, DevOps, Docker]
 ---
 
-# GitHub Actions와 CI/CD
 
 ## 1. GitHub Actions란?
 

@@ -7,7 +7,6 @@ section: spring-ai
 tags: [Spring AI, Prompt, PromptTemplate, Message, LLM]
 ---
 
-# Spring AI - Prompt와 Message
 
 ## 1. Prompt란?
 
@@ -33,7 +32,7 @@ Prompt
 
 ---
 
-# 2. PromptTemplate
+## 2. PromptTemplate
 
 프롬프트를 매번 문자열로 직접 작성하면 같은 형식의 프롬프트가 반복된다.
 
@@ -110,7 +109,7 @@ return chatClient
 
 ---
 
-# 3. Message란?
+## 3. Message란?
 
 Spring AI에서는 LLM에 전달하는 대화 내용을 **Message 객체**로 표현할 수 있다.
 
@@ -136,7 +135,7 @@ Tool → "외부 도구에서 어떤 결과가 나왔는가?"
 
 ---
 
-# 4. SystemMessage
+## 4. SystemMessage
 
 `SystemMessage`는 LLM의 **역할과 행동 규칙**을 지정한다.
 
@@ -179,7 +178,7 @@ Spring에서 DI가 뭐야?
 
 ---
 
-# 5. UserMessage
+## 5. UserMessage
 
 `UserMessage`는 실제 사용자가 전달한 질문이나 요청이다.
 
@@ -222,7 +221,7 @@ UserMessage
 
 ---
 
-# 6. AssistantMessage
+## 6. AssistantMessage
 
 `AssistantMessage`는 **LLM이 이전에 생성한 응답**을 나타낸다.
 
@@ -254,7 +253,7 @@ LLM이 이전 답변을 참고할 수 있다.
 
 ---
 
-# 7. LLM은 기본적으로 Stateless이다
+## 7. LLM은 기본적으로 Stateless이다
 
 LLM API를 사용할 때 중요한 개념이다.
 
@@ -300,7 +299,7 @@ User → "내 이름이 뭐라고?"
 
 ---
 
-# 8. 그렇다면 대화 기억은 어떻게 만드는가?
+## 8. 그렇다면 대화 기억은 어떻게 만드는가?
 
 이전 대화 내용을 다음 요청의 Prompt에 다시 포함하면 된다.
 
@@ -364,7 +363,7 @@ User
 
 ---
 
-# 9. 대화 기억의 실제 흐름
+## 9. 대화 기억의 실제 흐름
 
 실제 채팅 서비스에서는 대략 다음과 같은 흐름으로 동작한다.
 
@@ -392,7 +391,7 @@ User
 
 ---
 
-# 10. Prompt와 Message의 관계
+## 10. Prompt와 Message의 관계
 
 두 개념을 혼동하기 쉽다.
 
@@ -436,7 +435,7 @@ Response
 
 ---
 
-# 11. 전체 예제
+## 11. 전체 예제
 
 ```java
 import org.springframework.ai.chat.client.ChatClient;
@@ -495,7 +494,7 @@ UserMessage
 
 ---
 
-# 12. 여러 대화가 포함된 Prompt
+## 12. 여러 대화가 포함된 Prompt
 
 이전 대화까지 포함하면 다음과 같이 구성할 수 있다.
 
@@ -553,7 +552,7 @@ User
 
 ---
 
-# 13. PromptTemplate과 Message의 차이
+## 13. PromptTemplate과 Message의 차이
 
 둘은 서로 대체하는 개념이 아니다.
 
@@ -583,7 +582,7 @@ LLM 호출
 
 ---
 
-# 14. ToolMessage
+## 14. ToolMessage
 
 AI가 외부 도구를 호출하는 경우에는 **도구의 실행 결과를 다시 모델에게 전달**해야 할 수 있다.
 
@@ -617,7 +616,7 @@ Spring AI에서 Tool Calling을 사용할 때 함께 이해하면 좋은 개념�
 
 ---
 
-# 15. 전체 구조
+## 15. 전체 구조
 
 Spring AI에서 Prompt 관련 개념을 전체적으로 연결하면 다음과 같다.
 
@@ -655,7 +654,7 @@ Spring AI에서 Prompt 관련 개념을 전체적으로 연결하면 다음과 �
 
 ---
 
-# 16. 핵심 정리
+## 16. 핵심 정리
 
 ### Prompt
 

@@ -42,7 +42,7 @@ permalink: /write/
         <button type="button" data-action="table">표</button>
         <button type="button" data-action="link">링크</button>
       </div>
-      <textarea id="post-body" spellcheck="false" placeholder="Markdown 전체를 여기에 붙여넣으세요.\n\n예:\n---\ntitle: Spring AI 대화 기억\ndate: 2026-11-02 00:00:00 +0900\ntags: [Spring AI, Chat Memory]\n---\n\n# Spring AI 대화 기억\n\n본문을 작성합니다."></textarea>
+      <textarea id="post-body" spellcheck="false" placeholder="Markdown 전체를 여기에 붙여넣으세요.\n\n예:\n---\ntitle: Spring AI 대화 기억\ndate: YYYY-MM-DD 00:00:00 +0900\ntags: [Spring AI, Chat Memory]\n---\n\n## 이 글에서 확인할 질문\n어떤 문제를 다루는지 적습니다.\n\n## 핵심 개념\n용어와 동작 방식을 설명합니다.\n\n## 동작 흐름 또는 예제\n필요한 코드, 표, 명령어를 넣습니다.\n\n## 직접 확인한 내용\n실행 결과나 참고한 공식 문서를 함께 적습니다.\n\n## 정리\n핵심과 주의할 점을 짧게 남깁니다."></textarea>
     </section>
 
     <section class="preview-panel">
@@ -51,7 +51,7 @@ permalink: /write/
     </section>
   </div>
 
-  <div class="write-note"><strong>자동 처리</strong> · Spring AI, Java, Database, Backend, Frontend, Infra, ML 및 세부 카테고리를 제목·태그·본문 키워드로 자동 분류합니다.</div>
+  <div class="write-note"><strong>권장 글 흐름</strong> · 질문이나 배경 → 핵심 개념 → 동작 흐름·예제 → 직접 확인한 내용 → 정리 순서로 씁니다. 글에 맞지 않는 항목은 생략해도 됩니다. 본문 큰 제목은 H2(##), 하위 제목은 H3(###)로 작성합니다.</div><div class="write-note"><strong>내용 확인</strong> · 버전·명령어·수치는 공식 문서 또는 실행 결과와 대조하고, 부하 테스트에는 환경과 요청 수를 함께 적습니다. 제목·태그·본문에서 분야를 자동 분류합니다.</div>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
@@ -131,8 +131,9 @@ permalink: /write/
     ['spring-data','Spring',/\b(jpa|mybatis|hibernate|entitymanager|orm|fetch join)\b/i],
     ['spring-security','Spring',/\b(spring security|jwt|oauth2|oauth|csrf|cors|filter chain)\b/i],
     ['spring-testing','Spring',/\b(junit|mockito|mockmvc|integration test|test slice)\b|테스트/i],
-    ['spring-web','Spring',/\b(rest api|spring mvc|controller|http status|pagination|idempotency)\b|웹.?mvc/i],
+    ['spring-web','Spring',/\b(rest api|spring mvc|webflux|reactive|controller|http status|pagination|idempotency)\b|웹.?mvc/i],
     ['spring-core','Spring',/\b(spring|di|ioc|aop|bean|applicationcontext|transaction|proxy)\b/i],
+    ['database-storage','Database',/\bdocker volume\b|\bbind mount\b|\bnamed volume\b|도커.?볼륨/i],
     ['database-redis','Database',/\b(redis|sorted set|zset|pub.?sub)\b/i],
     ['database-oracle','Database',/\b(oracle|sql|pl.?sql|cursor|procedure|trigger|job|query|index|execution plan|mysql|database)\b|데이터베이스|쿼리|테이블/i],
     ['backend-messaging','Backend',/\b(websocket|stomp|kafka|rabbitmq|message broker|pub.?sub|outbox)\b|실시간.?메시징/i],
@@ -156,6 +157,40 @@ permalink: /write/
     return h1 ? h1[1].trim() : '';
   };
 
+  const normalizeArticle = (source, title = '') => {
+    const lines = String(source || '').replace(/\r\n/g, '\n').split('\n');
+    const output = [];
+    const tick = String.fromCharCode(96);
+    const fenceMarker = tick.repeat(3);
+    let fenceChar = '';
+    let firstContent = false;
+    const normalizeHeading = value => value.toLocaleLowerCase('ko-KR').replace(/[^\p{L}\p{N}]/gu, '');
+
+    lines.forEach(line => {
+      const trimmed = line.trimStart();
+      const marker = trimmed.startsWith(fenceMarker) ? tick : trimmed.startsWith('~~~') ? '~' : '';
+      if (marker) {
+        if (!fenceChar) fenceChar = marker;
+        else if (fenceChar === marker) fenceChar = '';
+        output.push(line);
+        return;
+      }
+      if (!fenceChar && !firstContent && line.trim()) {
+        firstContent = true;
+        const titleHeading = line.match(/^#\s+(.+)$/);
+        if (title && titleHeading && normalizeHeading(titleHeading[1]) === normalizeHeading(title)) return;
+      }
+      if (!fenceChar) {
+        const heading = line.match(/^(#+)\s+(.+)$/);
+        if (heading && heading[1].length === 1) {
+          output.push('## ' + heading[2]);
+          return;
+        }
+      }
+      output.push(line);
+    });
+    return output.join('\n').trim();
+  };
   let meta = {title:'',date:today(),tags:[]};
 
   const update = save => {
@@ -170,7 +205,7 @@ permalink: /write/
     metaTitle.textContent = title || '제목 자동 인식 대기';
     metaDate.textContent = date;
     metaTags.textContent = (tags.length ? tags.join(', ') : '태그 자동 생성') + '  ·  ' + category.parent + ' / ' + category.section;
-    preview.innerHTML = render(content);
+    preview.innerHTML = render(normalizeArticle(content, title));
     if (save) localStorage.setItem(draftKey, raw);
   };
 
@@ -239,9 +274,9 @@ permalink: /write/
 
   document.getElementById('download-post').addEventListener('click', () => {
     update(false);
-    const content = stripFrontMatter(body.value);
+    const content = normalizeArticle(stripFrontMatter(body.value), meta.title);
     if(!content.trim()){status.textContent='본문을 입력해 주세요.';status.className='status error';return;}
-    if(!meta.title){status.textContent='제목을 입력하거나 # 제목을 작성해 주세요.';status.className='status error';return;}
+    if(!meta.title){status.textContent='Front Matter 제목을 입력하거나 본문에 # 제목을 작성해 주세요.';status.className='status error';return;}
     const tagList = meta.tags.length ? meta.tags : ['Study'];
     const fm = ['---','layout: post','title: '+yamlQuote(meta.title),'date: '+meta.date+' 00:00:00 +0900','categories: ['+yamlQuote(meta.category.parent)+']','section: '+meta.category.section,'tags: ['+tagList.map(yamlQuote).join(', ')+']','---',''].join('\n');
     const blob = new Blob([fm + content], {type:'text/markdown;charset=utf-8'});

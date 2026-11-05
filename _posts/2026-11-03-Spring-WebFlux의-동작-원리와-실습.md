@@ -3,10 +3,9 @@ layout: post
 title: "Spring WebFlux의 동작 원리와 실습"
 date: 2026-11-03 00:00:00 +0900
 categories: ["Spring"]
-section: spring-ai
+section: spring-web
 tags: ["Spring", "Spring Boot", "WebFlux", "Reactive", "Mono", "Flux", "Thymeleaf", "SSE"]
 ---
-# Spring WebFlux의 동작 원리와 실습
 
 ## 1. Spring Boot 웹 애플리케이션의 기본 동작
 
@@ -56,7 +55,7 @@ Database
 
 ---
 
-# 2. Blocking과 Non-Blocking
+## 2. Blocking과 Non-Blocking
 
 ## 2.1 Blocking이란?
 
@@ -104,7 +103,7 @@ Spring MVC는 여러 요청을 여러 스레드가 처리하므로 다른 스레
 
 ---
 
-# 3. Non-Blocking이란?
+## 3. Non-Blocking이란?
 
 **Non-Blocking은 작업의 완료를 기다리는 동안 현재 스레드를 붙잡아 두지 않는 방식**이다.
 
@@ -130,7 +129,7 @@ WebFlux의 핵심은 바로 이 **논블로킹 I/O를 이용하여 스레드가 
 
 ---
 
-# 4. Spring WebFlux란?
+## 4. Spring WebFlux란?
 
 **Spring WebFlux는 비동기·논블로킹 방식의 웹 애플리케이션을 개발할 수 있도록 제공되는 Spring의 리액티브 웹 프레임워크이다.**
 
@@ -139,21 +138,21 @@ Spring MVC와 비교하면 다음과 같다.
 | 구분 | Spring MVC | Spring WebFlux |
 |---|---|---|
 | 기본 처리 모델 | 동기·블로킹 중심 | 비동기·논블로킹 중심 |
-| 서버 모델 | 요청당 스레드 모델 | 이벤트 루프 기반 |
+| 처리 흐름 | 요청 처리 스레드가 I/O를 기다릴 수 있음 | 기본적으로 작은 이벤트 루프 풀과 논블로킹 I/O를 사용 |
 | 단일 데이터 | `Member` | `Mono<Member>` |
 | 여러 데이터 | `List<Member>` | `Flux<Member>` |
 | 주요 활용 | 일반적인 CRUD | 스트리밍, 대규모 동시 I/O |
-| 대표 기술 | Servlet / Tomcat | Reactive / Netty |
+| 대표 조합 | Servlet 컨테이너(예: Tomcat) | Reactive 서버(기본: Reactor Netty) |
 
 단, WebFlux가 **항상 Spring MVC보다 빠르다는 의미는 아니다.**
 
 특히 일반적인 CRUD 애플리케이션에서는 성능 차이가 크지 않을 수 있다.
 
-WebFlux의 장점은 **동시 요청이 많고 I/O 대기 시간이 긴 상황에서 스레드를 효율적으로 활용할 수 있다는 것**이다.
+WebFlux는 동시 요청이 많고 I/O 대기가 긴 상황에서 스레드를 효율적으로 사용할 수 있다. 다만 이 장점은 DB 드라이버와 외부 API 클라이언트까지 논블로킹 방식으로 연결했을 때 기대할 수 있다. MyBatis·JDBC 같은 블로킹 호출은 WebFlux 컨트롤러에서 실행해도 블로킹 호출이라는 성격이 바뀌지 않는다.
 
 ---
 
-# 5. WebFlux의 핵심 개념 — Mono와 Flux
+## 5. WebFlux의 핵심 개념 — Mono와 Flux
 
 WebFlux에서는 Reactor에서 제공하는 `Mono`와 `Flux`를 사용한다.
 
@@ -229,7 +228,7 @@ names.subscribe(data -> {
 
 ---
 
-# 6. Mono와 Flux의 차이
+## 6. Mono와 Flux의 차이
 
 | 타입 | 데이터 개수 | 예시 |
 |---|---:|---|
@@ -265,7 +264,7 @@ Flux<Member>
 
 ---
 
-# 7. Mono와 Flux 주요 연산
+## 7. Mono와 Flux 주요 연산
 
 초급 단계에서는 `just()`, `map()`, `filter()`를 우선 이해하면 된다.
 
@@ -306,7 +305,7 @@ numbers
 
 ---
 
-# 8. WebFlux 실시간 데이터 스트리밍
+## 8. WebFlux 실시간 데이터 스트리밍
 
 WebFlux의 특징을 확인하기 좋은 예제가 스트리밍이다.
 
@@ -372,7 +371,7 @@ Flux.interval(Duration.ofSeconds(1))
 
 ---
 
-# 9. TEXT_EVENT_STREAM과 SSE
+## 9. TEXT_EVENT_STREAM과 SSE
 
 ```java
 produces = MediaType.TEXT_EVENT_STREAM_VALUE
@@ -396,7 +395,7 @@ eventSource.onmessage = function(event) {
 
 ---
 
-# 10. WebFlux 성능의 핵심
+## 10. WebFlux 성능의 핵심
 
 WebFlux를 공부할 때 가장 중요한 부분이다.
 
@@ -423,7 +422,7 @@ DB 조회 대기       : 490ms
 
 ---
 
-# 11. Spring MVC와 WebFlux의 차이
+## 11. Spring MVC와 WebFlux의 차이
 
 Spring MVC에서는 다음과 같은 상황이 발생할 수 있다.
 
@@ -465,14 +464,14 @@ Event Loop
 
 ---
 
-# 12. Spring MVC와 WebFlux를 언제 사용할까?
+## 12. Spring MVC와 WebFlux를 언제 사용할까?
 
 | 환경 | Spring MVC | Spring WebFlux |
 |---|---|---|
 | 동시 사용자 10~50명 | 적합 | 큰 차이 없을 수 있음 |
 | 일반적인 CRUD | 적합 | 큰 이점이 없을 수 있음 |
 | MyBatis + JDBC | 적합 | 블로킹으로 장점 감소 |
-| 외부 API 대기 2~3초 | 스레드 점유 증가 | 논블로킹 구조라 유리할 수 있음 |
+| 외부 API 대기 2~3초 | 호출 스레드 점유 | WebClient 등 논블로킹 클라이언트를 사용할 때 유리할 수 있음 |
 | 수천 개의 동시 I/O | 스레드 부담 증가 가능 | 효율적일 수 있음 |
 | CPU 연산 중심 | 적합 | 특별한 이점 없음 |
 | SSE / 스트리밍 | 가능 | 적합 |
@@ -480,7 +479,7 @@ Event Loop
 
 ---
 
-# 13. 스레드를 늘리면 되지 않을까?
+## 13. 스레드를 늘리면 되지 않을까?
 
 Spring MVC에서 요청을 처리하는 스레드 수를 늘리는 방법도 있다.
 
@@ -505,7 +504,7 @@ Spring MVC에서 요청을 처리하는 스레드 수를 늘리는 방법도 있
 
 ---
 
-# 14. Java 21 Virtual Thread
+## 14. Java 21 Virtual Thread
 
 Java 21부터는 **Virtual Thread(가상 스레드)**를 사용할 수 있다.
 
@@ -533,7 +532,7 @@ Spring MVC vs WebFlux
 
 ---
 
-# 15. Spring Boot + MyBatis에서는?
+## 15. Spring Boot + MyBatis에서는?
 
 현재 많이 사용하는 다음과 같은 구조를 생각해 보자.
 
@@ -578,7 +577,7 @@ Mono를 사용한다
 
 ---
 
-# 16. WebFlux를 사용하기 좋은 경우
+## 16. WebFlux를 사용하기 좋은 경우
 
 다음과 같은 상황에서는 WebFlux 도입을 고려할 수 있다.
 
@@ -615,7 +614,7 @@ AI 모델의 응답을 한 번에 받는 대신 생성되는 텍스트를 순차
 
 ---
 
-# 17. WebFlux + Thymeleaf 실습
+## 17. WebFlux + Thymeleaf 실습
 
 WebFlux가 Controller뿐만 아니라 Thymeleaf와 함께 사용되는 예제를 만들어 보자.
 
@@ -642,7 +641,7 @@ webflux-thymeleaf/
 
 ---
 
-# 18. build.gradle
+## 18. build.gradle
 
 ```gradle
 plugins {
@@ -686,7 +685,7 @@ implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 ---
 
-# 19. application.properties
+## 19. application.properties
 
 ```properties
 spring.application.name=webflux-thymeleaf
@@ -705,7 +704,7 @@ src/main/resources/templates/
 
 ---
 
-# 20. PageController
+## 20. PageController
 
 Thymeleaf 화면을 반환하는 Controller이다.
 
@@ -735,7 +734,7 @@ src/main/resources/templates/index.html
 
 ---
 
-# 21. StreamController
+## 21. StreamController
 
 이번에는 WebFlux의 `Flux`를 사용해 실시간 데이터를 전송한다.
 
@@ -794,7 +793,7 @@ SSE 방식으로 데이터를 스트리밍한다.
 
 ---
 
-# 22. index.html
+## 22. index.html
 
 `src/main/resources/templates/index.html`
 
@@ -867,7 +866,7 @@ SSE 방식으로 데이터를 스트리밍한다.
 
 ---
 
-# 23. 전체 동작 흐름
+## 23. 전체 동작 흐름
 
 브라우저에서 `/`에 접속하면 다음과 같이 동작한다.
 
@@ -902,7 +901,7 @@ Flux.interval()
 
 ---
 
-# 24. curl로 스트리밍 확인
+## 24. curl로 스트리밍 확인
 
 서버를 실행한 후 다음 명령을 사용할 수 있다.
 
@@ -928,7 +927,7 @@ data:서버 메시지 5 도착
 
 ---
 
-# 25. Spring MVC와 WebFlux + Thymeleaf 비교
+## 25. Spring MVC와 WebFlux + Thymeleaf 비교
 
 | 항목 | Spring MVC + Thymeleaf | WebFlux + Thymeleaf |
 |---|---|---|
@@ -944,7 +943,7 @@ data:서버 메시지 5 도착
 
 ---
 
-# 26. 핵심 정리
+## 26. 핵심 정리
 
 ### Blocking
 
@@ -1004,7 +1003,7 @@ Flux<Member>
 
 ---
 
-# 27. 가장 중요한 포인트
+## 27. 가장 중요한 포인트
 
 WebFlux를 공부할 때 다음 내용을 구분해야 한다.
 
@@ -1032,7 +1031,7 @@ Controller의 반환 타입은 `Mono`이지만 MyBatis의 DB 조회는 블로킹
 
 ---
 
-# 28. 어떤 기술을 선택할까?
+## 28. 어떤 기술을 선택할까?
 
 ```text
 일반적인 Spring Boot CRUD
@@ -1072,3 +1071,7 @@ Spring MVC + Virtual Thread
 ## 한 줄 정리
 
 > **Spring MVC는 요청을 처리하는 스레드가 I/O 작업을 기다리는 구조에 적합하고, Spring WebFlux는 논블로킹 I/O를 기반으로 많은 동시 요청이나 스트리밍을 효율적으로 처리하기 위한 프레임워크이다.**
+
+## 참고 자료
+
+- [Spring Framework Reference: Overview of Spring WebFlux](https://docs.spring.io/spring-framework/reference/web/webflux/new-framework.html)

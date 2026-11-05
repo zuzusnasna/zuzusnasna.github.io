@@ -6,7 +6,6 @@ categories: ["Spring"]
 section: spring-ai
 tags: ["Spring", "Spring AI", "Eclipse", "Spring Boot", "AI", "API"]
 ---
-# Spring AI와 Eclipse를 활용한 AI 애플리케이션 개발
 
 ## 1. Spring AI란?
 

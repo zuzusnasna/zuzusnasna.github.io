@@ -6,7 +6,7 @@ categories: [학습]
 tags: [Oracle, SQL, DML, Transaction]
 ---
 
-# 조회 이후의 데이터 변경
+## 조회 이후의 데이터 변경
 
 SELECT가 데이터를 읽는 문장이라면 DML(Data Manipulation Language)은 테이블의 데이터를 입력·수정·삭제한다. 실무에서는 실행 전에 WHERE 조건과 대상 행을 확인하고, 변경 결과를 검증한 뒤 COMMIT하는 습관이 중요하다.
 
