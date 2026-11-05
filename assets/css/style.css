@@ -62,6 +62,23 @@
 .editor-toolbar button{min-width:36px;min-height:34px;padding:5px 9px;border:1px solid #dfe3e8;border-radius:4px;background:#fff;color:#414851;font:inherit;font-size:11px;cursor:pointer}
 .editor-toolbar button:hover{border-color:#aeb7c2;background:#f2f4f6}
 .editor-toolbar button:focus-visible,.write-actions button:focus-visible,.secondary-button:focus-visible{outline:2px solid #6f8edb;outline-offset:2px}
+.image-attachment-panel{padding:12px 14px;border-bottom:1px solid var(--line);background:#fff}
+.image-attachment-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.image-attachment-top strong{display:block;color:#414851;font-size:11px;font-weight:600}
+.image-attachment-top p{margin:4px 0 0;color:#858c95;font-size:10px;line-height:1.5}
+.image-attachment-panel .secondary-button{flex:0 0 auto}
+.image-attachment-feedback{margin:9px 0 0;color:#5f735e;font-size:10px;line-height:1.5}
+.image-attachment-feedback.error{color:#a64a4a}
+.image-attachments{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.image-attachments[hidden]{display:none}
+.image-attachment{display:flex;align-items:center;gap:9px;min-width:0;max-width:100%;padding:6px 8px;border:1px solid #e3e7ec;border-radius:5px;background:#fafbfc}
+.image-attachment>img,.image-attachment-missing{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:4px;object-fit:cover;background:#eef1f5;color:#818995;font-size:8px;text-align:center}
+.image-attachment-details{display:grid;min-width:0;gap:3px}
+.image-attachment-details strong{max-width:180px;overflow:hidden;color:#4a525c;font-size:10px;font-weight:500;text-overflow:ellipsis;white-space:nowrap}
+.image-attachment-details small{color:#8b929b;font-size:9px}
+.image-attachment-remove{flex:0 0 auto;padding:5px 7px;border:1px solid transparent;border-radius:4px;background:transparent;color:#858c95;font:inherit;font-size:9px;cursor:pointer}
+.image-attachment-remove:hover{border-color:#e5caca;background:#fff7f7;color:#a64a4a}
+.image-attachment-remove:focus-visible{outline:2px solid #6f8edb;outline-offset:2px}
 .editor-panel textarea{display:block;width:100%;height:540px;resize:vertical;border:0;outline:0;padding:18px 21px;background:#fff;color:#30363d;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.85}
 .editor-panel textarea:focus{box-shadow:inset 0 0 0 2px rgba(36,87,214,.12)}
 .editor-panel textarea::placeholder{color:#a3aab3}
@@ -80,7 +97,7 @@
 .write-note code{padding:1px 4px;border-radius:3px;background:#f0f2f4;font-family:'IBM Plex Mono',monospace;font-size:10px}
 @media(max-width:1000px){.write-head{display:flex}.write-grid{grid-template-columns:minmax(0,1fr)}.preview-panel .post-content{min-height:280px}.write-notes{grid-template-columns:1fr}}
 @media(max-width:800px){.write-head{display:block}.write-actions{width:100%;max-width:none;margin-top:18px}.write-action-buttons{justify-content:flex-start}.status{text-align:left}.write-grid{margin-top:18px}.panel-heading{padding:16px}.write-fields{padding:16px}.body-editor-heading{padding-inline:16px}.editor-panel textarea{height:480px;padding:16px}.preview-panel .post-content{padding:19px 16px 24px}}
-@media(max-width:560px){.write-head h1{font-size:33px}.write-head-copy>p:last-child{font-size:13px}.write-action-buttons{display:grid;grid-template-columns:1fr 1fr}.write-actions button{width:100%}.write-field-row{grid-template-columns:1fr}.category-row{grid-template-columns:minmax(0,1fr);}.category-row .secondary-button{width:100%}.write-notes{gap:7px}.write-note{padding:11px 12px}}
+@media(max-width:560px){.write-head h1{font-size:33px}.write-head-copy>p:last-child{font-size:13px}.write-action-buttons{display:grid;grid-template-columns:1fr 1fr}.write-actions button{width:100%}.write-field-row{grid-template-columns:1fr}.category-row{grid-template-columns:minmax(0,1fr);}.category-row .secondary-button{width:100%}.write-notes{gap:7px}.write-note{padding:11px 12px}.image-attachment-panel{padding:11px 10px}.image-attachment-top{align-items:flex-start;flex-direction:column}.image-attachment-panel .secondary-button{width:100%}.image-attachment-details strong{max-width:150px}}
 @media(max-width:800px){.study-nav .custom-nav-group{display:flex;align-items:center;gap:3px;min-width:max-content;border:0;padding:0}.study-nav .custom-nav-group .nav-group-title{width:auto;gap:5px;padding:7px 8px;white-space:nowrap}.study-nav .custom-nav-group .custom-nav-children{display:flex!important;align-items:center;gap:4px;min-width:max-content;padding:0}.study-nav .custom-nav-group .custom-nav-children button{width:auto;min-width:max-content;padding:6px 8px;border:1px solid var(--line);border-radius:4px;white-space:nowrap}}
 
 
@@ -137,3 +154,4 @@ footer{background:#fff;border-top-color:var(--line)}
 .custom-category-grid #custom-parent-name-field[hidden]{display:none}
 .custom-category-grid .write-field select{height:40px}
 @media(max-width:560px){.custom-category-grid{grid-template-columns:minmax(0,1fr)}}
+
