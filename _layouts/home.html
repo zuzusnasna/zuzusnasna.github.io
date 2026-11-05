@@ -3,9 +3,14 @@ layout: default
 ---
 {% assign study_count = site.posts.size %}
 <section class="study-hero">
-  <div><h1>개발 공부 기록</h1></div>
+  <div><p class="eyebrow">STUDY NOTES</p><h1>개발 공부 기록</h1><p class="study-intro">Java와 Spring을 공부하며 직접 실행해 본 내용과 막힌 지점을 적어 둡니다.</p></div>
   <div class="study-stats"><div><strong>{{ study_count }}</strong><span>학습 글</span></div></div>
 </section>
+
+{% assign built_in_sections = 'java-core,java-oop,java-pattern,java-generics,java-functional,java-collections,java-jvm,java-concurrency,java-io,spring-core,spring-data,spring-web,spring-security,spring-testing,spring-ai,database-oracle,database-redis,database-storage,backend-messaging,backend-performance,frontend-html,frontend-react,infra-linux,infra-aws,infra-docker,infra-cicd,ml,other' | split: ',' %}
+{% assign all_sections = site.posts | map: 'section' | compact | uniq | sort_natural %}
+{% assign has_custom_sections = false %}
+{% for section in all_sections %}{% unless built_in_sections contains section %}{% assign has_custom_sections = true %}{% endunless %}{% endfor %}
 
 <div class="study-layout">
   <aside class="study-nav">
@@ -22,6 +27,18 @@ layout: default
     <div class="nav-group"><button class="nav-group-title" data-section="frontend" type="button">Frontend <span>+</span></button><div class="nav-children"><button data-section="frontend-html" type="button">HTML / CSS / JavaScript</button><button data-section="frontend-react" type="button">React</button></div></div>
     <div class="nav-group"><button class="nav-group-title" data-section="infra" type="button">Infra <span>+</span></button><div class="nav-children"><button data-section="infra-linux" type="button">Linux</button><button data-section="infra-aws" type="button">AWS / EC2</button><button data-section="infra-docker" type="button">Docker</button><button data-section="infra-cicd" type="button">GitHub Actions / CI-CD</button></div></div>
     <div class="nav-group"><button class="nav-group-title" data-section="ml" type="button">ML <span>+</span></button><div class="nav-children"><button data-section="ml" type="button">Machine Learning</button></div></div>
+    {% assign other_posts = site.posts | where: 'section', 'other' %}
+    {% if other_posts.size > 0 %}<div class="nav-group"><button class="nav-group-title" data-section="other" type="button">기타 <span>+</span></button><div class="nav-children"><button data-section="other" type="button">기타</button></div></div>{% endif %}
+    {% if has_custom_sections %}
+    <div class="nav-group custom-nav-group"><button class="nav-group-title" data-section="custom" type="button">내 분류 <span>+</span></button><div class="nav-children custom-nav-children">
+      {% for custom_section in all_sections %}
+        {% unless built_in_sections contains custom_section %}
+          {% assign category_post = site.posts | where: 'section', custom_section | first %}
+          <button data-section="{{ custom_section | escape }}" type="button">{{ category_post.section_label | default: custom_section | escape }}</button>
+        {% endunless %}
+      {% endfor %}
+    </div></div>
+    {% endif %}
   </aside>
 
   <main class="study-main">
@@ -38,7 +55,7 @@ layout: default
       {% assign haystack = post.title | append: ' ' | append: tags_text | downcase %}
       {% if post.section %}
         {% assign classification = post.section %}
-        {% if post.section contains 'spring' %}{% assign parent_classification = 'spring' %}{% elsif post.section contains 'java' %}{% assign parent_classification = 'java' %}{% elsif post.section contains 'database' %}{% assign parent_classification = 'database' %}{% elsif post.section contains 'backend' %}{% assign parent_classification = 'backend' %}{% elsif post.section contains 'frontend' %}{% assign parent_classification = 'frontend' %}{% elsif post.section contains 'infra' %}{% assign parent_classification = 'infra' %}{% elsif post.section contains 'ml' %}{% assign parent_classification = 'ml' %}{% else %}{% assign parent_classification = post.section %}{% endif %}
+        {% if post.section contains 'custom-' %}{% assign parent_classification = 'custom' %}{% elsif post.section == 'other' %}{% assign parent_classification = 'other' %}{% elsif post.section contains 'spring' %}{% assign parent_classification = 'spring' %}{% elsif post.section contains 'java' %}{% assign parent_classification = 'java' %}{% elsif post.section contains 'database' %}{% assign parent_classification = 'database' %}{% elsif post.section contains 'backend' %}{% assign parent_classification = 'backend' %}{% elsif post.section contains 'frontend' %}{% assign parent_classification = 'frontend' %}{% elsif post.section contains 'infra' %}{% assign parent_classification = 'infra' %}{% elsif post.section contains 'ml' %}{% assign parent_classification = 'ml' %}{% else %}{% assign parent_classification = 'custom' %}{% endif %}
       {% elsif tags_text contains 'java' or category == 'java' or category == 'jvm' %}
         {% if haystack contains 'jvm' or haystack contains 'jit' or haystack contains 'gc roots' or haystack contains 'memory leak' or haystack contains 'class loading' or haystack contains 'metaspace' or haystack contains '가비지 컬렉션' or haystack contains '클래스 로딩' or haystack contains 'heap' or haystack contains 'stack memory' %}{% assign classification = 'java-jvm' %}
         {% elsif haystack contains 'lambda' or haystack contains 'stream' or haystack contains '람다' or haystack contains '함수형' %}{% assign classification = 'java-functional' %}
@@ -132,6 +149,9 @@ layout: default
 (() => {
   const cards = [...document.querySelectorAll('.study-card')], buttons = [...document.querySelectorAll('.study-nav [data-section]')], groups = [...document.querySelectorAll('.nav-group-title')], input = document.getElementById('study-search-input'), empty = document.getElementById('empty'), title = document.getElementById('section-title'), tagPanel = document.getElementById('tag-search-panel'), tagItems = [...document.querySelectorAll('.tag-search-item')];
   const labels = {all:'전체 공부',java:'JAVA','java-core':'JAVA 기본','java-oop':'객체지향 / SOLID','java-pattern':'디자인 패턴','java-generics':'Generic','java-functional':'함수형 / Lambda / Stream','java-advanced':'Generic','java-collections':'컬렉션','java-jvm':'JVM','java-concurrency':'동시성','java-io':'입출력 / NIO',spring:'Spring','spring-core':'Spring Core / DI / AOP','spring-data':'JPA / MyBatis','spring-web':'MVC / WebFlux / REST API','spring-security':'Security / JWT / OAuth2','spring-testing':'테스트 / 품질 관리','spring-ai':'Spring AI',database:'Database','database-oracle':'Oracle / SQL / PL-SQL','database-redis':'Redis','database-storage':'MySQL / Docker Volume',backend:'Backend','backend-messaging':'실시간 / 메시징','backend-performance':'성능 / 부하 테스트',frontend:'Frontend','frontend-html':'HTML / CSS / JavaScript','frontend-react':'React',infra:'Infra','infra-linux':'Linux','infra-aws':'AWS / EC2','infra-docker':'Docker','infra-cicd':'GitHub Actions / CI-CD',ml:'Machine Learning'};
+  labels.custom = '내 분류';
+  labels.other = '기타';
+  buttons.forEach(button => { const section = button.dataset.section; if (section && !labels[section] && !button.classList.contains('nav-group-title')) labels[section] = button.textContent.trim(); });
   let current = 'all';
   function openParentFor(section) { const group = buttons.find(b => b.dataset.section === section)?.closest('.nav-group'); if (!group) return; group.classList.add('open'); const i = group.querySelector('.nav-group-title span'); if (i) i.textContent = '−'; }
   function render() { const q = input.value.trim().toLowerCase(); let visible = 0; cards.forEach(card => { const s = current === 'all' || card.dataset.section === current || card.dataset.parentSection === current; const m = !q || card.dataset.search.includes(q); const show = s && m; card.style.display = show ? '' : 'none'; if (show) visible++; }); empty.hidden = visible !== 0; title.textContent = q && current === 'all' ? '검색 결과' : (labels[current] || '전체 공부'); }

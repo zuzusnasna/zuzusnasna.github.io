@@ -61,8 +61,12 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
   tags = metadata["tags"]
   errors << "#{path}: tags must be a non-empty array" unless tags.is_a?(Array) && tags.any?
   section = metadata["section"].to_s.strip
-  if !section.empty? && !known_sections.include?(section)
+  custom_section = section.start_with?("custom-")
+  if !section.empty? && !known_sections.include?(section) && !custom_section
     errors << "#{path}: section '#{section}' is not defined in the blog sidebar"
+  end
+  if custom_section && metadata["section_label"].to_s.strip.empty?
+    errors << "#{path}: custom section '#{section}' needs a section_label"
   end
 
   # Keep Jekyll category and sidebar section in the same top-level group.
@@ -74,6 +78,8 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
                    when /\Afrontend-/ then "Frontend"
                    when /\Ainfra-/ then "Infra"
                    when "ml" then "ML"
+                   when "other" then "기타"
+                   when /\Acustom-/ then "내 분류"
                    else nil
                    end
   category = categories.is_a?(Array) ? categories.first.to_s : ""
