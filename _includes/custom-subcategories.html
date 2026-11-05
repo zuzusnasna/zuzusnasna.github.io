@@ -1,0 +1,9 @@
+{% for custom_section in include.sections %}
+  {% unless include.built_in_sections contains custom_section %}
+    {% assign custom_post = site.posts | where: 'section', custom_section | first %}
+    {% assign custom_parent = custom_post.section_parent | default: 'custom' %}
+    {% if custom_parent == include.parent %}
+      <button data-section="{{ custom_section | escape }}" type="button">{{ custom_post.section_label | default: custom_section | escape }}</button>
+    {% endif %}
+  {% endunless %}
+{% endfor %}

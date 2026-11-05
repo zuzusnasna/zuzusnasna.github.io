@@ -96,22 +96,59 @@ noindex: true
               {% for saved_section in saved_sections %}
                 {% unless built_in_sections contains saved_section %}{% assign custom_count = custom_count | plus: 1 %}{% endunless %}
               {% endfor %}
-              {% if custom_count > 0 %}<optgroup label="내 분류">
+              {% if custom_count > 0 %}<optgroup label="소분류">
               {% for saved_section in saved_sections %}
                 {% unless built_in_sections contains saved_section %}
                   {% assign saved_post = site.posts | where: 'section', saved_section | first %}
-                  <option value="section:{{ saved_section | escape }}" data-section="{{ saved_section | escape }}" data-parent="custom" data-label="{{ saved_post.section_label | default: saved_section | escape }}">{{ saved_post.section_label | default: saved_section | escape }}</option>
+                  {% assign saved_parent = saved_post.section_parent | default: 'custom' %}
+                  {% assign saved_parent_label = saved_post.section_parent_label | default: '내 분류' %}
+                  {% assign saved_label = saved_post.section_label | default: saved_section %}
+                  <option value="section:{{ saved_section | escape }}" data-section="{{ saved_section | escape }}" data-parent="{{ saved_parent | escape }}" data-parent-label="{{ saved_parent_label | escape }}" data-label="{{ saved_label | escape }}" data-custom-section="true">{{ saved_parent_label | escape }} / {{ saved_label | escape }}</option>
                 {% endunless %}
               {% endfor %}
               </optgroup>{% endif %}
-              <option value="new">새 분류 만들기</option>
+              <option value="new">새 대분류 / 소분류 만들기</option>
             </select>
-            <button type="button" id="add-category" class="secondary-button">분류 추가</button>
+            <button type="button" id="add-category" class="secondary-button">소분류 추가</button>
           </div>
           <div class="custom-category" id="custom-category-fields" hidden>
-            <label class="sr-only" for="custom-category-name">새 분류 이름</label>
-            <input id="custom-category-name" type="text" maxlength="60" autocomplete="off" aria-describedby="custom-category-help" placeholder="예: Kotlin, 네트워크">
-            <p id="custom-category-help">저장한 글을 블로그에 올리면 이 분류가 목록에 추가됩니다.</p>
+            <div class="custom-category-grid">
+              <label class="write-field" for="custom-category-parent">
+                <span>대분류</span>
+                <select id="custom-category-parent">
+                  <option value="new-parent" data-label="">새 대분류 만들기</option>
+                  <optgroup label="기본 대분류">
+                    <option value="java" data-label="Java">Java</option>
+                    <option value="spring" data-label="Spring">Spring</option>
+                    <option value="database" data-label="Database">Database</option>
+                    <option value="backend" data-label="Backend">Backend</option>
+                    <option value="frontend" data-label="Frontend">Frontend</option>
+                    <option value="infra" data-label="Infra">Infra</option>
+                    <option value="ml" data-label="ML">ML</option>
+                    <option value="other" data-label="기타">기타</option>
+                  </optgroup>
+                  {% assign saved_parent_keys = site.posts | map: 'section_parent' | compact | uniq | sort_natural %}
+                  <optgroup label="내 대분류">
+                    <option value="custom" data-label="내 분류">내 분류</option>
+                    {% for saved_parent_key in saved_parent_keys %}
+                      {% if saved_parent_key contains 'custom-' %}
+                        {% assign saved_parent_post = site.posts | where: 'section_parent', saved_parent_key | first %}
+                        <option value="{{ saved_parent_key | escape }}" data-label="{{ saved_parent_post.section_parent_label | default: saved_parent_key | escape }}">{{ saved_parent_post.section_parent_label | default: saved_parent_key | escape }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </optgroup>
+                </select>
+              </label>
+              <label class="write-field" id="custom-parent-name-field" for="custom-category-parent-name" hidden>
+                <span>새 대분류 이름</span>
+                <input id="custom-category-parent-name" type="text" maxlength="60" autocomplete="off" placeholder="예: 네트워크">
+              </label>
+              <label class="write-field" for="custom-category-name">
+                <span>소분류</span>
+                <input id="custom-category-name" type="text" maxlength="60" autocomplete="off" aria-describedby="custom-category-help" placeholder="예: HTTP 기초">
+              </label>
+            </div>
+            <p id="custom-category-help">대분류를 고르거나 새로 만든 뒤 소분류 이름을 입력하세요. 글을 게시하면 분류 목록에 반영됩니다.</p>
           </div>
         </div>
         <div class="write-meta" aria-live="polite">
@@ -157,7 +194,7 @@ noindex: true
   </div>
 
   <div class="write-notes">
-    <p class="write-note"><strong>분류</strong> · 기존 분류를 고르거나 새 분류를 만들 수 있습니다. 새 분류 이름은 글의 Front Matter에 들어가며, 글을 <code>_posts</code>에 추가하면 블로그 목록에도 나타납니다.</p>
+    <p class="write-note"><strong>분류</strong> · 기본 대분류 아래에 새 소분류를 추가하거나, 새 대분류와 소분류를 함께 만들 수 있습니다. 글을 <code>_posts</code>에 추가하면 블로그 목록에 반영됩니다.</p>
     <p class="write-note"><strong>저장</strong> · 임시 초안은 현재 브라우저에 저장됩니다. Markdown 파일을 내려받은 뒤 블로그 저장소의 <code>_posts</code>에 넣어 게시합니다.</p>
     <p class="write-note"><strong>글 구성</strong> · 질문, 핵심 내용, 예제, 직접 확인한 결과 순으로 쓰면 정리하기 쉽습니다. 글에 맞지 않는 부분은 빼도 됩니다.</p>
   </div>
@@ -173,6 +210,9 @@ noindex: true
   const tagsInput = document.getElementById('post-tags');
   const categorySelect = document.getElementById('post-category');
   const customFields = document.getElementById('custom-category-fields');
+  const customParentSelect = document.getElementById('custom-category-parent');
+  const customParentNameField = document.getElementById('custom-parent-name-field');
+  const customParentNameInput = document.getElementById('custom-category-parent-name');
   const customCategoryInput = document.getElementById('custom-category-name');
   const previewTitle = document.getElementById('preview-title');
   const previewBody = document.getElementById('preview-body');
@@ -403,23 +443,50 @@ noindex: true
   };
 
   const yamlQuote = value => JSON.stringify(String(value || '').replace(/[\u0000-\u001F\u007F]/g, ' ').trim());
+  const slugify = value => String(value || '').normalize('NFKC').toLocaleLowerCase('ko-KR').replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
+
+  const syncCustomParentFields = () => {
+    customParentNameField.hidden = customParentSelect.value !== 'new-parent';
+  };
 
   const selectedCategory = () => {
     const value = categorySelect.value;
-    if (value === 'auto') return classify([titleInput.value, tagsInput.value, body.value].join(' '));
+    if (value === 'auto') {
+      const classified = classify([titleInput.value, tagsInput.value, body.value].join(' '));
+      const parentOption = [...customParentSelect.options].find(option => option.value === classified.parent);
+      return {...classified, parentKey: classified.parent, parentLabel: parentOption?.dataset.label || classified.parent};
+    }
     if (value === 'new') {
+      const parentValue = customParentSelect.value;
+      const parentOption = customParentSelect.selectedOptions[0];
+      const parentLabel = String(parentValue === 'new-parent' ? customParentNameInput.value : parentOption?.dataset.label || parentOption?.textContent || '').trim();
+      const parentSlug = slugify(parentLabel);
+      if (!parentLabel) return {error: '대분류 이름을 입력해 주세요.', errorField: 'parent'};
+      if (!parentSlug) return {error: '대분류 이름에 글자나 숫자를 넣어 주세요.', errorField: 'parent'};
+
       const label = customCategoryInput.value.trim();
-      if (!label) return {error: '새 분류 이름을 입력해 주세요.'};
-      const slug = label.normalize('NFKC').toLocaleLowerCase('ko-KR').replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
-      if (!slug) return {error: '분류 이름에 글자나 숫자를 넣어 주세요.'};
-      return {section: 'custom-' + slug, parent: 'custom', label, isCustom: true};
+      const childSlug = slugify(label);
+      if (!label) return {error: '소분류 이름을 입력해 주세요.', errorField: 'child'};
+      if (!childSlug) return {error: '소분류 이름에 글자나 숫자를 넣어 주세요.', errorField: 'child'};
+
+      const existingParent = parentValue === 'new-parent'
+        ? [...customParentSelect.options].find(option => option.dataset.label?.toLocaleLowerCase('ko-KR') === parentLabel.toLocaleLowerCase('ko-KR'))
+        : parentOption;
+      const parentKey = existingParent?.value && existingParent.value !== 'new-parent' ? existingParent.value : 'custom-' + parentSlug;
+      return {section: 'custom-' + parentSlug + '--' + childSlug, parent: parentLabel, parentKey, parentLabel, label, isCustom: true};
     }
     const option = categorySelect.selectedOptions[0];
+    if (!option) return {error: '분류를 다시 선택해 주세요.', errorField: 'category'};
+    const parentKey = option.dataset.parent || 'custom';
+    const parentOption = [...customParentSelect.options].find(item => item.value === parentKey);
+    const parentLabel = option.dataset.parentLabel || parentOption?.dataset.label || (parentKey === 'custom' ? '내 분류' : parentKey);
     return {
       section: option.dataset.section || value.replace(/^section:/, ''),
-      parent: option.dataset.parent || 'custom',
+      parent: parentLabel,
+      parentKey,
+      parentLabel,
       label: option.dataset.label || option.textContent.trim(),
-      isCustom: option.dataset.parent === 'custom'
+      isCustom: option.dataset.customSection === 'true' || (option.dataset.section || '').startsWith('custom-')
     };
   };
 
@@ -428,13 +495,23 @@ noindex: true
   };
   const safeWriteDraft = () => {
     try {
+      const category = selectedCategory();
       localStorage.setItem(draftKey, JSON.stringify({
-        version: 2,
+        version: 3,
         title: titleInput.value,
         date: dateInput.value,
         tags: tagsInput.value,
         category: categorySelect.value,
+        categoryData: categorySelect.value.startsWith('section:') && !category.error ? {
+          section: category.section,
+          label: category.label,
+          parent: category.parentKey,
+          parentLabel: category.parentLabel
+        } : null,
         customCategory: customCategoryInput.value,
+        customParent: customParentSelect.value,
+        customParentLabel: category.parentLabel || customParentSelect.selectedOptions[0]?.dataset.label || customParentNameInput.value,
+        customParentName: customParentNameInput.value,
         body: body.value
       }));
       return true;
@@ -454,7 +531,7 @@ noindex: true
     previewBody.innerHTML = body.value.trim()
       ? render(normalizeArticle(body.value, title))
       : '<p class="preview-empty">본문을 입력하면 여기에서 확인할 수 있습니다.</p>';
-    const categoryLabel = category.error ? '분류 이름 입력 필요' : category.label || category.section;
+    const categoryLabel = category.error ? '분류 이름 입력 필요' : (category.isCustom && category.parentLabel ? category.parentLabel + ' / ' + category.label : category.label || category.section);
     const dateLabel = date || '날짜 확인 필요';
     metaSummary.textContent = (title || '제목을 입력해 주세요') + ' · ' + dateLabel + ' · ' + (tags.length ? tags.join(', ') : '태그 없음') + ' · ' + categoryLabel;
     previewState.textContent = body.value.trim() ? '미리보기' : '본문 입력 대기';
@@ -470,9 +547,24 @@ noindex: true
     }
   };
 
-  const setCategoryFromFrontMatter = (section, label) => {
+  const ensureCustomParentOption = (parentKey, label) => {
+    if (!parentKey || [...customParentSelect.options].some(option => option.value === parentKey)) return;
+    const group = customParentSelect.querySelector('optgroup[label="내 대분류"]');
+    if (!group) return;
+    const option = document.createElement('option');
+    option.value = parentKey;
+    option.dataset.label = label || parentKey;
+    option.textContent = option.dataset.label;
+    group.append(option);
+  };
+
+  const setCategoryFromFrontMatter = (section, label, parent, parentLabel) => {
     const options = [...categorySelect.options];
     const match = options.find(option => option.dataset.section === String(section || ''));
+    const savedParent = String(parent || match?.dataset.parent || 'custom');
+    const parentOption = [...customParentSelect.options].find(option => option.value === savedParent);
+    const savedParentLabel = String(parentLabel || match?.dataset.parentLabel || parentOption?.dataset.label || (savedParent === 'custom' ? '내 분류' : savedParent));
+    ensureCustomParentOption(savedParent, savedParentLabel);
     if (match) {
       categorySelect.value = match.value;
       customFields.hidden = true;
@@ -481,9 +573,11 @@ noindex: true
       const option = document.createElement('option');
       option.value = 'section:' + section;
       option.dataset.section = section;
-      option.dataset.parent = 'custom';
+      option.dataset.parent = savedParent;
+      option.dataset.parentLabel = savedParentLabel;
       option.dataset.label = label || section.replace(/^custom-/, '');
-      option.textContent = option.dataset.label;
+      option.dataset.customSection = 'true';
+      option.textContent = savedParentLabel + ' / ' + option.dataset.label;
       categorySelect.insertBefore(option, categorySelect.querySelector('option[value="new"]'));
       categorySelect.value = option.value;
       customFields.hidden = true;
@@ -493,6 +587,9 @@ noindex: true
       customFields.hidden = true;
       customCategoryInput.value = '';
     }
+    customParentSelect.value = savedParent;
+    customParentNameInput.value = savedParent.startsWith('custom-') ? savedParentLabel : '';
+    syncCustomParentFields();
   };
 
   const importFrontMatter = parsed => {
@@ -500,7 +597,7 @@ noindex: true
     titleInput.value = String(data.title || autoTitle(parsed.body) || '');
     dateInput.value = data.date ? normalizeDate(data.date) : today();
     tagsInput.value = normalizeTags(data.tags).join(', ');
-    setCategoryFromFrontMatter(data.section, data.section_label);
+    setCategoryFromFrontMatter(data.section, data.section_label, data.section_parent, data.section_parent_label);
     body.value = parsed.body;
   };
 
@@ -545,15 +642,22 @@ noindex: true
     scheduleUpdate();
   });
 
-  [titleInput, dateInput, tagsInput, customCategoryInput].forEach(input => input.addEventListener('input', scheduleUpdate));
+  [titleInput, dateInput, tagsInput, customParentNameInput, customCategoryInput].forEach(input => input.addEventListener('input', scheduleUpdate));
+  customParentSelect.addEventListener('change', () => { syncCustomParentFields(); scheduleUpdate(); });
   categorySelect.addEventListener('change', () => {
     customFields.hidden = categorySelect.value !== 'new';
+    if (categorySelect.value === 'new') syncCustomParentFields();
     scheduleUpdate();
   });
   document.getElementById('add-category').addEventListener('click', () => {
+    const currentCategory = selectedCategory();
+    const hasCategoryContext = categorySelect.value !== 'auto' || titleInput.value.trim() || tagsInput.value.trim() || body.value.trim();
+    const existingParent = hasCategoryContext && [...customParentSelect.options].find(option => option.value === currentCategory.parentKey);
+    if (existingParent) customParentSelect.value = existingParent.value;
     categorySelect.value = 'new';
     customFields.hidden = false;
-    customCategoryInput.focus();
+    syncCustomParentFields();
+    (customParentSelect.value === 'new-parent' ? customParentNameInput : customCategoryInput).focus();
     scheduleUpdate();
   });
 
@@ -566,6 +670,8 @@ noindex: true
     dateInput.value = today();
     tagsInput.value = '';
     categorySelect.value = 'auto';
+    customParentSelect.value = 'new-parent';
+    customParentNameInput.value = '';
     customCategoryInput.value = '';
     customFields.hidden = true;
     const removed = safeClearDraft();
@@ -584,7 +690,7 @@ noindex: true
     if (!title) { status.textContent = '제목을 입력해 주세요.'; status.className = 'status error'; titleInput.focus(); return; }
     if (!date) { status.textContent = '올바른 날짜를 선택해 주세요.'; status.className = 'status error'; dateInput.focus(); return; }
     if (!body.value.trim()) { status.textContent = '본문을 입력해 주세요.'; status.className = 'status error'; body.focus(); return; }
-    if (category.error) { status.textContent = category.error; status.className = 'status error'; customCategoryInput.focus(); return; }
+    if (category.error) { status.textContent = category.error; status.className = 'status error'; (category.errorField === 'parent' ? (customParentSelect.value === 'new-parent' ? customParentNameInput : customParentSelect) : category.errorField === 'category' ? categorySelect : customCategoryInput).focus(); return; }
 
     const content = normalizeArticle(stripFrontMatter(body.value), title);
     const fields = [
@@ -592,10 +698,10 @@ noindex: true
       'layout: post',
       'title: ' + yamlQuote(title),
       'date: ' + date + ' 00:00:00 +0900',
-      'categories: [' + yamlQuote(category.parent === 'custom' ? '내 분류' : category.parent) + ']',
+      'categories: [' + yamlQuote(category.parentLabel || category.parent) + ']',
       'section: ' + yamlQuote(category.section)
     ];
-    if (category.isCustom) fields.push('section_label: ' + yamlQuote(category.label));
+    if (category.isCustom) fields.push('section_parent: ' + yamlQuote(category.parentKey), 'section_parent_label: ' + yamlQuote(category.parentLabel), 'section_label: ' + yamlQuote(category.label));
     fields.push('tags: [' + (tags.length ? tags.map(yamlQuote).join(', ') : yamlQuote('Study')) + ']', '---', '');
     const fileContent = fields.join('\n') + content;
     const draftSaved = safeWriteDraft();
@@ -618,13 +724,24 @@ noindex: true
   if (storedDraft) {
     try {
       const saved = JSON.parse(storedDraft);
-      if (saved && saved.version === 2) {
+      if (saved && (saved.version === 2 || saved.version === 3)) {
         titleInput.value = saved.title || '';
         dateInput.value = normalizeDate(saved.date) || today();
         tagsInput.value = saved.tags || '';
-        categorySelect.value = saved.category || 'auto';
+        const savedCategory = saved.category || 'auto';
+        categorySelect.value = savedCategory;
         customCategoryInput.value = saved.customCategory || '';
+        const savedParent = saved.version === 3 ? saved.customParent || 'new-parent' : (categorySelect.value === 'new' ? 'custom' : 'new-parent');
+        ensureCustomParentOption(savedParent, saved.customParentLabel || saved.customParentName);
+        customParentSelect.value = savedParent;
+        customParentNameInput.value = saved.customParentName || '';
+        if (saved.categoryData && savedCategory.startsWith('section:')) {
+          setCategoryFromFrontMatter(saved.categoryData.section, saved.categoryData.label, saved.categoryData.parent, saved.categoryData.parentLabel);
+        } else if (!categorySelect.value) {
+          categorySelect.value = 'auto';
+        }
         customFields.hidden = categorySelect.value !== 'new';
+        syncCustomParentFields();
         body.value = saved.body || '';
         importedDraft = true;
       } else {

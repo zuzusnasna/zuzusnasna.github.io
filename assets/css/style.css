@@ -132,3 +132,8 @@ footer{background:#fff;border-top-color:var(--line)}
 .footer-inner strong{color:#566451}
 @media(max-width:800px){.study-nav{padding:8px;border-radius:9px;background:#fff}.study-card{grid-template-columns:1fr;gap:5px;margin:9px 0;padding:16px}.card-date{padding:3px 0;background:transparent}.post-detail{padding:21px 16px;border-radius:10px}.study-stats{margin-top:20px}}
 @media(max-width:560px){.main-nav{gap:3px}.main-nav a{padding:6px 8px;font-size:12px}.study-card{padding:14px}.study-hero{gap:18px}}
+
+.custom-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.custom-category-grid #custom-parent-name-field[hidden]{display:none}
+.custom-category-grid .write-field select{height:40px}
+@media(max-width:560px){.custom-category-grid{grid-template-columns:minmax(0,1fr)}}

@@ -68,6 +68,9 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
   if custom_section && metadata["section_label"].to_s.strip.empty?
     errors << "#{path}: custom section '#{section}' needs a section_label"
   end
+  if custom_section && !metadata["section_parent"].to_s.strip.empty? && metadata["section_parent_label"].to_s.strip.empty?
+    errors << "#{path}: custom section '#{section}' needs a section_parent_label"
+  end
 
   # Keep Jekyll category and sidebar section in the same top-level group.
   section_parent = case section
@@ -79,7 +82,7 @@ Dir.glob("_posts/*.{md,markdown}").sort.each do |path|
                    when /\Ainfra-/ then "Infra"
                    when "ml" then "ML"
                    when "other" then "기타"
-                   when /\Acustom-/ then "내 분류"
+                   when /\Acustom-/ then metadata["section_parent_label"].to_s.strip.empty? ? "내 분류" : metadata["section_parent_label"].to_s.strip
                    else nil
                    end
   category = categories.is_a?(Array) ? categories.first.to_s : ""
