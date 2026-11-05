@@ -10,12 +10,12 @@ noindex: true
     <div class="write-head-copy">
       <p class="eyebrow">STUDY NOTES</p>
       <h1>글쓰기</h1>
-      <p>제목과 본문을 적고, 미리보기에서 확인한 뒤 Markdown 파일로 저장합니다.</p>
+      <p>제목과 본문을 적고, 미리보기에서 확인한 뒤 글과 첨부 이미지를 저장합니다.</p>
     </div>
     <div class="write-actions">
       <div class="write-action-buttons">
         <button type="button" id="reset-post">새 글</button>
-        <button type="button" id="download-post" class="primary">Markdown 저장</button>
+        <button type="button" id="download-post" class="primary">글 파일 저장</button>
       </div>
       <p class="status" id="status" role="status" aria-live="polite">초안은 이 브라우저에 자동 저장됩니다.</p>
     </div>
@@ -166,6 +166,18 @@ noindex: true
         <button type="button" data-action="table" aria-label="표" title="표">표</button>
         <button type="button" data-action="link" aria-label="링크" title="링크">링크</button>
       </div>
+      <div class="image-attachment-panel">
+        <div class="image-attachment-top">
+          <div>
+            <strong>본문에 이미지 추가</strong>
+            <p>이미지당 5MB 이하 · PNG, JPG, GIF, WebP, AVIF · 최대 10장</p>
+          </div>
+          <input id="post-images" type="file" accept="image/png,image/jpeg,image/gif,image/webp,image/avif" multiple hidden>
+          <button type="button" id="add-images" class="secondary-button">이미지 첨부</button>
+        </div>
+        <div class="image-attachments" id="image-attachments" aria-live="polite" hidden></div>
+        <p class="image-attachment-feedback" id="image-attachment-feedback" role="status" aria-live="polite" hidden></p>
+      </div>
       <label class="sr-only" for="post-body">Markdown 본문</label>
       <textarea id="post-body" spellcheck="false" placeholder="Markdown 본문을 적거나 글 전체를 붙여넣으세요.
 
@@ -195,13 +207,14 @@ noindex: true
 
   <div class="write-notes">
     <p class="write-note"><strong>분류</strong> · 기본 대분류 아래에 새 소분류를 추가하거나, 새 대분류와 소분류를 함께 만들 수 있습니다. 글을 <code>_posts</code>에 추가하면 블로그 목록에 반영됩니다.</p>
-    <p class="write-note"><strong>저장</strong> · 임시 초안은 현재 브라우저에 저장됩니다. Markdown 파일을 내려받은 뒤 블로그 저장소의 <code>_posts</code>에 넣어 게시합니다.</p>
+    <p class="write-note"><strong>저장</strong> · 임시 초안과 첨부 이미지는 이 브라우저에 보관됩니다. 이미지가 있으면 글과 이미지 경로를 담은 ZIP을 저장해 저장소 루트에 풀어 넣습니다.</p>
     <p class="write-note"><strong>글 구성</strong> · 질문, 핵심 내용, 예제, 직접 확인한 결과 순으로 쓰면 정리하기 쉽습니다. 글에 맞지 않는 부분은 빼도 됩니다.</p>
   </div>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script>
 (() => {
   const body = document.getElementById('post-body');
@@ -219,9 +232,69 @@ noindex: true
   const status = document.getElementById('status');
   const metaSummary = document.getElementById('meta-summary');
   const previewState = document.getElementById('preview-state');
+  const imageInput = document.getElementById('post-images');
+  const addImagesButton = document.getElementById('add-images');
+  const imageAttachmentsPanel = document.getElementById('image-attachments');
+  const imageAttachmentFeedback = document.getElementById('image-attachment-feedback');
   const draftKey = 'zuzusnasna-study-draft';
+  const imageDbName = 'zuzusnasna-study-images';
+  const maxImageSize = 5 * 1024 * 1024;
+  const maxImageCount = 10;
+  const allowedImageExtensions = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'avif']);
+  let draftId = window.crypto?.randomUUID?.() || 'draft-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  let attachedImages = [];
+  let imageInsertPosition = 0;
+  let attachmentsRestoring = false;
+  let imageDbPromise;
   const tick = String.fromCharCode(96);
   const fencePattern = new RegExp('^ {0,3}(' + tick + '{3,}|~{3,})');
+
+  const createId = () => window.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  const isSafeImageFilename = value => typeof value === 'string' && /^image-[a-zA-Z0-9-]+\.(png|jpe?g|gif|webp|avif)$/.test(value);
+  const openImageDb = () => {
+    if (!window.indexedDB) return Promise.reject(new Error('이 브라우저에서는 이미지 초안을 저장할 수 없습니다.'));
+    if (!imageDbPromise) {
+      imageDbPromise = new Promise((resolve, reject) => {
+        const request = window.indexedDB.open(imageDbName, 1);
+        request.onupgradeneeded = () => {
+          if (!request.result.objectStoreNames.contains('images')) request.result.createObjectStore('images', {keyPath: 'id'});
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error('이미지 저장소를 열지 못했습니다.'));
+      });
+    }
+    return imageDbPromise;
+  };
+  const saveImageBlob = async record => {
+    const db = await openImageDb();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction('images', 'readwrite');
+      transaction.objectStore('images').put(record);
+      transaction.oncomplete = resolve;
+      transaction.onerror = () => reject(transaction.error || new Error('이미지를 브라우저에 저장하지 못했습니다.'));
+      transaction.onabort = () => reject(transaction.error || new Error('이미지 저장이 취소되었습니다.'));
+    });
+  };
+  const readImageBlob = async id => {
+    const db = await openImageDb();
+    return new Promise((resolve, reject) => {
+      const request = db.transaction('images', 'readonly').objectStore('images').get(id);
+      request.onsuccess = () => resolve(request.result?.blob || null);
+      request.onerror = () => reject(request.error || new Error('저장한 이미지를 불러오지 못했습니다.'));
+    });
+  };
+  const deleteImageBlob = async id => {
+    try {
+      const db = await openImageDb();
+      await new Promise((resolve, reject) => {
+        const transaction = db.transaction('images', 'readwrite');
+        transaction.objectStore('images').delete(id);
+        transaction.oncomplete = resolve;
+        transaction.onerror = () => reject(transaction.error);
+        transaction.onabort = () => reject(transaction.error);
+      });
+    } catch (_) {}
+  };
 
   const today = () => {
     const date = new Date();
@@ -442,6 +515,62 @@ noindex: true
     }
   };
 
+  const formatImageSize = bytes => bytes < 1024 * 1024
+    ? Math.max(1, Math.round(bytes / 1024)) + ' KB'
+    : (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+
+  const renderAttachments = () => {
+    imageAttachmentsPanel.replaceChildren();
+    imageAttachmentsPanel.hidden = attachedImages.length === 0;
+    attachedImages.forEach(image => {
+      const card = document.createElement('div');
+      card.className = 'image-attachment';
+      if (image.previewUrl) {
+        const preview = document.createElement('img');
+        preview.src = image.previewUrl;
+        preview.alt = '';
+        preview.loading = 'lazy';
+        card.append(preview);
+      } else {
+        const missing = document.createElement('span');
+        missing.className = 'image-attachment-missing';
+        missing.textContent = '이미지 복구 필요';
+        card.append(missing);
+      }
+      const details = document.createElement('div');
+      details.className = 'image-attachment-details';
+      const name = document.createElement('strong');
+      name.textContent = image.name;
+      const size = document.createElement('small');
+      size.textContent = formatImageSize(image.size);
+      details.append(name, size);
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'image-attachment-remove';
+      remove.textContent = '삭제';
+      remove.setAttribute('aria-label', image.name + ' 이미지 삭제');
+      remove.addEventListener('click', () => {
+        const pattern = new RegExp('!?\\[[^\\]]*\\]\\(' + image.path + '\\)', 'g');
+        body.value = body.value.replace(pattern, '');
+        attachedImages = attachedImages.filter(item => item.id !== image.id);
+        if (image.previewUrl) URL.revokeObjectURL(image.previewUrl);
+        void deleteImageBlob(image.id);
+        renderAttachments();
+        body.dispatchEvent(new Event('input', {bubbles: true}));
+      });
+      card.append(details, remove);
+      imageAttachmentsPanel.append(card);
+    });
+  };
+
+  const updatePreviewImages = () => {
+    previewBody.querySelectorAll('img').forEach(preview => {
+      const source = preview.getAttribute('src');
+      const image = attachedImages.find(item => item.path === source);
+      if (image?.previewUrl) preview.src = image.previewUrl;
+    });
+  };
+
   const yamlQuote = value => JSON.stringify(String(value || '').replace(/[\u0000-\u001F\u007F]/g, ' ').trim());
   const slugify = value => String(value || '').normalize('NFKC').toLocaleLowerCase('ko-KR').replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
 
@@ -497,7 +626,8 @@ noindex: true
     try {
       const category = selectedCategory();
       localStorage.setItem(draftKey, JSON.stringify({
-        version: 3,
+        version: 4,
+        draftId,
         title: titleInput.value,
         date: dateInput.value,
         tags: tagsInput.value,
@@ -512,7 +642,8 @@ noindex: true
         customParent: customParentSelect.value,
         customParentLabel: category.parentLabel || customParentSelect.selectedOptions[0]?.dataset.label || customParentNameInput.value,
         customParentName: customParentNameInput.value,
-        body: body.value
+        body: body.value,
+        attachments: attachedImages.map(({id, name, filename, path, type, size}) => ({id, name, filename, path, type, size}))
       }));
       return true;
     } catch (_) { return false; }
@@ -531,6 +662,7 @@ noindex: true
     previewBody.innerHTML = body.value.trim()
       ? render(normalizeArticle(body.value, title))
       : '<p class="preview-empty">본문을 입력하면 여기에서 확인할 수 있습니다.</p>';
+    updatePreviewImages();
     const categoryLabel = category.error ? '분류 이름 입력 필요' : (category.isCustom && category.parentLabel ? category.parentLabel + ' / ' + category.label : category.label || category.section);
     const dateLabel = date || '날짜 확인 필요';
     metaSummary.textContent = (title || '제목을 입력해 주세요') + ' · ' + dateLabel + ' · ' + (tags.length ? tags.join(', ') : '태그 없음') + ' · ' + categoryLabel;
@@ -631,6 +763,78 @@ noindex: true
     button.addEventListener('click', () => applyToolbar(button.dataset.action));
   });
 
+  const addImageFiles = async files => {
+    const added = [];
+    const errors = [];
+    for (const file of files) {
+      const extension = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+      if (!allowedImageExtensions.has(extension) || (file.type && !file.type.startsWith('image/'))) {
+        errors.push(file.name + ': 지원하는 이미지 형식이 아닙니다.');
+        continue;
+      }
+      if (!file.size || file.size > maxImageSize) {
+        errors.push(file.name + ': 이미지 크기는 5MB 이하여야 합니다.');
+        continue;
+      }
+      if (attachedImages.length >= maxImageCount) {
+        errors.push('이미지는 글 하나에 최대 10장까지 첨부할 수 있습니다.');
+        break;
+      }
+      const id = createId();
+      const filename = 'image-' + id.replace(/[^a-zA-Z0-9-]/g, '').slice(0, 24) + '.' + extension;
+      const path = '/assets/images/posts/' + draftId + '/' + filename;
+      try {
+        await saveImageBlob({id, blob: file});
+        const attachment = {
+          id,
+          name: file.name,
+          filename,
+          path,
+          type: file.type || 'image/' + extension,
+          size: file.size,
+          blob: file,
+          previewUrl: URL.createObjectURL(file)
+        };
+        attachedImages.push(attachment);
+        added.push(attachment);
+      } catch (error) {
+        errors.push(file.name + ': ' + (error.message || '브라우저에 저장하지 못했습니다.'));
+      }
+    }
+
+    if (added.length) {
+      const markdown = added.map(image => {
+        const alt = image.name.replace(/\.[^.]+$/, '').replace(/\\/g, '\\\\').replace(/\]/g, '\\]');
+        return '![' + alt + '](' + image.path + ')';
+      }).join('\n\n');
+      const start = Math.min(imageInsertPosition, body.value.length);
+      const before = body.value.slice(0, start);
+      const after = body.value.slice(start);
+      const prefix = before ? (before.endsWith('\n\n') ? '' : before.endsWith('\n') ? '\n' : '\n\n') : '';
+      const suffix = after ? (after.startsWith('\n\n') ? '' : after.startsWith('\n') ? '\n' : '\n\n') : '';
+      body.setRangeText(prefix + markdown + suffix, start, start, 'end');
+      imageInsertPosition = body.selectionStart;
+      renderAttachments();
+      body.focus();
+      body.dispatchEvent(new Event('input', {bubbles: true}));
+    }
+    imageAttachmentFeedback.textContent = errors.length
+      ? errors.join(' ')
+      : added.length ? added.length + '개 이미지를 본문에 넣었습니다.' : '';
+    imageAttachmentFeedback.className = 'image-attachment-feedback' + (errors.length ? ' error' : '');
+    imageAttachmentFeedback.hidden = !imageAttachmentFeedback.textContent;
+  };
+
+  addImagesButton.addEventListener('click', () => {
+    imageInsertPosition = body.selectionStart;
+    imageInput.click();
+  });
+  imageInput.addEventListener('change', async () => {
+    const files = [...imageInput.files];
+    imageInput.value = '';
+    await addImageFiles(files);
+  });
+
   body.addEventListener('input', () => {
     const parsed = readFrontMatter(body.value);
     if (parsed) {
@@ -662,9 +866,16 @@ noindex: true
   });
 
   document.getElementById('reset-post').addEventListener('click', () => {
-    if ((body.value.trim() || titleInput.value.trim()) && !window.confirm('현재 초안을 지우고 새 글을 시작할까요?')) return;
+    if ((body.value.trim() || titleInput.value.trim() || attachedImages.length) && !window.confirm('현재 초안을 지우고 새 글을 시작할까요?')) return;
     window.clearTimeout(updateTimer);
     window.clearTimeout(update.saveTimer);
+    attachedImages.forEach(image => {
+      if (image.previewUrl) URL.revokeObjectURL(image.previewUrl);
+      void deleteImageBlob(image.id);
+    });
+    attachedImages = [];
+    draftId = createId();
+    renderAttachments();
     body.value = '';
     titleInput.value = '';
     dateInput.value = today();
@@ -680,9 +891,14 @@ noindex: true
     status.className = 'status' + (removed ? '' : ' error');
   });
 
-  document.getElementById('download-post').addEventListener('click', () => {
+  document.getElementById('download-post').addEventListener('click', async () => {
     window.clearTimeout(updateTimer);
     window.clearTimeout(update.saveTimer);
+    if (attachmentsRestoring) {
+      status.textContent = '이전에 첨부한 이미지를 불러오는 중입니다. 잠시 후 다시 저장해 주세요.';
+      status.className = 'status';
+      return;
+    }
     const title = titleInput.value.trim() || autoTitle(body.value);
     const date = normalizeDate(dateInput.value);
     const tags = normalizeTags(tagsInput.value);
@@ -705,33 +921,58 @@ noindex: true
     fields.push('tags: [' + (tags.length ? tags.map(yamlQuote).join(', ') : yamlQuote('Study')) + ']', '---', '');
     const fileContent = fields.join('\n') + content;
     const draftSaved = safeWriteDraft();
-    const blob = new Blob([fileContent], {type: 'text/markdown;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
     const filenameSlug = title.normalize('NFKC').toLocaleLowerCase('ko-KR').replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '').slice(0, 90) || 'post';
-    link.href = url;
-    link.download = date + '-' + filenameSlug + '.md';
-    link.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    status.textContent = draftSaved
-      ? 'Markdown 파일을 저장하고 초안도 브라우저에 보관했습니다.'
-      : 'Markdown 파일은 저장했지만 브라우저 초안은 저장하지 못했습니다.';
-    status.className = 'status' + (draftSaved ? ' ok' : ' error');
+    const download = (blob, filename) => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    };
+    const imagesToPackage = attachedImages.filter(image => body.value.includes('](' + image.path + ')'));
+    try {
+      if (imagesToPackage.length) {
+        if (!window.JSZip) throw new Error('이미지 묶음 기능을 불러오지 못했습니다. 페이지를 새로고침한 뒤 다시 저장해 주세요.');
+        const unavailable = imagesToPackage.find(image => !image.blob);
+        if (unavailable) throw new Error(unavailable.name + ' 이미지를 복구하지 못했습니다. 다시 첨부해 주세요.');
+        const archive = new window.JSZip();
+        archive.file('_posts/' + date + '-' + filenameSlug + '.md', fileContent);
+        imagesToPackage.forEach(image => archive.file(image.path.replace(/^\//, ''), image.blob));
+        const zipBlob = await archive.generateAsync({type: 'blob'});
+        download(zipBlob, date + '-' + filenameSlug + '.zip');
+        status.textContent = draftSaved
+          ? '게시글과 이미지가 담긴 ZIP을 저장했습니다. 저장소 루트에 압축을 풀어 주세요.'
+          : 'ZIP 파일은 저장했지만 브라우저 초안은 저장하지 못했습니다.';
+        status.className = 'status' + (draftSaved ? ' ok' : ' error');
+      } else {
+        download(new Blob([fileContent], {type: 'text/markdown;charset=utf-8'}), date + '-' + filenameSlug + '.md');
+        status.textContent = draftSaved
+          ? 'Markdown 파일을 저장하고 초안도 브라우저에 보관했습니다.'
+          : 'Markdown 파일은 저장했지만 브라우저 초안은 저장하지 못했습니다.';
+        status.className = 'status' + (draftSaved ? ' ok' : ' error');
+      }
+    } catch (error) {
+      status.textContent = error.message || '파일을 저장하지 못했습니다.';
+      status.className = 'status error';
+    }
   });
 
   let importedDraft = false;
+  let pendingAttachments = [];
   const storedDraft = safeReadDraft();
   if (storedDraft) {
     try {
       const saved = JSON.parse(storedDraft);
-      if (saved && (saved.version === 2 || saved.version === 3)) {
+      if (saved && (saved.version === 2 || saved.version === 3 || saved.version === 4)) {
+        draftId = typeof saved.draftId === 'string' && /^[a-zA-Z0-9-]{1,100}$/.test(saved.draftId) ? saved.draftId : draftId;
         titleInput.value = saved.title || '';
         dateInput.value = normalizeDate(saved.date) || today();
         tagsInput.value = saved.tags || '';
         const savedCategory = saved.category || 'auto';
         categorySelect.value = savedCategory;
         customCategoryInput.value = saved.customCategory || '';
-        const savedParent = saved.version === 3 ? saved.customParent || 'new-parent' : (categorySelect.value === 'new' ? 'custom' : 'new-parent');
+        const savedParent = saved.version >= 3 ? saved.customParent || 'new-parent' : (categorySelect.value === 'new' ? 'custom' : 'new-parent');
         ensureCustomParentOption(savedParent, saved.customParentLabel || saved.customParentName);
         customParentSelect.value = savedParent;
         customParentNameInput.value = saved.customParentName || '';
@@ -743,6 +984,11 @@ noindex: true
         customFields.hidden = categorySelect.value !== 'new';
         syncCustomParentFields();
         body.value = saved.body || '';
+        if (Array.isArray(saved.attachments)) {
+          attachedImages = saved.attachments.filter(image => image && typeof image.id === 'string' && typeof image.name === 'string' && isSafeImageFilename(image.filename) && image.path === '/assets/images/posts/' + draftId + '/' + image.filename)
+            .map(image => ({...image, blob: null, previewUrl: null}));
+          pendingAttachments = attachedImages;
+        }
         importedDraft = true;
       } else {
         body.value = storedDraft;
@@ -760,11 +1006,37 @@ noindex: true
   } else {
     dateInput.value = today();
   }
+  renderAttachments();
   update(false);
   if (importedDraft) status.textContent = '이전에 작성하던 초안을 불러왔습니다.';
+  if (pendingAttachments.length) {
+    attachmentsRestoring = true;
+    status.textContent = '이전에 첨부한 이미지를 불러오는 중입니다.';
+    Promise.all(pendingAttachments.map(async image => {
+      try {
+        image.blob = await readImageBlob(image.id);
+        if (image.blob) image.previewUrl = URL.createObjectURL(image.blob);
+        else image.missing = true;
+      } catch (_) {
+        image.missing = true;
+      }
+    })).then(() => {
+      attachmentsRestoring = false;
+      renderAttachments();
+      update(false);
+      if (pendingAttachments.some(image => image.missing)) {
+        status.textContent = '일부 이미지를 브라우저 저장소에서 찾지 못했습니다. 다시 첨부해 주세요.';
+        status.className = 'status error';
+      } else {
+        status.textContent = '작성 중인 초안과 이미지 ' + pendingAttachments.length + '장을 불러왔습니다.';
+        status.className = 'status ok';
+      }
+    });
+  }
   window.addEventListener('pagehide', () => {
     window.clearTimeout(updateTimer);
     if (body.value.trim() || titleInput.value.trim()) safeWriteDraft();
   });
 })();
 </script>
+
