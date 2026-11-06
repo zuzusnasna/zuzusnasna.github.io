@@ -175,6 +175,7 @@ noindex: true
           <input id="post-images" type="file" accept="image/png,image/jpeg,image/gif,image/webp,image/avif" multiple hidden>
           <button type="button" id="add-images" class="secondary-button">이미지 첨부</button>
         </div>
+        <p class="image-paste-hint">스크린샷을 본문 칸에 붙여넣으면 첨부한 뒤 <code>![image](/assets/images/posts/.../image-....png)</code> 형식의 Markdown 링크를 넣습니다.</p>
         <div class="image-attachments" id="image-attachments" aria-live="polite" hidden></div>
         <p class="image-attachment-feedback" id="image-attachment-feedback" role="status" aria-live="polite" hidden></p>
       </div>
@@ -833,6 +834,33 @@ noindex: true
     const files = [...imageInput.files];
     imageInput.value = '';
     await addImageFiles(files);
+  });
+
+  body.addEventListener('paste', event => {
+    const clipboard = event.clipboardData;
+    if (!clipboard) return;
+    const imageItem = [...(clipboard.items || [])].find(item => item.kind === 'file' && item.type.startsWith('image/'));
+    const imageFile = imageItem?.getAsFile() || [...(clipboard.files || [])].find(file => file.type.startsWith('image/'));
+    if (!imageFile) return;
+
+    event.preventDefault();
+    const mimeType = (imageFile.type || imageItem?.type || '').toLowerCase();
+    const extension = ({
+      'image/png': 'png',
+      'image/jpeg': 'jpg',
+      'image/gif': 'gif',
+      'image/webp': 'webp',
+      'image/avif': 'avif'
+    })[mimeType];
+    if (!extension) {
+      imageAttachmentFeedback.textContent = '지원하는 이미지 형식은 PNG, JPG, GIF, WebP, AVIF입니다.';
+      imageAttachmentFeedback.className = 'image-attachment-feedback error';
+      imageAttachmentFeedback.hidden = false;
+      return;
+    }
+    const pastedImage = new File([imageFile], 'image.' + extension, {type: mimeType});
+    imageInsertPosition = body.selectionStart;
+    void addImageFiles([pastedImage]);
   });
 
   body.addEventListener('input', () => {
