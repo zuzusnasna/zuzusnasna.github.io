@@ -156,3 +156,63 @@ footer{background:#fff;border-top-color:var(--line)}
 .custom-category-grid .write-field select{height:40px}
 @media(max-width:560px){.custom-category-grid{grid-template-columns:minmax(0,1fr)}}
 
+
+
+/* Keep the preview alongside the editor while writing. */
+.write-view-switch{display:none}
+@media(min-width:1001px){
+  .write-grid .preview-panel{
+    position:sticky;
+    top:78px;
+    max-height:calc(100vh - 94px);
+    overflow-x:hidden;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+  }
+}
+@media(max-width:1000px){
+  .write-view-switch{
+    position:sticky;
+    top:70px;
+    z-index:25;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:4px;
+    margin:16px 0 0;
+    padding:5px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:rgba(250,251,248,.96);
+    box-shadow:0 4px 12px rgba(34,42,32,.06);
+    backdrop-filter:blur(10px);
+  }
+  .write-view-switch button{
+    min-height:38px;
+    border:0;
+    border-radius:4px;
+    background:transparent;
+    color:#737b86;
+    font:inherit;
+    font-size:12px;
+    cursor:pointer;
+  }
+  .write-view-switch button.is-active{
+    background:#fff;
+    color:var(--accent);
+    font-weight:600;
+    box-shadow:0 1px 4px rgba(34,42,32,.12);
+  }
+  .write-view-switch button:focus-visible{
+    outline:2px solid #6f8edb;
+    outline-offset:2px;
+  }
+  .write-grid{margin-top:10px}
+  .write-grid .editor-panel[hidden],
+  .write-grid .preview-panel[hidden]{display:none!important}
+  .write-grid .preview-panel{
+    position:static;
+    max-height:none;
+    overflow:hidden;
+  }
+}
