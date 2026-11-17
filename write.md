@@ -21,6 +21,11 @@ noindex: true
     </div>
   </header>
 
+  <div class="write-view-switch" role="group" aria-label="작성 화면 선택" data-active-view="editor">
+    <button type="button" class="is-active" data-write-view="editor" aria-pressed="true">편집</button>
+    <button type="button" data-write-view="preview" aria-pressed="false">미리보기</button>
+  </div>
+
   <div class="write-grid">
     <section class="editor-panel" aria-labelledby="editor-heading">
       <div class="panel-heading">
@@ -219,6 +224,39 @@ noindex: true
 <script>
 (() => {
   const body = document.getElementById('post-body');
+  const editorPanel = document.querySelector('.editor-panel');
+  const previewPanel = document.querySelector('.preview-panel');
+  const viewSwitch = document.querySelector('.write-view-switch');
+  const viewButtons = [...viewSwitch.querySelectorAll('[data-write-view]')];
+  const compactLayout = window.matchMedia('(max-width: 1000px)');
+  let lastEditorScrollY = 0;
+
+  const applyWriteView = view => {
+    const isCompact = compactLayout.matches;
+    if (isCompact && view === 'preview' && viewSwitch.dataset.activeView !== 'preview') {
+      lastEditorScrollY = window.scrollY;
+    }
+    viewSwitch.dataset.activeView = view;
+    editorPanel.hidden = isCompact && view !== 'editor';
+    previewPanel.hidden = isCompact && view !== 'preview';
+    viewButtons.forEach(button => {
+      const isActive = button.dataset.writeView === view;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+    if (!isCompact) return;
+    window.requestAnimationFrame(() => {
+      if (view === 'preview') previewPanel.scrollIntoView({block: 'start', behavior: 'smooth'});
+      else if (lastEditorScrollY > 0) window.scrollTo({top: lastEditorScrollY, behavior: 'smooth'});
+    });
+  };
+
+  viewButtons.forEach(button => button.addEventListener('click', () => applyWriteView(button.dataset.writeView)));
+  compactLayout.addEventListener('change', () => {
+    const view = viewSwitch.dataset.activeView || 'editor';
+    editorPanel.hidden = compactLayout.matches && view !== 'editor';
+    previewPanel.hidden = compactLayout.matches && view !== 'preview';
+  });
   const titleInput = document.getElementById('post-title');
   const dateInput = document.getElementById('post-date');
   const tagsInput = document.getElementById('post-tags');
@@ -1036,6 +1074,7 @@ noindex: true
   }
   renderAttachments();
   update(false);
+  applyWriteView('editor');
   if (importedDraft) status.textContent = '이전에 작성하던 초안을 불러왔습니다.';
   if (pendingAttachments.length) {
     attachmentsRestoring = true;
