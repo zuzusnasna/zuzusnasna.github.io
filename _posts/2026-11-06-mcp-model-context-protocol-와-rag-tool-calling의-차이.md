@@ -3,7 +3,7 @@ layout: post
 title: "MCP(Model Context Protocol)와 RAG, Tool Calling의 차이"
 date: 2026-11-06 00:00:00 +0900
 categories: ["내 분류"]
-section: "ai"
+section: "custom-ai"
 section_parent: "custom"
 section_parent_label: "내 분류"
 section_label: "ai"
