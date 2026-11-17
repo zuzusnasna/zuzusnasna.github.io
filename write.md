@@ -246,7 +246,7 @@ noindex: true
     });
     if (!isCompact) return;
     window.requestAnimationFrame(() => {
-      if (view === 'preview') previewPanel.scrollIntoView({block: 'start', behavior: 'smooth'});
+      if (view === 'preview') window.scrollTo({top: Math.max(0, previewPanel.getBoundingClientRect().top + window.scrollY - 126), behavior: 'smooth'});
       else if (lastEditorScrollY > 0) window.scrollTo({top: lastEditorScrollY, behavior: 'smooth'});
     });
   };
